@@ -4,15 +4,22 @@ bin/
 target/
 libs/
 tmp/
+
 node_modules/
 jaxws/jaxws-client/src/main/java
 jaxws/jaxws-endpoint/src/main/webapp/WEB-INF/wsdl/
- 
+
+
+# IDEA
+jee.iml
+out/
+META-INF/
+
 # OS Files #
 .DS_Store
- 
+
 *.class
- 
+
 # Package Files #
 *.jar
 *.war
@@ -23,23 +30,23 @@ rebel.xml
 ######################
 # Windows
 ######################
- 
+
 # Windows image file caches
-Thumbs.db 
- 
+Thumbs.db
+
 # Folder config file
 Desktop.ini
- 
+
 ######################
 # OSX
 ######################
- 
+
 .DS_Store
 .svn
- 
+
 # Thumbnails
 ._*
- 
+
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
@@ -54,7 +61,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
- 
+
 ######################
 # IDEA
 ######################
@@ -64,11 +71,11 @@ nb-configuration.xml
 .idea/
 atlassian-ide-plugin.xml
 
- 
+
 ######################
 # Eclipse
 ######################
- 
+
 *.pydevproject
 .project
 .metadata
@@ -83,13 +90,13 @@ local.properties
 
 # External tool builders
 .externalToolBuilders/
- 
+
 # Locally stored "Eclipse launch configurations"
 *.launch
- 
+
 # CDT-specific
 .cproject
- 
+
 # PDT-specific
 .buildpath
 
