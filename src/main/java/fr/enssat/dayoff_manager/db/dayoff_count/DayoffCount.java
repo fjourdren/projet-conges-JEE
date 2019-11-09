@@ -1,4 +1,7 @@
-package fr.enssat.dayoff_manager.entities;
+package fr.enssat.dayoff_manager.db.dayoff_count;
+
+import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
+import fr.enssat.dayoff_manager.db.employee.Employee;
 
 import javax.persistence.*;
 import java.io.Serializable;

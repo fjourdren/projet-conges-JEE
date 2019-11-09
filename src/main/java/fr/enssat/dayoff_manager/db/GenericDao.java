@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.dao;
+package fr.enssat.dayoff_manager.db;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public interface Dao<E> {
+public interface GenericDao<E> {
 
     /**
      * Sauvegarde l'entité en base
