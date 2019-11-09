@@ -26,4 +26,14 @@ public class DayoffDaoMockImpl implements DayoffDao {
         //TODO
         return new ArrayList<>();
     }
+
+    @Override
+    public void validate(String comment) {
+        //TODO
+    }
+
+    @Override
+    public void refuse(String comment) {
+        //TODO
+    }
 }
