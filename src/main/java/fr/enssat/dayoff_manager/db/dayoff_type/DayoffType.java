@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.entities;
+package fr.enssat.dayoff_manager.db.dayoff_type;
 
 import javax.persistence.*;
 import java.io.Serializable;

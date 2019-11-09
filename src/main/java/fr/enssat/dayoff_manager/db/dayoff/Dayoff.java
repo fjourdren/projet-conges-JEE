@@ -1,4 +1,6 @@
-package fr.enssat.dayoff_manager.entities;
+package fr.enssat.dayoff_manager.db.dayoff;
+
+import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -158,23 +160,21 @@ public class Dayoff implements Serializable {
     }
 
     @Basic
-    @Column(nullable = false)
     public String getCommentRH() {
         return commentRH;
     }
 
     public void setCommentRH(String commentRH) {
-        this.commentRH = Objects.requireNonNull(commentRH);
+        this.commentRH = commentRH;
     }
 
     @Basic
-    @Column(nullable = false)
     public String getCommentEmployee() {
         return commentEmployee;
     }
 
     public void setCommentEmployee(String commentEmployee) {
-        this.commentEmployee = Objects.requireNonNull(commentEmployee);
+        this.commentEmployee = commentEmployee;
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

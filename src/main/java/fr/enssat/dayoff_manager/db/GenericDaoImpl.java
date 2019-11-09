@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.dao;
+package fr.enssat.dayoff_manager.db;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public class GenericDao<E> implements Dao<E> {
+public class GenericDaoImpl<E> implements GenericDao<E> {
 
     /**
      * Classe de l'entité
@@ -26,7 +26,7 @@ public class GenericDao<E> implements Dao<E> {
         em = Persistence.createEntityManagerFactory("dayoff_manager").createEntityManager();
     }
 
-    public GenericDao(Class<E> entityClass) {
+    public GenericDaoImpl(Class<E> entityClass) {
         this.entityClass = entityClass;
     }
 

@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.entities;
+package fr.enssat.dayoff_manager.db.dayoff;
 
 /**
  * Statut d'une demande de congé

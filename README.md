@@ -1,5 +1,19 @@
 # dayoff_manager
 
+**Ce projet utilise MAVEN !**
+
+## Architecture du projet
+
+Le package `db` contient pour chaque entité :
+- la classe représentant l'entité (*ne pas modfier*)
+- l'interface définissant le DAO (interface)
+- l'implémentation DAO (avec DB)
+- implémentation DAO mock (sans DB, pour tests)
+
+Pour ajouter une fonction, il faut l'ajouter dans l'interface puis l'implémenter dans les deux classes (Impl+MockImpl)
+
+Le package `servlets` contient les servlets de l'application (*il faut également les déclarer dans le web.xml !*)
+
 ## Procédure de mise en place et test de la base de données
 
 ### Etape 1 (si besoin)

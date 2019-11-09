@@ -3,7 +3,19 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>Archetype Created Web Application</display-name>
+    <display-name>dayoff_manager</display-name>
+
+    <servlet>
+        <display-name>HelloWorld</display-name>
+        <servlet-name>HelloWorld</servlet-name>
+        <servlet-class>fr.enssat.dayoff_manager.servlets.HelloWorldServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HelloWorld</servlet-name>
+        <url-pattern>/HelloWorld</url-pattern>
+    </servlet-mapping>
+
 
     <!-- A décommenter pour tester la BDD -->
     <!--

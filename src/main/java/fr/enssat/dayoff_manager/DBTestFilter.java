@@ -1,7 +1,13 @@
 package fr.enssat.dayoff_manager;
 
-import fr.enssat.dayoff_manager.dao.GenericDao;
-import fr.enssat.dayoff_manager.entities.*;
+import fr.enssat.dayoff_manager.db.GenericDaoImpl;
+import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
+import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
+import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
+import fr.enssat.dayoff_manager.db.department.Department;
+import fr.enssat.dayoff_manager.db.employee.Employee;
+import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -49,15 +55,15 @@ public class DBTestFilter implements Filter {
         manager.persist(dayoffCount);
         manager.getTransaction().commit();
 
-        System.out.println(Arrays.toString(new GenericDao<>(Department.class).getAll().toArray()));
+        System.out.println(Arrays.toString(new GenericDaoImpl<>(Department.class).getAll().toArray()));
         System.out.println("---");
-        System.out.println(Arrays.toString(new GenericDao<>(Employee.class).getAll().toArray()));
+        System.out.println(Arrays.toString(new GenericDaoImpl<>(Employee.class).getAll().toArray()));
         System.out.println("---");
-        System.out.println(Arrays.toString(new GenericDao<>(DayoffType.class).getAll().toArray()));
+        System.out.println(Arrays.toString(new GenericDaoImpl<>(DayoffType.class).getAll().toArray()));
         System.out.println("---");
-        System.out.println(Arrays.toString(new GenericDao<>(Dayoff.class).getAll().toArray()));
+        System.out.println(Arrays.toString(new GenericDaoImpl<>(Dayoff.class).getAll().toArray()));
         System.out.println("---");
-        System.out.println(Arrays.toString(new GenericDao<>(DayoffCount.class).getAll().toArray()));
+        System.out.println(Arrays.toString(new GenericDaoImpl<>(DayoffCount.class).getAll().toArray()));
         System.out.println("---");
 
         manager.getTransaction().begin();
