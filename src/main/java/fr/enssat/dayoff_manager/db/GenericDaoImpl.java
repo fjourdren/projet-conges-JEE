@@ -80,35 +80,5 @@ public class GenericDaoImpl<E> implements GenericDao<E> {
     }
 
 
-    public boolean login(String email, String password) {
-        String qlString = String.format("SELECT x FROM %s x", entityClass.getSimpleName());
-        if(em.createQuery(qlString, entityClass).getResultList().isEmpty()){
-            return false;
-        }
-        return true;
-    }
 
-    public void createLeave(DayoffType typeDayoff, int nbDays, java.util.Date dateStart, java.util.Date dateEnd){
-        Dayoff send = new Dayoff((dateEnd, dateStart, nbDays));
-        DayoffDaoImpl.save(send);
-    }
-
-    public List<E> getDayoff(){
-        String qlString = String.format("SELECT dayoff.x FROM dayoff, employee WHERE employee.id = dayoff.employeeId;");
-        return em.createQuery(qlString, entityClass).getResultList();
-    }
-
-    public int nbDaysUsable(DayoffType type){
-        String qlString = String.format("SELECT defaultNbDays FROM dayofftype WHERE name = %s;", type.getName());
-        return em.createQuery(qlString, entityClass).getFirstResult();
-    }
-
-    public void modifyLeaveDemand(Dayoff dayoff, Dayoff newDayoff){
-        DayoffDaoImpl.delete(dayoff);
-        DayoffDao.save(newDayoff);
-    }
-
-    public void deleteLeaveDemand(Dayoff dayoff){
-        DayoffDaoImpl.delete(dayoff);
-    }
 }
