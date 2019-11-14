@@ -43,16 +43,19 @@ public class loginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		//String userName = (String) session.getAttribute("uName");
-		
 		if(Employee.login(email, password)) {
+			Employee employee = Employee(email);
+			
 			HttpSession session = request.getSession();
 			
 			session.setAttribute("email", email);
 			
-			response.sendRedirect("/default");
+			session.setAttribute("prenom", employee.getPrenom());
+			session.setAttribute("nom", employee.getNom());
+			
+			response.sendRedirect("default");
 		} else {
-			response.sendRedirect("/login");
+			response.sendRedirect("login");
 		}
 		
 	}
