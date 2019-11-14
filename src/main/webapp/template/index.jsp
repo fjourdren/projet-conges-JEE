@@ -9,22 +9,23 @@
 		<jsp:include page="components/head.jsp" />
 	</head>
 	<body>
+
 		<jsp:include page="components/menu.jsp" />
 
         <div class="container">
             
             <%
-            // router - components
-            switch((String) request.getAttribute("componentNeeded")) {
-				case "login":
-					%> <jsp:include page="login.jsp" /> <%
-					break;
-				case "demo":
-					%> <jsp:include page="demo.jsp" /> <%
-					break;
-				default:
-					
-			}
+	            // router - components
+	            switch((String) request.getAttribute("componentNeeded")) {
+					case "login":
+						%> <jsp:include page="login.jsp" /> <%
+						break;
+					case "demo":
+						%> <jsp:include page="demo.jsp" /> <%
+						break;
+					default:
+						
+				}
 			%>
        
 
