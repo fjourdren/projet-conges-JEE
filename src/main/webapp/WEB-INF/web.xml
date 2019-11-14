@@ -18,7 +18,7 @@
 
 
     <!-- A décommenter pour tester la BDD -->
-    <!--
+
 
     <filter>
         <filter-name>TestFilter</filter-name>
@@ -29,5 +29,5 @@
         <filter-name>TestFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    -->
+
 </web-app>

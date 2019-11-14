@@ -27,13 +27,14 @@ public class DayoffDaoMockImpl implements DayoffDao {
         return new ArrayList<>();
     }
 
+
     @Override
-    public void validate(String comment) {
-        //TODO
+    public void validate(Dayoff dayoff, String comment) {
+
     }
 
     @Override
-    public void refuse(String comment) {
-        //TODO
+    public void refuse(Dayoff dayoff, String comment) {
+
     }
 }
