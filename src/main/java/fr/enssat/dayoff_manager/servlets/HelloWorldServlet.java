@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 
 public class HelloWorldServlet extends HttpServlet {
 
+	// http://localhost:8080/dayoff_manager/HelloWorld
+	
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
