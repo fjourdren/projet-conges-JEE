@@ -1,61 +1,105 @@
 package fr.enssat.dayoff_manager.db.employee;
 
+import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
-import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
+import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EmployeeDaoMockImpl implements EmployeeDao {
 
-    private static List<Employee> listEmployee;
-    static {
-        listEmployee = new ArrayList<Employee>();
-        Department department = new Department("imr");
-        listEmployee.add(new Employee("Flavien", "Jourdren", "xXdidocheGamingXx", "adr", "pos", "fj@", EmployeeType.BOSS, department));
-        listEmployee.add(new Employee("firstClassic", "endClassic", "pass", "adr", "pos", "email1@", EmployeeType.CLASSIC, department));
-        listEmployee.add(new Employee("firstRH", "endRH", "pass", "adr", "pos", "email2@", EmployeeType.RH, department));
-        listEmployee.add(new Employee("firstRH_Admin", "end_RHAdmin", "pass", "adr", "pos", "email3@", EmployeeType.RH_ADMIN, department));
+    private List<Employee> listEmployee = new ArrayList<>();
+    private int nextID = -1;
+
+    public EmployeeDaoMockImpl() {
+        Department dep0 = new Department("imr1");
+        DaoProvider.getDepartmentDao().save(dep0);
+
+        Employee boss = new Employee("Flavien", "Jourdren", "xXdidocheGamingXx", "adr", "pos", "fj@", EmployeeType.BOSS, dep0);
+        boss.setId(++nextID);
+
+        Employee classic = new Employee("firstClassic", "endClassic", "pass", "adr", "pos", "email1@", EmployeeType.CLASSIC, dep0);
+        classic.setId(++nextID);
+
+        Employee rh = new Employee("firstRH", "endRH", "pass", "adr", "pos", "email2@", EmployeeType.RH, dep0);
+        rh.setId(++nextID);
+
+        Employee rh_admin = new Employee("firstRH_Admin", "end_RHAdmin", "pass", "adr", "pos", "email3@", EmployeeType.RH_ADMIN, dep0);
+        rh_admin.setId(++nextID);
+
+        listEmployee.add(boss);
+        listEmployee.add(classic);
+        listEmployee.add(rh);
+        listEmployee.add(rh_admin);
     }
 
     @Override
     public void save(Employee entity) {
-        //nothing
+        entity.setId(++nextID);
+        listEmployee.add(entity);
     }
 
     @Override
     public void delete(Employee entity) {
-        //nothing
+        listEmployee.remove(entity);
     }
 
     @Override
     public Employee findById(int id) {
-        List<Employee> listEmployeeId = listEmployee.stream().filter(x->x.getId() == id).collect(Collectors.toList());
-        if(listEmployeeId.size() == 1 ) return listEmployeeId.get(0);
+        List<Employee> listEmployeeId = listEmployee.stream().filter(x -> x.getId() == id).collect(Collectors.toList());
+        if (listEmployeeId.size() == 1) return listEmployeeId.get(0);
         return null;
     }
 
     @Override
     public List<Employee> getAll() {
-        return listEmployee;
+        return Collections.unmodifiableList(listEmployee);
     }
 
-    public boolean login(Employee employee, String email, String password){
-        return (employee.getEmail().equals(email) && employee.getPassword().equals(password));
-    }
-
-    public List<Dayoff> getDayoff(Employee employee){
-        // TODO
+    @Override
+    public Employee login(String username, String password) {
+        for (Employee employee : listEmployee) {
+            if (employee.getEmail().equals(username) && employee.getPassword().equals(password)) {
+                return employee;
+            }
+        }
         return null;
     }
 
-    public int nbDaysUsable(DayoffType dayoffType){
-        // TODO
-        return 0;
+    @Override
+    public List<Dayoff> getDayOffs(Employee employee) {
+        List<Dayoff> dayoffs = new ArrayList<>();
+
+        for (Dayoff dayoff : DaoProvider.getDayoffDao().getAll()) {
+            if (dayoff.getEmployee().equals(employee)) {
+                dayoffs.add(dayoff);
+            }
+        }
+
+        return dayoffs;
+    }
+
+    @Override
+    public Float nbDaysUsable(Employee employee, DayoffType dayoffType) {
+        for (DayoffCount dayoffCount : DaoProvider.getDayoffCountDao().getAll()) {
+            if (dayoffCount.getType() == dayoffType && dayoffCount.getEmployee().equals(employee)) {
+                return dayoffCount.getNbDays();
+            }
+        }
+
+        DayoffCount dayoffCount = new DayoffCount();
+        dayoffCount.setType(dayoffType);
+        dayoffCount.setNbDays(dayoffType.getDefaultNbDays());
+        dayoffCount.setEmployee(employee);
+        dayoffCount.setType(dayoffType);
+
+        DaoProvider.getDayoffCountDao().save(dayoffCount);
+        return dayoffCount.getNbDays();
     }
 
 }
