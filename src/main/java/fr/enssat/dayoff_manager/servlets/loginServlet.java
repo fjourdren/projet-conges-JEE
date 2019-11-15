@@ -43,7 +43,7 @@ public class loginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		if(Employee.login(email, password)) {
+/*		if(Employee.login(email, password)) {
 			Employee employee = Employee(email);
 			
 			HttpSession session = request.getSession();
@@ -56,7 +56,7 @@ public class loginServlet extends HttpServlet {
 			response.sendRedirect("default");
 		} else {
 			response.sendRedirect("login");
-		}
+		}*/
 		
 	}
 
