@@ -48,11 +48,6 @@ public class EmployeeDaoMockImpl implements EmployeeDao {
         return (employee.getEmail().equals(email) && employee.getPassword().equals(password));
     }
 
-    public boolean createDayoff(Employee employee, DayoffType dayoffType, int nbDays, Date dateStart, Date dateEnd){
-        // TODO: décider si la fonction return true ou false si l'insertion est possible ou pas ou bien void
-        return false;
-    }
-
     public List<Dayoff> getDayoff(Employee employee){
         // TODO
         return null;
@@ -61,16 +56,6 @@ public class EmployeeDaoMockImpl implements EmployeeDao {
     public int nbDaysUsable(DayoffType dayoffType){
         // TODO
         return 0;
-    }
-
-    public boolean modifyDayoffDemand(Dayoff dayoff, Dayoff newDayOff){
-        // TODO
-        return false;
-    }
-
-    public boolean deleteDayoffDemand(Dayoff dayoff){
-        // TODO
-        return false;
     }
 
 }

@@ -3,6 +3,7 @@ package fr.enssat.dayoff_manager.db.dayoff;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
+import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +15,14 @@ public class DayoffDaoMockImpl implements DayoffDao {
     private static List<Dayoff> listDayoff;
     static {
         listDayoff = new ArrayList<Dayoff>();
+
+        Department department = new Department("imr");
+        Employee employeeTest = new Employee("firstClassic", "endClassic", "pass", "adr", "pos", "email1@", EmployeeType.CLASSIC, department);
         DayoffType type = new DayoffType("type", 5f);
-        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 10, DayoffStatus.WAITING, "comment", "aie", type));
-        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 20, DayoffStatus.WAITING, "comment", "aie", type));
-        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 30, DayoffStatus.WAITING, "comment", "aie", type));
-        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 40, DayoffStatus.WAITING, "comment", "aie", type));
+        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 10, DayoffStatus.WAITING, "comment", "aie", type, employeeTest));
+        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 20, DayoffStatus.WAITING, "comment", "aie", type, employeeTest));
+        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 30, DayoffStatus.WAITING, "comment", "aie", type, employeeTest));
+        listDayoff.add(new Dayoff(new Date(), new Date(), new Date(), new Date(), 40, DayoffStatus.WAITING, "comment", "aie", type, employeeTest));
     }
 
     @Override
