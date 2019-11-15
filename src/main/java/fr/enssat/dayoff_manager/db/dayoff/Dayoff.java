@@ -1,6 +1,7 @@
 package fr.enssat.dayoff_manager.db.dayoff;
 
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
+import fr.enssat.dayoff_manager.db.employee.Employee;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -63,6 +64,11 @@ public class Dayoff implements Serializable {
      */
     private DayoffType type;
 
+    /**
+     * Employé
+     */
+    private Employee employee;
+
     public Dayoff() {
     }
 
@@ -74,7 +80,8 @@ public class Dayoff implements Serializable {
                   DayoffStatus status,
                   String commentRH,
                   String commentEmployee,
-                  DayoffType type) {
+                  DayoffType type,
+                  Employee employee) {
         setDateStart(dateStart);
         setDateEnd(dateEnd);
         setDateCreation(dateCreation);
@@ -84,6 +91,7 @@ public class Dayoff implements Serializable {
         setCommentRH(commentRH);
         setCommentEmployee(commentEmployee);
         setType(type);
+        setEmployee(employee);
     }
 
     @Id
@@ -187,6 +195,16 @@ public class Dayoff implements Serializable {
         this.type = Objects.requireNonNull(type);
     }
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_employee", nullable = false)
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -201,12 +219,13 @@ public class Dayoff implements Serializable {
                 status == dayoff.status &&
                 Objects.equals(commentRH, dayoff.commentRH) &&
                 Objects.equals(commentEmployee, dayoff.commentEmployee) &&
-                Objects.equals(type, dayoff.type);
+                Objects.equals(type, dayoff.type) &&
+                Objects.equals(employee, dayoff.employee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateStart, dateEnd, dateCreation, dateValidation, nbDays, status, commentRH, commentEmployee, type);
+        return Objects.hash(id, dateStart, dateEnd, dateCreation, dateValidation, nbDays, status, commentRH, commentEmployee, type, employee);
     }
 
     @Override
@@ -222,6 +241,7 @@ public class Dayoff implements Serializable {
                 ", commentRH='" + commentRH + '\'' +
                 ", commentEmployee='" + commentEmployee + '\'' +
                 ", type=" + type +
+                ", employee=" + employee +
                 '}';
     }
 }
