@@ -1,5 +1,7 @@
 package fr.enssat.dayoff_manager.servlets;
 
+import fr.enssat.dayoff_manager.db.employee.Employee;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -43,15 +45,15 @@ public class loginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		if(Employee.login(email, password)) {
-			Employee employee = Employee(email);
+		if(/*TODO Employee.login(email, password)*/true) {
+			Employee employee = new Employee();
 			
 			HttpSession session = request.getSession();
 			
 			session.setAttribute("email", email);
 			
-			session.setAttribute("prenom", employee.getPrenom());
-			session.setAttribute("nom", employee.getNom());
+			session.setAttribute("prenom", employee.getFirstName());
+			session.setAttribute("nom", employee.getLastName());
 			
 			response.sendRedirect("default");
 		} else {
