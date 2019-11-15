@@ -16,20 +16,10 @@
         <url-pattern>/HelloWorld</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <display-name>TestDAO</display-name>
-        <servlet-name>TestDAOServlet</servlet-name>
-        <servlet-class>fr.enssat.dayoff_manager.servlets.TestDAOServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>TestDAOServlet</servlet-name>
-        <url-pattern>/TestDAOServlet</url-pattern>
-    </servlet-mapping>
-
 
     <!-- A décommenter pour tester la BDD -->
     <!--
+
     <filter>
         <filter-name>TestFilter</filter-name>
         <filter-class>fr.enssat.dayoff_manager.DBTestFilter</filter-class>
