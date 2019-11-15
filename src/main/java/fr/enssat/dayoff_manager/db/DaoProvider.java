@@ -2,6 +2,7 @@ package fr.enssat.dayoff_manager.db;
 
 import fr.enssat.dayoff_manager.db.dayoff.DayoffDao;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffDaoImpl;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffDaoMockImpl;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCountDao;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCountDaoImpl;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffTypeDao;
@@ -10,15 +11,16 @@ import fr.enssat.dayoff_manager.db.department.DepartmentDao;
 import fr.enssat.dayoff_manager.db.department.DepartmentDaoImpl;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDaoImpl;
+import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
 
 public class DaoProvider {
 
     static {
-        DAYOFF_DAO = new DayoffDaoImpl();
+        DAYOFF_DAO = new DayoffDaoMockImpl();
         DAYOFF_COUNT_DAO = new DayoffCountDaoImpl();
         DAYOFF_TYPE_DAO = new DayoffTypeDaoImpl();
         DEPARTMENT_DAO = new DepartmentDaoImpl();
-        EMPLOYEE_DAO = new EmployeeDaoImpl();
+        EMPLOYEE_DAO = new EmployeeDaoMockImpl();
     }
 
     private static final DayoffDao DAYOFF_DAO;
