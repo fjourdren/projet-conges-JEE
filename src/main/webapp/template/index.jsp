@@ -13,6 +13,8 @@
 		<jsp:include page="components/menu.jsp" />
 
         <div class="container">
+        
+        	<jsp:include page="components/flashMessages.jsp" />
             
             <%
 	            // router - components

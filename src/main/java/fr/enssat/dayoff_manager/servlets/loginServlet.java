@@ -1,6 +1,9 @@
 package fr.enssat.dayoff_manager.servlets;
 
+import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.employee.Employee;
+import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
+import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,18 +48,21 @@ public class loginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		if(/*TODO Employee.login(email, password)*/true) {
-			Employee employee = new Employee();
+		EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
+		
+		Employee employeeLogin = employeeDao.login(email, password);
+		
+		HttpSession session = request.getSession();
+
+		if(employeeLogin != null) {
 			
-			HttpSession session = request.getSession();
-			
-			session.setAttribute("email", email);
-			
-			session.setAttribute("prenom", employee.getFirstName());
-			session.setAttribute("nom", employee.getLastName());
+			session.setAttribute("employeeLogged", employeeLogin);
 			
 			response.sendRedirect("default");
 		} else {
+			session.setAttribute("flashType", "danger");
+			session.setAttribute("flashMessage", "Authentification invalide.");
+			
 			response.sendRedirect("login");
 		}
 		
