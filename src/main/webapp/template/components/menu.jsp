@@ -1,3 +1,5 @@
+<%@ page import="fr.enssat.dayoff_manager.db.employee.Employee" %>
+
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
@@ -11,10 +13,10 @@
 
 		<ul class="nav navbar-nav navbar-right">
             <% 
-            String email = (String) session.getAttribute("email");
-            if(email != null && !email.isEmpty()) { 
+            Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+            if(employeeLogged != null) {
             %>
-				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img class="img-circle" style="height: 19px; padding: 0; margin: 0;" src="https://cours-informatique-gratuit.fr/wp-content/uploads/2014/05/compte-utilisateur-1.png" alt=""/> <%= session.getAttribute("prenom") %> <%= session.getAttribute("nom") %> <span class="caret"></span></a>
+				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img class="img-circle" style="height: 19px; padding: 0; margin: 0;" src="https://cours-informatique-gratuit.fr/wp-content/uploads/2014/05/compte-utilisateur-1.png" alt=""/> <%= employeeLogged.getFirstName() %> <%= employeeLogged.getLastName() %> <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 					</ul>
