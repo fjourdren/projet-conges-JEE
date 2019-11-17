@@ -54,8 +54,8 @@ public class TestDAOServlet extends HttpServlet {
         }
         out.println("<br>");
         out.println("<br>");
-        out.println("<br>login avec bon mot de passe : " + edo.login(listEmployee.get(0), "fj@", "xXdidocheGamingXx"));
-        out.println("<br>login avec mauvais mot de passe : " + edo.login(listEmployee.get(0), "fj@", "123"));
+        out.println("<br>login avec bon mot de passe : " + edo.login("fj@", "xXdidocheGamingXx"));
+        out.println("<br>login avec mauvais mot de passe : " + edo.login("fj@", "123"));
 
         out.println("</body></html>");
 
