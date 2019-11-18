@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import fr.enssat.dayoff_manager.db.employee.Employee;
 
 /**
  * Servlet implementation class defaultPage
@@ -28,6 +31,15 @@ public class defaultPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// check if user is connected
+		HttpSession session = request.getSession();
+		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+		if(employeeLogged == null) {
+			response.sendRedirect("login");
+			return;
+		}
+		
+		// generate page
 		RequestDispatcher dispatcher = request.getRequestDispatcher(
 		          "/template/index.jsp");
 		
@@ -45,7 +57,7 @@ public class defaultPage extends HttpServlet {
 		datatableDataArray.add(line1);
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
-		request.setAttribute("componentNeeded", "datatable");
+		request.setAttribute("componentNeeded", "employees");
 		
 		dispatcher.forward(request, response);
 	}

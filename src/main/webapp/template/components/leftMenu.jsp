@@ -2,6 +2,7 @@
 
 <%
 Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+if(employeeLogged != null) {
 %>
 
 <div class="col-md-3">
@@ -52,3 +53,7 @@ Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
         <% } %>
     </ul>
 </div>
+
+<%
+}
+%>

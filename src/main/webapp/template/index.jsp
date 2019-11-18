@@ -24,8 +24,8 @@
 					case "login":
 						%> <jsp:include page="login.jsp" /> <%
 						break;
-					case "datatable":
-						%> <jsp:include page="components/datatable.jsp" /> <%
+					case "employees":
+						%> <jsp:include page="employees.jsp" /> <%
 						break;
 					default:
 						
