@@ -25,6 +25,13 @@
         <servlet-class>fr.enssat.dayoff_manager.servlets.logoutServlet</servlet-class>
     </servlet>
 
+    <servlet>
+    	<servlet-name>employeesServlet</servlet-name>
+    	<display-name>employeesServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.enssat.dayoff_manager.servlets.employeesServlet</servlet-class>
+    </servlet>
+
 
 
     <servlet-mapping>
@@ -44,6 +51,12 @@
         <servlet-name>logoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    
+    
+    <servlet-mapping>
+    	<servlet-name>employeesServlet</servlet-name>
+    	<url-pattern>/employees</url-pattern>
+    </servlet-mapping>
 
 
     <servlet>
@@ -51,11 +64,11 @@
         <servlet-name>TestDAOServlet</servlet-name>
         <servlet-class>fr.enssat.dayoff_manager.servlets.TestDAOServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>TestDAOServlet</servlet-name>
         <url-pattern>/TestDAOServlet</url-pattern>
     </servlet-mapping>
+    
 
     <!-- A décommenter pour tester la BDD -->
     <!-- <filter>

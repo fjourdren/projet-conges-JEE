@@ -17,7 +17,7 @@ if(employeeLogged != null) {
             <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffsAddModify") { %> active <% } %>" href="dayoffsAddModify"><span class="glyphicon glyphicon-road"></span> Ajouter congés</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffs") { %> active <% } %>" href="comportements"><span class="glyphicon glyphicon-road"></span> Congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffs") { %> active <% } %>" href="dayoffs"><span class="glyphicon glyphicon-road"></span> Congés</a>
         </li>
         
         <% if(employeeLogged.getType() == EmployeeType.BOSS) { %>
