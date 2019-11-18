@@ -13,6 +13,10 @@
 		<jsp:include page="components/menu.jsp" />
 
         <div class="container">
+        
+        	<jsp:include page="components/leftMenu.jsp" />
+        
+        	<jsp:include page="components/flashMessages.jsp" />
             
             <%
 	            // router - components
@@ -20,8 +24,8 @@
 					case "login":
 						%> <jsp:include page="login.jsp" /> <%
 						break;
-					case "demo":
-						%> <jsp:include page="demo.jsp" /> <%
+					case "employees":
+						%> <jsp:include page="employees.jsp" /> <%
 						break;
 					default:
 						

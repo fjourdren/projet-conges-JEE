@@ -26,7 +26,10 @@ public class logoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-        session.invalidate();
+        session.setAttribute("employeeLogged", null);
+        
+        session.setAttribute("flashType", "success");
+		session.setAttribute("flashMessage", "Vous avez été déconnecté.");
         
         response.sendRedirect("default");
 	}
