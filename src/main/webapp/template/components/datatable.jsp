@@ -9,6 +9,7 @@ $(document).ready(function() {
 <div class="col-md-9">
 	<div class="row">
 		<div class="col-centered col-md-12">
+			<% if(request.getAttribute("datatableDataArray") != null) { %>
 			<table id="dataTableRead" class="table table-bordred table-striped">
 				<thead>
 					<% 
@@ -37,6 +38,9 @@ $(document).ready(function() {
 					} %>
 				</tbody>  
 			</table>
+			<% } else { %>
+			<h1>Aucune donnée</h1>
+			<% } %>
 		</div>
 	</div>
  </div>

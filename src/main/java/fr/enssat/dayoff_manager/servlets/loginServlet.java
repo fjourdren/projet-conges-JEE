@@ -4,6 +4,7 @@ import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
+import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +34,15 @@ public class loginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// check if user is connected
+		HttpSession session = request.getSession();
+		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+		if(employeeLogged != null) {
+			response.sendRedirect("default");
+			return;
+		}
+				
+		// login page
 		RequestDispatcher dispatcher = request.getRequestDispatcher(
 		          "/template/index.jsp");
 		
