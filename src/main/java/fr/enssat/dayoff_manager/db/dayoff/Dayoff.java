@@ -17,57 +17,57 @@ public class Dayoff implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private int id = -1;
 
     /**
      * Date de début
      */
-    private java.util.Date dateStart;
+    private java.util.Date dateStart = new Date();
 
     /**
      * Date de fin
      */
-    private java.util.Date dateEnd;
+    private java.util.Date dateEnd = new Date();
 
     /**
      * Date de création
      */
-    private java.util.Date dateCreation;
+    private java.util.Date dateCreation = new Date();
 
     /**
      * Date de validation
      */
-    private java.util.Date dateValidation;
+    private java.util.Date dateValidation = null;
 
     /**
      * Nombre de jours ouvrés
      */
-    private float nbDays;
+    private float nbDays = 0.0f;
 
     /**
      * Statut (en attente, accepté, refusé)
      */
-    private DayoffStatus status;
+    private DayoffStatus status = DayoffStatus.WAITING;
 
     /**
      * Commentaire RH
      */
-    private String commentRH;
+    private String commentRH = null;
 
     /**
      * Commentaire employé (motif)
      */
-    private String commentEmployee;
+    private String commentEmployee = null;
 
     /**
      * Type du congés
      */
-    private DayoffType type;
+    private DayoffType type = null;
 
     /**
      * Employé
      */
-    private Employee employee;
+    private Employee employee = null;
 
     public Dayoff() {
     }
