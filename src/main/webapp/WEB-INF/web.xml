@@ -32,6 +32,17 @@
     	<servlet-class>fr.enssat.dayoff_manager.servlets.employeesServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>EditEmployeeServlet</servlet-name>
+        <display-name>EditEmployeeServlet</display-name>
+
+        <servlet-class>fr.enssat.dayoff_manager.servlets.employees.EditEmployeeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EditEmployeeServlet</servlet-name>
+        <url-pattern>/employees/edit</url-pattern>
+    </servlet-mapping>
 
 
     <servlet-mapping>
