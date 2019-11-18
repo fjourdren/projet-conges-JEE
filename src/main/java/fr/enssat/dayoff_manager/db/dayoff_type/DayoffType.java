@@ -13,17 +13,17 @@ public class DayoffType implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private int id = -1;
 
     /**
      * Nom
      */
-    private String name;
+    private String name = "";
 
     /**
      * Nombre de jours annuels par défaut pour tous les employés (null si pas de limitation)
      */
-    private Float defaultNbDays;
+    private Float defaultNbDays = null;
 
     public DayoffType() {
     }
