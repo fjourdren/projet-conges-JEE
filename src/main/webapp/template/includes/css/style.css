@@ -1,18 +1,3 @@
-.inviteBotLink {
-    margin-top: 1px;
-    background-color: #70EA9F;
-}
-
-.thanksToLogin {
-    font-size: 150%;
-}
-
-.inviteBotLink a {
-    color: white !important;
-    font-weight: bold;
-}
-
-
 .col-centered {
     float: none;
     margin: 0 auto;
@@ -44,10 +29,6 @@
 }
 
 @media only screen and (max-width: 750px) {
-    .serverSelectionForm {
-        float: inherit !important;
-    }
-
     .nav li p {
         padding-top: 0;
         padding-bottom: 0;

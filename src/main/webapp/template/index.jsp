@@ -14,6 +14,8 @@
 
         <div class="container">
         
+        	<jsp:include page="components/leftMenu.jsp" />
+        
         	<jsp:include page="components/flashMessages.jsp" />
             
             <%
@@ -22,8 +24,8 @@
 					case "login":
 						%> <jsp:include page="login.jsp" /> <%
 						break;
-					case "demo":
-						%> <jsp:include page="demo.jsp" /> <%
+					case "datatable":
+						%> <jsp:include page="components/datatable.jsp" /> <%
 						break;
 					default:
 						
