@@ -6,10 +6,6 @@
             <a class="navbar-brand" href="/">Titre</a>
         </div>
 
-		<ul class="nav navbar-nav">
-		    <li><p>Sélection du serveur :</p></li>
-		</ul>
-
 
 		<ul class="nav navbar-nav navbar-right">
             <% 
