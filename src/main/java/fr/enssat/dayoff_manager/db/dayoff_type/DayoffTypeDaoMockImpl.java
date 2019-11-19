@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import fr.enssat.dayoff_manager.db.employee.Employee;
+
 public class DayoffTypeDaoMockImpl implements DayoffTypeDao {
 
     private List<DayoffType> dayoffTypeList = new ArrayList<>();
@@ -13,7 +15,7 @@ public class DayoffTypeDaoMockImpl implements DayoffTypeDao {
     public DayoffTypeDaoMockImpl() {
         DayoffType type1 = new DayoffType("Congés", 5.0f);
         type1.setId(++nextID);
-        DayoffType type2 = new DayoffType("Maladie", null);
+        DayoffType type2 = new DayoffType("Maladie", -1.0f);
         type2.setId(++nextID);
 
         dayoffTypeList.add(type1);
@@ -22,8 +24,15 @@ public class DayoffTypeDaoMockImpl implements DayoffTypeDao {
 
     @Override
     public void save(DayoffType entity) {
-        entity.setId(++nextID);
+        if(entity.getId() == -1) {
+    		entity.setId(++nextID);
+    	} else {
+    		DayoffType lastDayOffType = this.findById(entity.getId());
+    		dayoffTypeList.remove(lastDayOffType);
+    	}
+    	
         dayoffTypeList.add(entity);
+        
     }
 
     @Override
