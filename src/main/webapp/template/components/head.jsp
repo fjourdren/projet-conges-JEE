@@ -2,14 +2,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script><%@include file="/template/includes/js/jquery3.2.1.min.js"%></script>
-<script><%@include file="/template/includes/js/bootstrap.min.js"%></script>
-<script><%@include file="/template/includes/js/bootstrap-toggle.min.js"%></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/bootstrap-toggle.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/datatables.css">
 
-<style><%@include file="/template/includes/css/bootstrap.min.css"%></style>
-<style><%@include file="/template/includes/css/style.css"%></style>
-<style><%@include file="/template/includes/css/bootstrap-toggle.min.css"%></style>
+<script src="<%=request.getContextPath()%>/template/includes/js/jquery3.2.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/template/includes/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/template/includes/js/bootstrap-toggle.min.js"></script>
+<script src="<%=request.getContextPath()%>/template/includes/js/datatables.js"></script>
 
-<!--  <link href="../includes/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="../includes/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/style.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"> -->
