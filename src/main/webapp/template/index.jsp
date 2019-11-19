@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Insert title here</title>
-		
+
 		<jsp:include page="components/head.jsp" />
 	</head>
 	<body>
@@ -13,11 +13,11 @@
 		<jsp:include page="components/menu.jsp" />
 
         <div class="container">
-        
+
         	<jsp:include page="components/leftMenu.jsp" />
-        
+
         	<jsp:include page="components/flashMessages.jsp" />
-            
+
             <%
 	            // router - components
 	            switch((String) request.getAttribute("componentNeeded")) {
@@ -25,10 +25,10 @@
 						%> <jsp:include page="login.jsp" /> <%
 						break;
 					case "employeesRender":
-						%> <jsp:include page="employees/render.jsp" /> <%
+						%> <jsp:include page="Employees/render.jsp" /> <%
 						break;
 					case "employeesEditAdd":
-						%> <jsp:include page="employees/edit-add.jsp" /> <%
+						%> <jsp:include page="Employees/edit-add.jsp" /> <%
 						break;
 					case "dayoffTypeRender":
 						%> <jsp:include page="DayoffType/render.jsp" /> <%
@@ -37,13 +37,13 @@
 						%> <jsp:include page="DayoffType/edit-add.jsp" /> <%
 						break;
 					default:
-						
+
 				}
 			%>
-       
+
 
             <jsp:include page="components/footer.jsp" />
-        
+
         </div>
 	</body>
 </html>

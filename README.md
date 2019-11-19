@@ -14,6 +14,9 @@ Pour ajouter une fonction, il faut l'ajouter dans l'interface puis l'implémente
 
 Le package `servlets` contient les servlets de l'application (*il faut également les déclarer dans le web.xml !*)
 
+## Infos divers
+Lorsque la base est vide, une fonction dans la classe Utils crée automatiquement des enregistrements. 
+Pour voir le contenu de la base de données : Servlet ShowDBContentsServlet
 
 ## Stockage des données
 **ATTENTION : les DAO ne doivent pas être modifié sans accord chef projet !**
