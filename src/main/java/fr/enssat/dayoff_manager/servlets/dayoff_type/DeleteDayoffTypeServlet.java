@@ -14,39 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Servlet implementation class DeleteEmployeeServlet
- */
-
-
-/*
-TODO
-    CE CODE EST FAUX!
-
-    Un type de congés ne peut PAS être supprimé !
-    Il peut seulement être marqué comme supprimé
-TODO
- */
-
 @WebServlet(
         name = "DeleteDayoffTypeServlet",
         description = "DeleteDayoffTypeServlet",
         urlPatterns = {"/congesTypes-delete"}
 )
 public class DeleteDayoffTypeServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteDayoffTypeServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // check if user is connected
         HttpSession session = request.getSession();
@@ -59,7 +33,6 @@ public class DeleteDayoffTypeServlet extends HttpServlet {
         // delete
         if (request.getParameter("id") != null) {
             DayoffTypeDao dayoffTypeDao = DaoProvider.getDayoffTypeDao();
-
             DayoffType dayoffType = null;
 
             try {
@@ -67,46 +40,27 @@ public class DeleteDayoffTypeServlet extends HttpServlet {
             } catch (Error e) {
                 session.setAttribute("flashType", "danger");
                 session.setAttribute("flashMessage", "Erreur de conversion");
-
                 response.sendRedirect("congesTypes");
-
                 return;
             }
 
-
             if (dayoffType != null) {
-                dayoffTypeDao.delete(dayoffType);
+                //FIXME (Clément) Un DayoffType ne PEUT PAS être supprimé, il peut seulement être marqué comme supprimé
+                dayoffType.setDeleted(true);
+                dayoffTypeDao.save(dayoffType);
 
                 session.setAttribute("flashType", "success");
                 session.setAttribute("flashMessage", "Type de congés supprimé");
-
                 response.sendRedirect("congesTypes");
-
-                return;
             } else {
                 session.setAttribute("flashType", "danger");
                 session.setAttribute("flashMessage", "Type de congés inconnu");
-
                 response.sendRedirect("congesTypes");
-
-                return;
             }
         } else {
             session.setAttribute("flashType", "danger");
-            session.setAttribute("flashMessage", "Ce type de congés est non défini");
-
+            session.setAttribute("flashMessage", "Paramètre manquant");
             response.sendRedirect("congesTypes");
-
-            return;
         }
     }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
-    }
-
 }
