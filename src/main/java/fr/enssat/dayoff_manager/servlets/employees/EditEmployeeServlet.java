@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -27,12 +28,12 @@ public class EditEmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // check if user is connected
-       /* HttpSession session = req.getSession();
+        HttpSession session = req.getSession();
         Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
         if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
             resp.sendRedirect("default");
             return;
-        }*/
+        }
 
         // generate
         Employee employee = null;
@@ -56,20 +57,17 @@ public class EditEmployeeServlet extends HttpServlet {
                 employeeID = Integer.parseInt(req.getParameter("id"));
                 if (employeeID < 0) throw new IllegalArgumentException("employeeID");
             } catch (Exception e) {
-                //session.setAttribute("flashType", "danger");
-                //session.setAttribute("flashMessage", "Requête invalide");
-
-                //resp.sendRedirect("employees");
-
+                session.setAttribute("flashType", "danger");
+                session.setAttribute("flashMessage", "Requête invalide");
+                resp.sendRedirect("employees");
                 return;
             }
 
             employee = DaoProvider.getEmployeeDao().findById(employeeID);
             if (employee == null) {
-                //session.setAttribute("flashType", "danger");
-                //session.setAttribute("flashMessage", "Employé inconnu");
-
-                //resp.sendRedirect("employees");
+                session.setAttribute("flashType", "danger");
+                session.setAttribute("flashMessage", "Employé inconnu");
+                resp.sendRedirect("employees");
 
                 return;
             }
@@ -82,39 +80,35 @@ public class EditEmployeeServlet extends HttpServlet {
         req.setAttribute("employee", employee);
         req.setAttribute("allDeps", allDeps);
         req.setAttribute("dayoffTypeMap", dayoffTypeMap);
+        req.setAttribute("componentNeeded", "employeesEditAdd");
 
-        // req.setAttribute("componentNeeded", "employeesEditAdd");
-
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/employees/edit.jsp"); ///template/index.jsp
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/template/index.jsp");
         rd.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // check if user is connected
-        /*HttpSession session = req.getSession();
+        HttpSession session = req.getSession();
         Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
         if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
             resp.sendRedirect("default");
             return;
-        }*/
+        }
 
         try {
             Employee employee = createEmployeeObjectFromForm(req);
             updateDayoffCountsFromForm(req, employee);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        /*if (employeeDao.findById(employee.getId()) == null) {
             session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Employé ajouté");
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Employé modifié");
         }
 
-        resp.sendRedirect("employees");*/
+        resp.sendRedirect("employees");
     }
 
     /**
