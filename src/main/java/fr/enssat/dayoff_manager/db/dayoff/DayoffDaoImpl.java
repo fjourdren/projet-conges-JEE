@@ -2,8 +2,7 @@ package fr.enssat.dayoff_manager.db.dayoff;
 
 import fr.enssat.dayoff_manager.db.GenericDaoImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class DayoffDaoImpl extends GenericDaoImpl<Dayoff> implements DayoffDao {
 
@@ -12,26 +11,21 @@ public class DayoffDaoImpl extends GenericDaoImpl<Dayoff> implements DayoffDao {
     }
 
     @Override
-    public void save(Dayoff entity) {
-        //nothing
+    public void validate(Dayoff dayoff, String rhComment) {
+        Objects.requireNonNull(dayoff);
+        dayoff.setDateValidation(new java.util.Date());
+        dayoff.setCommentRH(rhComment);
+        dayoff.setStatus(DayoffStatus.ACCEPTED);
+        save(dayoff);
     }
 
     @Override
-    public void delete(Dayoff entity) {
-        //nothing
+    public void refuse(Dayoff dayoff, String rhComment) {
+        Objects.requireNonNull(dayoff);
+        Objects.requireNonNull(rhComment);
+        dayoff.setDateValidation(new java.util.Date());
+        dayoff.setCommentRH(rhComment);
+        dayoff.setStatus(DayoffStatus.REFUSED);
+        save(dayoff);
     }
-
-    @Override
-    public Dayoff findById(int id) {
-        //TODO
-        // probleme : pas d'id dans la classe Dayoff ?
-        return null;
-    }
-
-    @Override
-    public List<Dayoff> getAll() {
-        List<Dayoff> listDayoff = new ArrayList<Dayoff>();
-        return listDayoff;
-    }
-
 }

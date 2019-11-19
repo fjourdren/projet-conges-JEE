@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public interface GenericDao<E> {
+public interface GenericDao<E extends GenericEntity> {
 
     /**
      * Sauvegarde l'entité en base
