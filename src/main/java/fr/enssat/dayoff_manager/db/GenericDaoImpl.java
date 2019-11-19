@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public class GenericDaoImpl<E> implements GenericDao<E> {
+public class GenericDaoImpl<E extends GenericEntity> implements GenericDao<E> {
 
     /**
      * Classe de l'entité
@@ -37,7 +37,9 @@ public class GenericDaoImpl<E> implements GenericDao<E> {
      */
     @Override
     public void save(E entity) {
+        em.getTransaction().begin();
         em.persist(entity);
+        em.getTransaction().commit();
     }
 
     /**
@@ -47,7 +49,9 @@ public class GenericDaoImpl<E> implements GenericDao<E> {
      */
     @Override
     public void delete(E entity) {
+        em.getTransaction().begin();
         em.remove(entity);
+        em.getTransaction().commit();
     }
 
     /**
