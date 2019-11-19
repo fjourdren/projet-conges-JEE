@@ -68,7 +68,7 @@ public class DayoffCount extends GenericEntity implements Serializable {
         this.nbDays = nbDays;
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_type", nullable = false)
     public DayoffType getType() {
         return type;
@@ -78,7 +78,7 @@ public class DayoffCount extends GenericEntity implements Serializable {
         this.type = Objects.requireNonNull(type);
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_employee", nullable = false)
     public Employee getEmployee() {
         return employee;
