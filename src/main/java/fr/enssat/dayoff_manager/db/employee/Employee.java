@@ -165,7 +165,7 @@ public class Employee extends GenericEntity implements Serializable {
         this.type = Objects.requireNonNull(type);
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_department", nullable = false)
     public Department getDepartment() {
         return department;
