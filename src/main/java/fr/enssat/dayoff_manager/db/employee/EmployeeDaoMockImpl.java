@@ -12,14 +12,12 @@ import java.util.List;
 public class EmployeeDaoMockImpl extends GenericDaoMockImpl<Employee> implements EmployeeDao {
 
     @Override
-    public void save(Employee entity) {
+    public void newEntityConstraintsCheck(Employee entity) {
         for (Employee employee : getAll()) {
             if (employee.getEmail().equals(entity.getEmail())) {
                 throw new RuntimeException("A employee with mail" + entity.getEmail() + " already exists");
             }
         }
-
-        super.save(entity);
     }
 
     @Override

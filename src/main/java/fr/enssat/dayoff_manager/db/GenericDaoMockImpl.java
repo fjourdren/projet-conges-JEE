@@ -3,16 +3,24 @@ package fr.enssat.dayoff_manager.db;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GenericDaoMockImpl<E extends GenericEntity> implements GenericDao<E> {
+public abstract class GenericDaoMockImpl<E extends GenericEntity> implements GenericDao<E> {
 
     private Map<Integer, E> items = new HashMap<>();
     private int nextID = 0;
+
+    /**
+     * Vérifie si la nouvelle entité ne déclenche pas d'erreurs de contraintes (lance une exception sinon)
+     *
+     * @param entity entité
+     */
+    public abstract void newEntityConstraintsCheck(E entity);
 
     @Override
     public void save(E entity) {
         System.out.println("[MOCK] save : " + entity.toString());
         if (entity.getId() == 0) {
             //new item
+            newEntityConstraintsCheck(entity);
             entity.setId(++nextID);
         }
 

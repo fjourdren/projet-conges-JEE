@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public class GenericDaoImpl<E extends GenericEntity> implements GenericDao<E> {
+public abstract class GenericDaoImpl<E extends GenericEntity> implements GenericDao<E> {
 
     /**
      * Classe de l'entité

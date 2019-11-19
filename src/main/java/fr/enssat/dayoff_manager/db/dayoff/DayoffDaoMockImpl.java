@@ -7,9 +7,8 @@ import java.util.Objects;
 public class DayoffDaoMockImpl extends GenericDaoMockImpl<Dayoff> implements DayoffDao {
 
     @Override
-    public void save(Dayoff entity) {
+    public void newEntityConstraintsCheck(Dayoff entity) {
         //TODO contrôler validité dates...
-        super.save(entity);
     }
 
     @Override
