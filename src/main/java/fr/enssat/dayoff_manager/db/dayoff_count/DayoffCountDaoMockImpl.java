@@ -18,7 +18,8 @@ public class DayoffCountDaoMockImpl extends GenericDaoMockImpl<DayoffCount> impl
     @Override
     public DayoffCount findByEmployeeAndDayoffType(Employee employee, DayoffType dayoffType) {
         for (DayoffCount count : getAll()) {
-            if (count.getEmployee().equals(employee) && count.getType().equals(dayoffType)) {
+            if (count.getEmployee().getId() == employee.getId()
+                    && count.getType().getId() == dayoffType.getId()) {
                 return count;
             }
         }
