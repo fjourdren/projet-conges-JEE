@@ -36,6 +36,9 @@
 					case "dayoffTypeEditAdd":
 						%> <jsp:include page="DayoffType/edit-add.jsp" /> <%
 						break;
+					case "dayoffRender":
+						%> <jsp:include page="Dayoff/render.jsp" /> <%
+					break;
 					default:
 
 				}

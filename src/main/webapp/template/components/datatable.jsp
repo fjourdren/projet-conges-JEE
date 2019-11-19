@@ -41,7 +41,7 @@ $(document).ready(function() {
 				</tbody>  
 			</table>
 			<% } else { %>
-			<p>Aucune donnée.</p>
+			<p>Aucune donnï¿½e.</p>
 			<% } %>
 		</div>
 	</div>
