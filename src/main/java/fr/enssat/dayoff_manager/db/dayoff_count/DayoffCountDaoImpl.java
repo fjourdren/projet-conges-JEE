@@ -15,10 +15,10 @@ public class DayoffCountDaoImpl extends GenericDaoImpl<DayoffCount> implements D
 
     @Override
     public DayoffCount findByEmployeeAndDayoffType(Employee employee, DayoffType dayoffType) {
-        String qlString = "SELECT x FROM DayoffCount x WHERE x.id_employee = :employee_id AND x.id_type = :type_id";
+        String qlString = "SELECT x FROM DayoffCount x WHERE x.employee = :employee AND x.type = :type";
         TypedQuery<DayoffCount> query = em.createQuery(qlString, DayoffCount.class);
-        query.setParameter("employee_id", employee.getId());
-        query.setParameter("type_id", dayoffType.getId());
+        query.setParameter("employee", employee);
+        query.setParameter("type", dayoffType);
 
         try {
             return query.getSingleResult();

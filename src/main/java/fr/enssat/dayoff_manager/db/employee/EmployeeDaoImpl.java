@@ -31,18 +31,18 @@ public class EmployeeDaoImpl extends GenericDaoImpl<Employee> implements Employe
 
     @Override
     public List<Dayoff> getDayOffs(Employee employee) {
-        String qlString = "SELECT x FROM Dayoff x WHERE x.id_employee = :employee_id";
+        String qlString = "SELECT x FROM Dayoff x WHERE x.employee = :employee";
         TypedQuery<Dayoff> query = em.createQuery(qlString, Dayoff.class);
-        query.setParameter("employee_id", employee.getId());
+        query.setParameter("employee", employee);
         return query.getResultList();
     }
 
     @Override
     public Float nbDaysUsable(Employee employee, DayoffType type) {
-        String qlString = "SELECT x FROM DayoffCount x WHERE x.id_employee = :employee_id AND x.id_type = :type_id";
+        String qlString = "SELECT x FROM DayoffCount x WHERE x.employee = :employee AND x.type = :type";
         TypedQuery<DayoffCount> query = em.createQuery(qlString, DayoffCount.class);
-        query.setParameter("employee_id", employee.getId());
-        query.setParameter("type_id", type.getId());
+        query.setParameter("employee", employee);
+        query.setParameter("type", type);
 
         try {
             return query.getSingleResult().getNbDays();
