@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="department-input" class="col-sm-2 col-form-label">Service</label>
+                    <label for="department-input" class="col-sm-2 col-form-label">Type</label>
                     <div class="col-sm-10">
                         <select name="type" id="type-select" required>
                             <!-- from EmployeeType -->
@@ -167,6 +167,7 @@
                                 <input type="number" class="form-control"
                                        min="0"
                                        step="0.5"
+                                    <%= (entry.getValue() == null) ? "disabled" : "" %>
                                        name="<%= "dayofftype-" + entry.getKey().getId() %>"
                                        id="<%= "dayofftype-" + entry.getKey().getId() + "-input" %>"
                                        value="<%= entry.getValue() == null ? "" : entry.getValue() %>">
@@ -174,7 +175,9 @@
                                     <input type="checkbox"
                                            name="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited" %>"
                                            id="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited-chk" %>"
-                                           onclick="var a = document.getElementById('<%= "dayofftype-" + entry.getKey().getId() + "-input" %>'); a.disabled = this.checked; a.required = !this.checked;">
+                                           onclick="var a = document.getElementById('<%= "dayofftype-" + entry.getKey().getId() + "-input" %>'); a.disabled = this.checked; a.required = !this.checked;"
+                                        <%= (entry.getValue() == null) ? "checked" : "" %>
+                                    >
                                     <label style="margin-bottom:0; margin-left: 4px"
                                            for="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited-chk" %>">Illimité</label>
                                 </span>
