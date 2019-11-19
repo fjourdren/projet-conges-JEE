@@ -17,7 +17,6 @@ public abstract class GenericDaoMockImpl<E extends GenericEntity> implements Gen
 
     @Override
     public void save(E entity) {
-        System.out.println("[MOCK] save : " + entity.toString());
         if (entity.getId() == 0) {
             //new item
             newEntityConstraintsCheck(entity);
@@ -25,19 +24,16 @@ public abstract class GenericDaoMockImpl<E extends GenericEntity> implements Gen
         }
 
         items.put(entity.getId(), entity);
-        printAllContent();
     }
 
     @Override
     public void delete(E entity) {
-        System.out.println("[MOCK] delete : " + entity.toString());
         E savedItem = items.get(entity.getId());
         if (savedItem == null) {
             throw new RuntimeException("Item not found");
         } else {
             items.remove(entity.getId());
         }
-        printAllContent();
     }
 
     @Override
@@ -55,19 +51,5 @@ public abstract class GenericDaoMockImpl<E extends GenericEntity> implements Gen
     @Override
     public String toString() {
         return Arrays.toString(items.values().toArray());
-    }
-
-    private void printAllContent() {
-        System.out.println("---");
-        System.out.println(DaoProvider.getEmployeeDao().toString());
-        System.out.println("---");
-        System.out.println(DaoProvider.getDepartmentDao().toString());
-        System.out.println("---");
-        System.out.println(DaoProvider.getDayoffCountDao().toString());
-        System.out.println("---");
-        System.out.println(DaoProvider.getDayoffTypeDao().toString());
-        System.out.println("---");
-        System.out.println(DaoProvider.getDayoffDao().toString());
-        System.out.println("---");
     }
 }
