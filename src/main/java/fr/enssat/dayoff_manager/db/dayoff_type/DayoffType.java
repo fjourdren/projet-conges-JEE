@@ -62,6 +62,11 @@ public class DayoffType extends GenericEntity implements Serializable {
     }
 
     public void setDefaultNbDays(Float defaultNbDays) {
+        if (defaultNbDays != null) {
+            if (defaultNbDays < 0f) throw new IllegalArgumentException("defaultNbDays must be 0 or more, or null");
+            if (defaultNbDays % 0.5f != 0)
+                throw new IllegalArgumentException("defaultNbDays must be a multiple of 0.5");
+        }
         this.defaultNbDays = defaultNbDays;
     }
 
@@ -71,7 +76,7 @@ public class DayoffType extends GenericEntity implements Serializable {
         if (!(o instanceof DayoffType)) return false;
         DayoffType that = (DayoffType) o;
         return id == that.id &&
-                defaultNbDays == that.defaultNbDays &&
+                defaultNbDays.equals(that.defaultNbDays) &&
                 Objects.equals(name, that.name);
     }
 
