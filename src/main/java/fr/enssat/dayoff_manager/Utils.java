@@ -40,8 +40,8 @@ public class Utils {
         DaoProvider.getDepartmentDao().save(dep0);
         DaoProvider.getDepartmentDao().save(dep1);
 
-        DayoffType type0 = new DayoffType("Vacances", 5.0f);
-        DayoffType type1 = new DayoffType("Maladie", null);
+        DayoffType type0 = new DayoffType("Vacances", 5.0f, false);
+        DayoffType type1 = new DayoffType("Maladie", null, false);
         DaoProvider.getDayoffTypeDao().save(type0);
         DaoProvider.getDayoffTypeDao().save(type1);
 
