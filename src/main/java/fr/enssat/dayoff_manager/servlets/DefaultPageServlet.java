@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @WebServlet(
         name = "DefaultPageServlet",
         description = "Default page",
-        urlPatterns = {"/", "/default"}
+        urlPatterns = {"/default"}
 )
 public class DefaultPageServlet extends HttpServlet {
 
