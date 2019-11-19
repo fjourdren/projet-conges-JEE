@@ -22,7 +22,7 @@ public class DepartmentDaoMockImpl extends GenericDaoMockImpl<Department> implem
     public List<Dayoff> getDayOffs(Department department) {
         List<Dayoff> res = new ArrayList<>();
         for (Dayoff dayoff : DaoProvider.getDayoffDao().getAll()) {
-            if (dayoff.getEmployee().getDepartment().equals(department)) {
+            if (dayoff.getEmployee().getDepartment().getId() == department.getId()) {
                 res.add(dayoff);
             }
         }

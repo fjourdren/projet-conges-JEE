@@ -36,7 +36,7 @@ public class EmployeeDaoMockImpl extends GenericDaoMockImpl<Employee> implements
         List<Dayoff> dayoffs = new ArrayList<>();
 
         for (Dayoff dayoff : DaoProvider.getDayoffDao().getAll()) {
-            if (dayoff.getEmployee().equals(employee)) {
+            if (dayoff.getEmployee().getId() == employee.getId()) {
                 dayoffs.add(dayoff);
             }
         }
@@ -47,7 +47,8 @@ public class EmployeeDaoMockImpl extends GenericDaoMockImpl<Employee> implements
     @Override
     public Float nbDaysUsable(Employee employee, DayoffType type) {
         for (DayoffCount dayoffCount : DaoProvider.getDayoffCountDao().getAll()) {
-            if (dayoffCount.getType().equals(type) && dayoffCount.getEmployee().equals(employee)) {
+            if (dayoffCount.getType().getId() == type.getId()
+                    && dayoffCount.getEmployee().getId() == employee.getId()) {
                 return dayoffCount.getNbDays();
             }
         }
