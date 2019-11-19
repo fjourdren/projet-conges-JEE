@@ -81,6 +81,7 @@ public class EmployeesServlet extends HttpServlet {
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
 		// page send
+		request.setAttribute("leftMenuActive", "employees");
 		request.setAttribute("componentNeeded", "employeesRender");
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(

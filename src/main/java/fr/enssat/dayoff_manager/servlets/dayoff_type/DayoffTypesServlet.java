@@ -75,6 +75,7 @@ public class DayoffTypesServlet extends HttpServlet {
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
 		// page send
+		request.setAttribute("leftMenuActive", "typesDayoff");
 		request.setAttribute("componentNeeded", "dayoffTypeRender");
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(
