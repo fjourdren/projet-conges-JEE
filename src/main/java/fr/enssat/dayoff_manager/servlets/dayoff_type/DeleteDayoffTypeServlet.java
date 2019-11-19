@@ -18,6 +18,16 @@ import java.io.IOException;
  * Servlet implementation class DeleteEmployeeServlet
  */
 
+
+/*
+TODO
+    CE CODE EST FAUX!
+
+    Un type de congés ne peut PAS être supprimé !
+    Il peut seulement être marqué comme supprimé
+TODO
+ */
+
 @WebServlet(
         name = "DeleteDayoffTypeServlet",
         description = "DeleteDayoffTypeServlet",

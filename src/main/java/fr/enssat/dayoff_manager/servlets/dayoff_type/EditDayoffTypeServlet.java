@@ -2,7 +2,6 @@ package fr.enssat.dayoff_manager.servlets.dayoff_type;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
-import fr.enssat.dayoff_manager.db.dayoff_type.DayoffTypeDao;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
@@ -37,10 +36,11 @@ public class EditDayoffTypeServlet extends HttpServlet {
 
         if (req.getParameter("id") == null) {
             // if new DayoffType
-            dayoffType.setId(-1L);
+            //FIXME (Clément) NE PAS METTRE l'ID à -1 (fause bonne idée de ma part)
+            //dayoffType.setId(-1L);
         } else {
             //Modification employé existant
-            Long dayoffTypeID = -1L;
+            Long dayoffTypeID;
 
             try {
                 dayoffTypeID = Long.parseLong(req.getParameter("id"));
@@ -84,38 +84,35 @@ public class EditDayoffTypeServlet extends HttpServlet {
         }
 
         // process
-        DayoffType dayoffType = new DayoffType();
+        //FIXME (Clément) Lors de la modification, il faut récupérer l'objet existant depuis la DB (sinon bug)
+        DayoffType dayoffType;
+        if (req.getParameter("id") == null) {
+            dayoffType = new DayoffType();
+        } else {
+            dayoffType = DaoProvider.getDayoffTypeDao().findById(Long.parseLong(req.getParameter("id")));
+        }
+
         dayoffType.setName(req.getParameter("last-name"));
         try {
             dayoffType.setDefaultNbDays(Float.parseFloat(req.getParameter("first-name")));
         } catch (Exception e) {
             session.setAttribute("flashType", "danger");
             session.setAttribute("flashMessage", "Requête invalide");
-
             resp.sendRedirect("conges");
-
             return;
         }
 
-
-        if (Integer.parseInt(req.getParameter("id")) != -1) {
-            dayoffType.setId(Long.parseLong(req.getParameter("id")));
-        }
-
         // save
-        DayoffTypeDao dayoffTypeDao = DaoProvider.getDayoffTypeDao();
-
-        dayoffTypeDao.save(dayoffType);
-
-        if (dayoffTypeDao.findById(dayoffType.getId()) == null) {
+        //FIXME (Clément) Si la sauvegarde échoue, une exception est levée
+        try {
+            DaoProvider.getDayoffTypeDao().save(dayoffType);
             session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Type de congés ajouté");
-        } else {
+        } catch (Exception e) {
             session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Type de congés modifié");
         }
 
         resp.sendRedirect("congesTypes");
-
     }
 }
