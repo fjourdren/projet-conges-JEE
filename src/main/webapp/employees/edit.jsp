@@ -6,7 +6,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%
-    Employee employee = (Employee) request.getAttribute("employee");
+    Employee e;
+    if (request.getAttribute("employee") == null) {
+        e = null;
+    } else {
+        e = (Employee) request.getAttribute("employee");
+    }
+
     Map<DayoffType, Float> dayoffTypeMap = (Map<DayoffType, Float>) request.getAttribute("dayoffTypeMap");
     List<String> allDeps = (List<String>) request.getAttribute("allDeps");
 %>
@@ -36,7 +42,7 @@
 <body>
 <form action="" method="POST" id="edit-form">
     <nav class="navbar navbar-light bg-light">
-        <% if (employee.getId() == -1) { %>
+        <% if (e == null) { %>
         <span class="navbar-brand mb-0 h1">Ajouter un employé</span>
         <% } else { %>
         <span class="navbar-brand mb-0 h1">Modifier un employé</span>
@@ -55,7 +61,7 @@
         <% } %>
     </datalist>
 
-    <input type="hidden" name="id" id="object-id" value="<%= employee.getId() %>">
+    <input type="hidden" name="id" id="object-id" value="<%= e == null ? "" : e.getId() %>">
     <div style="margin: 16px">
         <div class="card">
             <div style="padding: 16px">
@@ -63,42 +69,42 @@
                     <label for="last-name-input" class="col-sm-2 col-form-label">Nom</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="last-name" id="last-name-input" required
-                               value="<%= employee.getLastName() %>">
+                               value="<%= e == null ? "" : e.getLastName() %>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="first-name-input" class="col-sm-2 col-form-label">Prénom</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="first-name" id="first-name-input" required
-                               value="<%= employee.getFirstName() %>">
+                               value="<%= e == null ? "" : e.getFirstName() %>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="email-input" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
                         <input type="email" class="form-control" name="email" id="email-input" required
-                               value="<%= employee.getEmail() %>">
+                               value="<%= e == null ? "" : e.getEmail() %>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="password-input" class="col-sm-2 col-form-label">Mot de passe</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="password" id="password-input" required
-                               value="<%= employee.getPassword() %>">
+                               value="<%= e == null ? "" : e.getSha256Password() %>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="adress-input" class="col-sm-2 col-form-label">Adresse</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="adress" id="adress-input" required
-                               value="<%= employee.getAddress() %>">
+                               value="<%= e == null ? "" : e.getAddress() %>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="position-input" class="col-sm-2 col-form-label">Fonction</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="position" id="position-input" required
-                               value="<%= employee.getPosition() %>">
+                               value="<%= e == null ? "" : e.getPosition() %>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -106,7 +112,7 @@
                     <div class="col-sm-10">
                         <input list="departments" type="text" class="form-control" name="department"
                                id="department-input" required
-                               value="<%= employee.getDepartment().getName() %>">
+                               value="<%= e == null ? "" : e.getDepartment().getName() %>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -114,18 +120,24 @@
                     <div class="col-sm-10">
                         <select name="type" id="type-select" required>
                             <!-- from EmployeeType -->
-                            <option value="CLASSIC" <%= (employee.getType() == EmployeeType.CLASSIC) ? "selected" : "" %>
-                                    selected="<%= employee.getType() == EmployeeType.CLASSIC ? "selected" : ""%>">
+                            <option
+                                    value="CLASSIC"
+                                    <%= (e != null && e.getType() == EmployeeType.CLASSIC) ? "selected" : "" %>>
                                 Employée
                             </option>
-                            <option value="BOSS" <%= (employee.getType() == EmployeeType.BOSS) ? "selected" : "" %>>Chef
+                            <option
+                                    value="BOSS"
+                                    <%= (e != null && e.getType() == EmployeeType.BOSS) ? "selected" : "" %>>Chef
                                 d'équipe
                             </option>
-                            <option value="RH" <%= (employee.getType() == EmployeeType.RH) ? "selected" : "" %>>
+                            <option
+                                    value="RH"
+                                    <%= (e != null && e.getType() == EmployeeType.RH) ? "selected" : "" %>>
                                 Membre RH
                             </option>
-                            <option value="RH_ADMIN"
-                                    <%= (employee.getType() == EmployeeType.RH_ADMIN) ? "selected" : "" %>>Admin
+                            <option
+                                    value="RH_ADMIN"
+                                    <%= (e != null && e.getType() == EmployeeType.RH_ADMIN) ? "selected" : "" %>>Admin
                                 RH
                             </option>
                         </select>
@@ -137,22 +149,37 @@
         <br>
 
         <div class="table card">
-            <table class=" table table-hover">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Type</th>
-                    <th scope="col">Nbre jours congés (-1 = pas de limitation)</th>
+                    <th scope="col">Nombre jours congés</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% for (Map.Entry<DayoffType, Float> dayoffTypeEntry : dayoffTypeMap.entrySet()) {%>
+                <% for (Map.Entry<DayoffType, Float> entry : dayoffTypeMap.entrySet()) {%>
                 <tr>
-                    <td><%= dayoffTypeEntry.getKey().getName() %>
+                    <td><%= entry.getKey().getName() %>
                     </td>
-                    <td><input type="number" min="-1" step="0.5" class="form-control"
-                               name="<%= "dayofftype-" + dayoffTypeEntry.getKey().getId() %>"
-                               id="<%= "dayofftype-" + dayoffTypeEntry.getKey().getId() + "-input" %>" required
-                               value="<%= dayoffTypeEntry.getValue() == null ? -1 : dayoffTypeEntry.getValue() %>">
+                    <td>
+                        <div class="form-group">
+                            <div class="input-group mb-2">
+                                <input type="number" class="form-control"
+                                       min="0"
+                                       step="0.5"
+                                       name="<%= "dayofftype-" + entry.getKey().getId() %>"
+                                       id="<%= "dayofftype-" + entry.getKey().getId() + "-input" %>"
+                                       value="<%= entry.getValue() == null ? "" : entry.getValue() %>">
+                                <span class="input-group-text">
+                                    <input type="checkbox"
+                                           name="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited" %>"
+                                           id="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited-chk" %>"
+                                           onclick="var a = document.getElementById('<%= "dayofftype-" + entry.getKey().getId() + "-input" %>'); a.disabled = this.checked; a.required = !this.checked;">
+                                    <label style="margin-bottom:0; margin-left: 4px"
+                                           for="<%= "dayofftype-" + entry.getKey().getId() + "-unlimited-chk" %>">Illimité</label>
+                                </span>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <% } %>
@@ -161,8 +188,7 @@
         </div>
     </div>
 
-
 </form>
-</body>
 
+</body>
 </html>
