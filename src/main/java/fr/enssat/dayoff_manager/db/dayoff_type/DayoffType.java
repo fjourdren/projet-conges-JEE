@@ -1,5 +1,7 @@
 package fr.enssat.dayoff_manager.db.dayoff_type;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,22 +10,22 @@ import java.util.Objects;
  * Type de congés
  */
 @Entity
-public class DayoffType implements Serializable {
+public class DayoffType extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private int id;
 
     /**
      * Nom
      */
-    private String name = "";
+    private String name;
 
     /**
      * Nombre de jours annuels par défaut pour tous les employés (null si pas de limitation)
      */
-    private Float defaultNbDays = null;
+    private Float defaultNbDays;
 
     public DayoffType() {
     }
@@ -40,7 +42,6 @@ public class DayoffType implements Serializable {
         return id;
     }
 
-    @Deprecated
     public void setId(int id) {
         this.id = id;
     }
