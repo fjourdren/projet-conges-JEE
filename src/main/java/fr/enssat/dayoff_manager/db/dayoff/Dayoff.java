@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.db.dayoff;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 
@@ -12,62 +13,62 @@ import java.util.Objects;
  * (Demande de) congés
  */
 @Entity
-public class Dayoff implements Serializable {
+public class Dayoff extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private int id;
 
     /**
      * Date de début
      */
-    private java.util.Date dateStart = new Date();
+    private java.util.Date dateStart;
 
     /**
      * Date de fin
      */
-    private java.util.Date dateEnd = new Date();
+    private java.util.Date dateEnd;
 
     /**
      * Date de création
      */
-    private java.util.Date dateCreation = new Date();
+    private java.util.Date dateCreation;
 
     /**
      * Date de validation
      */
-    private java.util.Date dateValidation = null;
+    private java.util.Date dateValidation;
 
     /**
      * Nombre de jours ouvrés
      */
-    private float nbDays = 0.0f;
+    private float nbDays;
 
     /**
      * Statut (en attente, accepté, refusé)
      */
-    private DayoffStatus status = DayoffStatus.WAITING;
+    private DayoffStatus status;
 
     /**
      * Commentaire RH
      */
-    private String commentRH = null;
+    private String commentRH;
 
     /**
      * Commentaire employé (motif)
      */
-    private String commentEmployee = null;
+    private String commentEmployee;
 
     /**
      * Type du congés
      */
-    private DayoffType type = null;
+    private DayoffType type;
 
     /**
      * Employé
      */
-    private Employee employee = null;
+    private Employee employee;
 
     public Dayoff() {
     }
@@ -244,4 +245,6 @@ public class Dayoff implements Serializable {
                 ", employee=" + employee +
                 '}';
     }
+
+
 }

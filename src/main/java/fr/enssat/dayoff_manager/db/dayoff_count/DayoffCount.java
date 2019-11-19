@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.db.dayoff_count;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 
@@ -12,27 +13,27 @@ import java.util.Objects;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id_type", "id_employee"})})
-public class DayoffCount implements Serializable {
+public class DayoffCount extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private int id;
 
     /**
      * Nombre de jours annuels restants (null si pas de limitation)
      */
-    private Float nbDays = null;
+    private Float nbDays;
 
     /**
      * Type de congés
      */
-    private DayoffType type = null;
+    private DayoffType type;
 
     /**
      * Employé concerné
      */
-    private Employee employee = null;
+    private Employee employee;
 
     public DayoffCount() {
     }
@@ -50,7 +51,6 @@ public class DayoffCount implements Serializable {
         return id;
     }
 
-    @Deprecated
     public void setId(int id) {
         this.id = id;
     }

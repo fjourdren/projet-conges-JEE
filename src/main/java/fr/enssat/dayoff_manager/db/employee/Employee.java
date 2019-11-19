@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.db.employee;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
 import fr.enssat.dayoff_manager.db.department.Department;
 
 import javax.persistence.*;
@@ -11,59 +12,59 @@ import java.util.Objects;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
-public class Employee implements Serializable {
+public class Employee extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private int id;
 
     /**
      * Prénom
      */
-    private String firstName = "";
+    private String firstName;
 
     /**
      * Nom
      */
-    private String lastName = "";
+    private String lastName;
 
     /**
      * Mot de passe (chiffré)
      */
-    private String password = "";
+    private String sha256Password;
 
     /**
      * Adresse
      */
-    private String address = "";
+    private String address;
 
     /**
      * Fonction
      */
-    private String position = "";
+    private String position;
 
     /**
      * Email
      */
-    private String email = "";
+    private String email;
 
     /**
      * Type (employé, chef équipe, employé RH, responsable RH)
      */
-    private EmployeeType type = EmployeeType.CLASSIC;
+    private EmployeeType type;
 
     /**
      * Service
      */
-    private Department department = null;
+    private Department department;
 
     public Employee() {
     }
 
     public Employee(String firstName,
                     String lastName,
-                    String password,
+                    String sha256Password,
                     String address,
                     String position,
                     String email,
@@ -71,12 +72,16 @@ public class Employee implements Serializable {
                     Department department) {
         setFirstName(firstName);
         setLastName(lastName);
-        setPassword(password);
+        setSha256Password(sha256Password);
         setAddress(address);
         setPosition(position);
         setEmail(email);
         setType(type);
         setDepartment(department);
+    }
+
+    public static Employee createEmpty() {
+        return new Employee("", "", "", "", "", "", EmployeeType.CLASSIC, null);
     }
 
     @Id
@@ -86,7 +91,6 @@ public class Employee implements Serializable {
         return id;
     }
 
-    @Deprecated
     public void setId(int id) {
         this.id = id;
     }
@@ -113,12 +117,12 @@ public class Employee implements Serializable {
 
     @Basic
     @Column(nullable = false)
-    public String getPassword() {
-        return password;
+    public String getSha256Password() {
+        return sha256Password;
     }
 
-    public void setPassword(String password) {
-        this.password = Objects.requireNonNull(password);
+    public void setSha256Password(String sha256Password) {
+        this.sha256Password = Objects.requireNonNull(sha256Password);
     }
 
     @Basic
@@ -179,7 +183,7 @@ public class Employee implements Serializable {
         return id == employee.id &&
                 Objects.equals(firstName, employee.firstName) &&
                 Objects.equals(lastName, employee.lastName) &&
-                Objects.equals(password, employee.password) &&
+                Objects.equals(sha256Password, employee.sha256Password) &&
                 Objects.equals(address, employee.address) &&
                 Objects.equals(position, employee.position) &&
                 Objects.equals(email, employee.email) &&
@@ -189,7 +193,7 @@ public class Employee implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, password, address, position, email, type, department);
+        return Objects.hash(id, firstName, lastName, sha256Password, address, position, email, type, department);
     }
 
     @Override
@@ -198,7 +202,7 @@ public class Employee implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + sha256Password + '\'' +
                 ", address='" + address + '\'' +
                 ", position='" + position + '\'' +
                 ", email='" + email + '\'' +
