@@ -17,22 +17,22 @@ public class DayoffCount implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private int id = -1;
 
     /**
      * Nombre de jours annuels restants (null si pas de limitation)
      */
-    private Float nbDays;
+    private Float nbDays = null;
 
     /**
      * Type de congés
      */
-    private DayoffType type;
+    private DayoffType type = null;
 
     /**
      * Employé concerné
      */
-    private Employee employee;
+    private Employee employee = null;
 
     public DayoffCount() {
     }

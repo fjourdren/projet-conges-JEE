@@ -13,12 +13,12 @@ public class Department implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private int id = -1;
 
     /**
      * Nom
      */
-    private String name;
+    private String name = "";
 
     public Department() {
     }
