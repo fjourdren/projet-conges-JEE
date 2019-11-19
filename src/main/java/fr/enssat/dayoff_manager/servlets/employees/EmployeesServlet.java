@@ -54,28 +54,29 @@ public class EmployeesServlet extends HttpServlet {
         for (Employee e : employeeDao.getAll()) {
             ArrayList<String> lineToAdd = new ArrayList<String>();
 
-            lineToAdd.add(e.getFirstName());
-            lineToAdd.add(e.getLastName());
-            lineToAdd.add(e.getAddress());
-            lineToAdd.add(e.getPosition());
-            lineToAdd.add(e.getEmail());
-            lineToAdd.add(e.getDepartment().getName());
-            lineToAdd.add("<a class=\"btn btn-primary\" href=\"employees-edit?id=" + e.getId() + "\" role=\"button\">Modifier</a>"); // modify button
-            lineToAdd.add("<a class=\"btn btn-danger\" href=\"employees-delete?id=" + e.getId() + "\" role=\"button\">Supprimer</a>"); // delete button
+			lineToAdd.add(e.getFirstName());
+			lineToAdd.add(e.getLastName());
+			lineToAdd.add(e.getAddress());
+			lineToAdd.add(e.getPosition());
+			lineToAdd.add(e.getEmail());
+			lineToAdd.add(e.getDepartment().getName());
+			lineToAdd.add("<a class=\"btn btn-primary\" href=\"employees-add-edit?id=" + e.getId() + "\" role=\"button\">Modifier</a>"); // modify button
+			lineToAdd.add("<a class=\"btn btn-danger\" href=\"employees-delete?id=" + e.getId() + "\" role=\"button\">Supprimer</a>"); // delete button
 
-            datatableDataArray.add(lineToAdd);
-        }
+			datatableDataArray.add(lineToAdd);
+		}
 
 
-        request.setAttribute("datatableDataArray", datatableDataArray);
+		request.setAttribute("datatableDataArray", datatableDataArray);
 
-        // page send
-        request.setAttribute("componentNeeded", "employeesRender");
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher(
-                "/template/index.jsp");
-
-        dispatcher.forward(request, response);
-    }
+		// page send
+		request.setAttribute("leftMenuActive", "employees");
+		request.setAttribute("componentNeeded", "employeesRender");
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(
+		          "/template/index.jsp");
+		
+		dispatcher.forward(request, response);
+	}
 
 }

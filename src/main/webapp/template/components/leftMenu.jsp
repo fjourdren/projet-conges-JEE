@@ -45,7 +45,7 @@ if(employeeLogged != null) {
         	<strong>Menu Responsable RH</strong>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "typesDayoff") { %> active <% } %>" href="typesDayoff"><span class="glyphicon glyphicon-user"></span> Gestion des types de congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "typesDayoff") { %> active <% } %>" href="congesTypes"><span class="glyphicon glyphicon-user"></span> Gestion des types de congés</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "employees") { %> active <% } %>" href="employees"><span class="glyphicon glyphicon-cog"></span> Gestion des employées</a>
