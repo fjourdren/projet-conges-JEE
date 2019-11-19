@@ -15,4 +15,12 @@ public interface DepartmentDao extends GenericDao<Department> {
      */
     List<Dayoff> getDayOffs(Department department);
 
+    /**
+     * Recherche un département par nom
+     *
+     * @param name nom
+     * @return déprtement si trouvé, sinon null
+     */
+    Department findByName(String name);
+
 }
