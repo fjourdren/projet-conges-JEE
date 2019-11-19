@@ -10,14 +10,12 @@ import java.util.List;
 public class DepartmentDaoMockImpl extends GenericDaoMockImpl<Department> implements DepartmentDao {
 
     @Override
-    public void save(Department entity) {
+    public void newEntityConstraintsCheck(Department entity) {
         for (Department department : getAll()) {
             if (department.getName().equals(entity.getName())) {
                 throw new RuntimeException("A department with name" + entity.getName() + " already exists");
             }
         }
-
-        super.save(entity);
     }
 
     @Override

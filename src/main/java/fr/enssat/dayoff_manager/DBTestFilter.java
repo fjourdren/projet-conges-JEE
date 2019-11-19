@@ -55,7 +55,7 @@ public class DBTestFilter implements Filter {
         manager.persist(dayoffCount);
         manager.getTransaction().commit();
 
-        System.out.println(Arrays.toString(new GenericDaoImpl<>(Department.class).getAll().toArray()));
+      /*  System.out.println(Arrays.toString(new GenericDaoImpl<>(Department.class).getAll().toArray()));
         System.out.println("---");
         System.out.println(Arrays.toString(new GenericDaoImpl<>(Employee.class).getAll().toArray()));
         System.out.println("---");
@@ -65,7 +65,7 @@ public class DBTestFilter implements Filter {
         System.out.println("---");
         System.out.println(Arrays.toString(new GenericDaoImpl<>(DayoffCount.class).getAll().toArray()));
         System.out.println("---");
-
+*/
         manager.getTransaction().begin();
         manager.remove(dayoffCount);
         manager.remove(dayoff);
