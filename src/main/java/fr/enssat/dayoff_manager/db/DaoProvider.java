@@ -1,15 +1,16 @@
 package fr.enssat.dayoff_manager.db;
 
+import fr.enssat.dayoff_manager.Utils;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffDao;
-import fr.enssat.dayoff_manager.db.dayoff.DayoffDaoMockImpl;
+import fr.enssat.dayoff_manager.db.dayoff.*;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCountDao;
-import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCountDaoMockImpl;
+import fr.enssat.dayoff_manager.db.dayoff_count.*;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffTypeDao;
-import fr.enssat.dayoff_manager.db.dayoff_type.DayoffTypeDaoMockImpl;
+import fr.enssat.dayoff_manager.db.dayoff_type.*;
 import fr.enssat.dayoff_manager.db.department.DepartmentDao;
-import fr.enssat.dayoff_manager.db.department.DepartmentDaoMockImpl;
+import fr.enssat.dayoff_manager.db.department.*;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
-import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
+import fr.enssat.dayoff_manager.db.employee.*;
 
 public class DaoProvider {
 
@@ -19,6 +20,8 @@ public class DaoProvider {
         DAYOFF_TYPE_DAO = new DayoffTypeDaoMockImpl();
         DEPARTMENT_DAO = new DepartmentDaoMockImpl();
         EMPLOYEE_DAO = new EmployeeDaoMockImpl();
+
+        Utils.fillDBWithSomeData();
     }
 
     private static final DayoffDao DAYOFF_DAO;
