@@ -17,7 +17,7 @@ public abstract class GenericDaoMockImpl<E extends GenericEntity> implements Gen
 
     @Override
     public void save(E entity) {
-        if (entity.getId() == 0) {
+        if (entity.getId() == null) {
             //new item
             newEntityConstraintsCheck(entity);
             entity.setId(++nextID);
