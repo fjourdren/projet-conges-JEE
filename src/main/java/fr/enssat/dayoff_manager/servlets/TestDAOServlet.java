@@ -37,7 +37,7 @@ public class TestDAOServlet extends HttpServlet {
         for (Dayoff d : listDayoff){
             out.println("id : " + d.getId() + " nb day : " + d.getNbDays());
         }
-        Dayoff dayId0 = tdo.findById(0);
+        Dayoff dayId0 = tdo.findById(0L);
 
         // WARNING, probablement un problème avec les id hibernate et les dayoff du mock qui ne sont pas dans la db
         if(dayId0 != null){

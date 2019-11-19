@@ -36,7 +36,7 @@ public class DeleteEmployeeServlet extends HttpServlet {
             Employee employee = null;
 
             try {
-                employee = employeeDao.findById(Integer.parseInt(request.getParameter("id")));
+                employee = employeeDao.findById(Long.parseLong(request.getParameter("id")));
             } catch (Error e) {
                 session.setAttribute("flashType", "danger");
                 session.setAttribute("flashMessage", "Erreur de conversion");

@@ -29,7 +29,7 @@ public interface GenericDao<E extends GenericEntity> {
      * @param id ID
      * @return entité ayant l'ID spécifié en paramètre
      */
-    E findById(int id);
+    E findById(Long id);
 
     /**
      * Retourne tous les objets de l'entité stockés en base
