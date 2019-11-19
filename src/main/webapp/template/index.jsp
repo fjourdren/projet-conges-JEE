@@ -24,8 +24,11 @@
 					case "login":
 						%> <jsp:include page="login.jsp" /> <%
 						break;
-					case "employees":
-						%> <jsp:include page="employees.jsp" /> <%
+					case "employeesRender":
+						%> <jsp:include page="employees/render.jsp" /> <%
+						break;
+					case "employeesEditAdd":
+						%> <jsp:include page="employees/edit-add.jsp" /> <%
 						break;
 					default:
 						
