@@ -41,7 +41,8 @@ public class TestDAOServlet extends HttpServlet {
             out.println("dayId0 is null<br><br>");
         }
 
-        tdo.validate("You deserved it", listDayoff.get(0));
+
+        //tdo.validate("You deserved it", listDayoff.get(0));
         out.println("\ncommentRH : " + listDayoff.get(0).getCommentRH() + "\nnb day : " + listDayoff.get(0).getNbDays());
 
 
