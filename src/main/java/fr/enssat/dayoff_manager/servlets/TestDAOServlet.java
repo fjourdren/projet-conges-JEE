@@ -6,6 +6,7 @@ import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+@WebServlet(
+        name = "TestDAOServlet",
+        description = "TestDAOServlet",
+        urlPatterns = {"/TestDAOServlet"}
+)
 public class TestDAOServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

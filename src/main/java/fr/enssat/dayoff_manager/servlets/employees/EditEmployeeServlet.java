@@ -6,33 +6,35 @@ import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
-import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.util.*;
 
+@WebServlet(
+        name = "EditEmployeeServlet",
+        description = "Add or edit employee",
+        urlPatterns = {"/employees-add-edit"}
+)
 public class EditEmployeeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	// check if user is connected
-		HttpSession session = req.getSession();
-		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-		if(employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-			resp.sendRedirect("default");
-			return;
-		}
+        // check if user is connected
+       /* HttpSession session = req.getSession();
+        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
+            resp.sendRedirect("default");
+            return;
+        }*/
 
-		// generate
-        Employee employee = new Employee();
+        // generate
         Employee employee = null;
         List<String> allDeps = new ArrayList<>();
         Map<DayoffType, Float> dayoffTypeMap = new HashMap<>();
@@ -54,20 +56,20 @@ public class EditEmployeeServlet extends HttpServlet {
                 employeeID = Integer.parseInt(req.getParameter("id"));
                 if (employeeID < 0) throw new IllegalArgumentException("employeeID");
             } catch (Exception e) {
-            	session.setAttribute("flashType", "danger");
-        		session.setAttribute("flashMessage", "Requête invalide");
+                //session.setAttribute("flashType", "danger");
+                //session.setAttribute("flashMessage", "Requête invalide");
 
-        		resp.sendRedirect("employees");
+                //resp.sendRedirect("employees");
 
                 return;
             }
 
             employee = DaoProvider.getEmployeeDao().findById(employeeID);
             if (employee == null) {
-            	session.setAttribute("flashType", "danger");
-        		session.setAttribute("flashMessage", "Employé inconnu");
+                //session.setAttribute("flashType", "danger");
+                //session.setAttribute("flashMessage", "Employé inconnu");
 
-        		resp.sendRedirect("employees");
+                //resp.sendRedirect("employees");
 
                 return;
             }
@@ -81,24 +83,52 @@ public class EditEmployeeServlet extends HttpServlet {
         req.setAttribute("allDeps", allDeps);
         req.setAttribute("dayoffTypeMap", dayoffTypeMap);
 
-        req.setAttribute("componentNeeded", "employeesEditAdd");
+        // req.setAttribute("componentNeeded", "employeesEditAdd");
 
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/template/index.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/employees/edit.jsp"); ///template/index.jsp
         rd.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	// check if user is connected
-		HttpSession session = req.getSession();
-		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-		if(employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-			resp.sendRedirect("default");
-			return;
-		}
+        // check if user is connected
+        /*HttpSession session = req.getSession();
+        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
+            resp.sendRedirect("default");
+            return;
+        }*/
 
-		// process
+        try {
+            Employee employee = createEmployeeObjectFromForm(req);
+            updateDayoffCountsFromForm(req, employee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /*if (employeeDao.findById(employee.getId()) == null) {
+            session.setAttribute("flashType", "success");
+            session.setAttribute("flashMessage", "Employé ajouté");
+        } else {
+            session.setAttribute("flashType", "success");
+            session.setAttribute("flashMessage", "Employé modifié");
+        }
+
+        resp.sendRedirect("employees");*/
+    }
+
+    /**
+     * Crée un objet Employee (et un Department) et les sauvegarde en base
+     *
+     * @param req http request
+     */
+    private Employee createEmployeeObjectFromForm(HttpServletRequest req) {
         Employee employee = new Employee();
+
+        if (!req.getParameter("id").isEmpty()) {
+            employee.setId(Integer.parseInt(req.getParameter("id")));
+        }
+
         employee.setLastName(req.getParameter("last-name"));
         employee.setFirstName(req.getParameter("first-name"));
         employee.setEmail(req.getParameter("email"));
@@ -107,19 +137,25 @@ public class EditEmployeeServlet extends HttpServlet {
         employee.setPosition(req.getParameter("position"));
         employee.setType(EmployeeType.valueOf(req.getParameter("type")));
 
-        if (!req.getParameter("id").isEmpty()) {
-            employee.setId(Integer.parseInt(req.getParameter("id")));
+        String departmentName = req.getParameter("department");
+        Department dep = DaoProvider.getDepartmentDao().findByName(departmentName);
+        if (dep == null) {
+            dep = new Department(departmentName);
+            DaoProvider.getDepartmentDao().save(dep);
         }
 
-        /*Department department = DaoProvider.getDepartmentDao().findByName(req.getParameter("department"));
-        if (department == null) {
-            department = new Department(req.getParameter("department"));
-            DaoProvider.getDepartmentDao().save(department);
-        }*/
+        employee.setDepartment(dep);
+        DaoProvider.getEmployeeDao().save(employee);
+        return employee;
+    }
 
-        //FIXME
-        //employee.setDepartment(department);
-
+    /**
+     * Met à jour les nombre de jours disponibles pour chaque congé pour l'employé
+     *
+     * @param req      http request
+     * @param employee employé
+     */
+    private void updateDayoffCountsFromForm(HttpServletRequest req, Employee employee) {
         for (DayoffType type : DaoProvider.getDayoffTypeDao().getAll()) {
             Float nbDays;
             if (req.getParameter("dayofftype-" + type.getId() + "-unlimited") != null) {
@@ -128,29 +164,16 @@ public class EditEmployeeServlet extends HttpServlet {
                 nbDays = Float.parseFloat(req.getParameter("dayofftype-" + type.getId()));
             }
 
-            if (!Objects.equals(type.getDefaultNbDays(), nbDays)) {
-                DayoffCount dayoffCount = new DayoffCount(nbDays, type, employee);
+            DayoffCount dayoffCount = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(employee, type);
+            if (dayoffCount != null && Objects.equals(type.getDefaultNbDays(), nbDays)) {
+                DaoProvider.getDayoffCountDao().delete(dayoffCount);
+            } else if (dayoffCount != null) {
+                dayoffCount.setNbDays(nbDays);
+                DaoProvider.getDayoffCountDao().save(dayoffCount);
+            } else {
+                dayoffCount = new DayoffCount(nbDays, type, employee);
                 DaoProvider.getDayoffCountDao().save(dayoffCount);
             }
         }
-
-        DaoProvider.getEmployeeDao().save(employee);
-
-        // save
-        EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
-
-        employeeDao.save(employee);
-
-        if(employeeDao.findById(employee.getId()) == null) {
-            session.setAttribute("flashType", "success");
-    		session.setAttribute("flashMessage", "Employé ajouté");
-        } else {
-            session.setAttribute("flashType", "success");
-    		session.setAttribute("flashMessage", "Employé modifié");
-        }
-
-        System.out.println(employee);
-        resp.sendRedirect("employees");
-
     }
 }
