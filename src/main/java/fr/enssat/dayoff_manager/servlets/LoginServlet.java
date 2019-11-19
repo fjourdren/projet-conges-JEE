@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.servlets;
 
+import fr.enssat.dayoff_manager.Utils;
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
@@ -44,7 +45,8 @@ public class LoginServlet extends HttpServlet {
 
         EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
 
-        Employee employeeLogin = employeeDao.login(email, password);
+        //FIXME [Clément] Maintenant le password est chiffré en SHA256, il faut penser à le chiffrer via Utils.sha256
+        Employee employeeLogin = employeeDao.login(email, Utils.sha256(password));
 
         HttpSession session = request.getSession();
 
