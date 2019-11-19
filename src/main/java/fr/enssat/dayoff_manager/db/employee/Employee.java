@@ -10,53 +10,53 @@ import java.util.Objects;
  * Employé (utilisateur)
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"firstName", "lastName"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class Employee implements Serializable {
 
     /**
      * ID
      */
-    private int id;
+    private int id = -1;
 
     /**
      * Prénom
      */
-    private String firstName;
+    private String firstName = "";
 
     /**
      * Nom
      */
-    private String lastName;
+    private String lastName = "";
 
     /**
      * Mot de passe (chiffré)
      */
-    private String password;
+    private String password = "";
 
     /**
      * Adresse
      */
-    private String address;
+    private String address = "";
 
     /**
      * Fonction
      */
-    private String position;
+    private String position = "";
 
     /**
      * Email
      */
-    private String email;
+    private String email = "";
 
     /**
      * Type (employé, chef équipe, employé RH, responsable RH)
      */
-    private EmployeeType type;
+    private EmployeeType type = EmployeeType.CLASSIC;
 
     /**
      * Service
      */
-    private Department department;
+    private Department department = null;
 
     public Employee() {
     }

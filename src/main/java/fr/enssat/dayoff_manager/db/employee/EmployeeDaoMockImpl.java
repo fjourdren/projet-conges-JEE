@@ -40,8 +40,15 @@ public class EmployeeDaoMockImpl implements EmployeeDao {
 
     @Override
     public void save(Employee entity) {
-        entity.setId(++nextID);
-        listEmployee.add(entity);
+    	if(entity.getId() == -1) {
+    		entity.setId(++nextID);
+    	} else {
+    		Employee lastEmployee = this.findById(entity.getId());
+    		listEmployee.remove(lastEmployee);
+    	}
+    	
+    	listEmployee.add(entity);
+        
     }
 
     @Override

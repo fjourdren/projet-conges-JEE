@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.servlets;
+package fr.enssat.dayoff_manager.servlets.employees;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,13 +19,13 @@ import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 /**
  * Servlet implementation class employeesServlet
  */
-public class employeesServlet extends HttpServlet {
+public class EmployeesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public employeesServlet() {
+    public EmployeesServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,9 +43,6 @@ public class employeesServlet extends HttpServlet {
 		}
 		
 		// generate page
-		RequestDispatcher dispatcher = request.getRequestDispatcher(
-		          "/template/index.jsp");
-		
 		// generate tabledata
 		ArrayList<String> datatableHeadArray = new ArrayList<String>();
 
@@ -74,8 +71,8 @@ public class employeesServlet extends HttpServlet {
 			lineToAdd.add(e.getPosition());
 			lineToAdd.add(e.getEmail());
 			lineToAdd.add(e.getDepartment().getName());
-			lineToAdd.add(""); // modify button
-			lineToAdd.add(""); // delete button
+			lineToAdd.add("<a class=\"btn btn-primary\" href=\"employees-add-edit?id=" + e.getId() + "\" role=\"button\">Modifier</a>"); // modify button
+			lineToAdd.add("<a class=\"btn btn-danger\" href=\"employees-delete?id=" + e.getId() + "\" role=\"button\">Supprimer</a>"); // delete button
 			
 			datatableDataArray.add(lineToAdd);
 		}
@@ -84,7 +81,11 @@ public class employeesServlet extends HttpServlet {
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
 		// page send
-		request.setAttribute("componentNeeded", "employees");
+		request.setAttribute("leftMenuActive", "employees");
+		request.setAttribute("componentNeeded", "employeesRender");
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(
+		          "/template/index.jsp");
 		
 		dispatcher.forward(request, response);
 	}

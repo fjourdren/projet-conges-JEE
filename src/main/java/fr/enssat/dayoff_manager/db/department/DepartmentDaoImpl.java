@@ -7,4 +7,9 @@ public class DepartmentDaoImpl extends GenericDaoImpl<Department> implements Dep
     public DepartmentDaoImpl() {
         super(Department.class);
     }
+
+    @Override
+    public Department findByName(String name) {
+        return null;
+    }
 }

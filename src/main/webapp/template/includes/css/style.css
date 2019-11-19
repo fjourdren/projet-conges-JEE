@@ -3,6 +3,12 @@
     margin: 0 auto;
 }
 
+.center-button {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
 .col-right {
     float: right;
     margin: 0 auto;
