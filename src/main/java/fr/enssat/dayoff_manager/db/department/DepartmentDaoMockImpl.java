@@ -30,4 +30,14 @@ public class DepartmentDaoMockImpl extends GenericDaoMockImpl<Department> implem
         }
         return res;
     }
+
+    @Override
+    public Department findByName(String name) {
+        for (Department department : getAll()) {
+            if (department.getName().equals(name)) {
+                return department;
+            }
+        }
+        return null;
+    }
 }
