@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.db.dayoff_count;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 
@@ -12,27 +13,27 @@ import java.util.Objects;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id_type", "id_employee"})})
-public class DayoffCount implements Serializable {
+public class DayoffCount extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private Long id;
 
     /**
      * Nombre de jours annuels restants (null si pas de limitation)
      */
-    private Float nbDays = null;
+    private Float nbDays;
 
     /**
      * Type de congés
      */
-    private DayoffType type = null;
+    private DayoffType type;
 
     /**
      * Employé concerné
      */
-    private Employee employee = null;
+    private Employee employee;
 
     public DayoffCount() {
     }
@@ -46,12 +47,11 @@ public class DayoffCount implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    @Deprecated
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,7 +68,7 @@ public class DayoffCount implements Serializable {
         this.nbDays = nbDays;
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_type", nullable = false)
     public DayoffType getType() {
         return type;
@@ -78,7 +78,7 @@ public class DayoffCount implements Serializable {
         this.type = Objects.requireNonNull(type);
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_employee", nullable = false)
     public Employee getEmployee() {
         return employee;
@@ -93,7 +93,7 @@ public class DayoffCount implements Serializable {
         if (this == o) return true;
         if (!(o instanceof DayoffCount)) return false;
         DayoffCount that = (DayoffCount) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(nbDays, that.nbDays) &&
                 Objects.equals(type, that.type) &&
                 Objects.equals(employee, that.employee);

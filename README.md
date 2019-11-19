@@ -14,6 +14,45 @@ Pour ajouter une fonction, il faut l'ajouter dans l'interface puis l'implémente
 
 Le package `servlets` contient les servlets de l'application (*il faut également les déclarer dans le web.xml !*)
 
+
+## Stockage des données
+**ATTENTION : les DAO ne doivent pas être modifié sans accord chef projet !**
+
+Le stockage des données est implémenté sous deux formes :
+- avec une DB réelle
+- en mémoire (Mock, utile pour les tests)
+
+Il existe cinq entités (table) dans l'application :
+- **dayoff** : Congés
+- **dayoff_count** : Nombre de jours restants par congé par employé
+- **dayoff_type** : Type de congé
+- **department** : Service
+- **employee** : Employé
+
+Pour chaque entité il existe deux DAO :
+- un finissant par **DaoImpl** : DAO se connectant à une base de données
+- un finissant par **DaoMockImpl** : DAO stockant les entités en mémoire (pour test)
+
+Par défaut, il faut utiliser les **DaoMockImpl**. Pour changer le type de DAO utilisé, il faut modifier la variable *MOCK_MODE* dans la classe *DaoProvider*.
+
+Pour accéder un DAO, il suffit d'utiliser la classe **DaoProvider** qui contient un getter par DAO.
+
+## Servlets
+Chaque servlet représente une fonctionnalité du site. Pour en créer un, il faut créer une classe dans le package **servlets** avec un nom finissant par **Servlet**. 
+
+Il faut ensuite le déclarer, pour pouvoir l'utiliser. Il faut donc ajouter une annotation. Voici un exemple : 
+
+```java
+@WebServlet(  
+  name = "DefaultPageServlet",  /*nom servlet*/
+  description = "Default page",  /*descriptions*/
+  urlPatterns = {"/", "/default"}  /*quel(s) url(s) doivent appeller ce servlet ?
+)  
+public class DefaultPageServlet extends HttpServlet {
+	...
+}
+```
+
 ## Procédure de mise en place et test de la base de données
 
 ### Etape 1 (si besoin)

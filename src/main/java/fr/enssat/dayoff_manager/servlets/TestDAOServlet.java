@@ -6,6 +6,7 @@ import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+@WebServlet(
+        name = "TestDAOServlet",
+        description = "TestDAOServlet",
+        urlPatterns = {"/TestDAOServlet"}
+)
 public class TestDAOServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +37,7 @@ public class TestDAOServlet extends HttpServlet {
         for (Dayoff d : listDayoff){
             out.println("id : " + d.getId() + " nb day : " + d.getNbDays());
         }
-        Dayoff dayId0 = tdo.findById(0);
+        Dayoff dayId0 = tdo.findById(0L);
 
         // WARNING, probablement un problème avec les id hibernate et les dayoff du mock qui ne sont pas dans la db
         if(dayId0 != null){
@@ -41,7 +47,8 @@ public class TestDAOServlet extends HttpServlet {
             out.println("dayId0 is null<br><br>");
         }
 
-        tdo.validate("You deserved it", listDayoff.get(0));
+
+        //tdo.validate("You deserved it", listDayoff.get(0));
         out.println("\ncommentRH : " + listDayoff.get(0).getCommentRH() + "\nnb day : " + listDayoff.get(0).getNbDays());
 
 

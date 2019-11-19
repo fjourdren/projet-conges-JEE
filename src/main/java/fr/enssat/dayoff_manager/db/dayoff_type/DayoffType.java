@@ -1,5 +1,7 @@
 package fr.enssat.dayoff_manager.db.dayoff_type;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,22 +10,22 @@ import java.util.Objects;
  * Type de congés
  */
 @Entity
-public class DayoffType implements Serializable {
+public class DayoffType extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private Long id;
 
     /**
      * Nom
      */
-    private String name = "";
+    private String name;
 
     /**
      * Nombre de jours annuels par défaut pour tous les employés (null si pas de limitation)
      */
-    private Float defaultNbDays = null;
+    private Float defaultNbDays;
 
     public DayoffType() {
     }
@@ -36,12 +38,11 @@ public class DayoffType implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    @Deprecated
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,6 +62,11 @@ public class DayoffType implements Serializable {
     }
 
     public void setDefaultNbDays(Float defaultNbDays) {
+        if (defaultNbDays != null) {
+            if (defaultNbDays < 0f) throw new IllegalArgumentException("defaultNbDays must be 0 or more, or null");
+            if (defaultNbDays % 0.5f != 0)
+                throw new IllegalArgumentException("defaultNbDays must be a multiple of 0.5");
+        }
         this.defaultNbDays = defaultNbDays;
     }
 
@@ -69,8 +75,8 @@ public class DayoffType implements Serializable {
         if (this == o) return true;
         if (!(o instanceof DayoffType)) return false;
         DayoffType that = (DayoffType) o;
-        return id == that.id &&
-                defaultNbDays == that.defaultNbDays &&
+        return Objects.equals(id, that.id) &&
+                defaultNbDays.equals(that.defaultNbDays) &&
                 Objects.equals(name, that.name);
     }
 
