@@ -17,7 +17,7 @@ public class Employee extends GenericEntity implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private Long id;
 
     /**
      * Prénom
@@ -87,11 +87,11 @@ public class Employee extends GenericEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -180,7 +180,7 @@ public class Employee extends GenericEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Employee)) return false;
         Employee employee = (Employee) o;
-        return id == employee.id &&
+        return Objects.equals(id, employee.id) &&
                 Objects.equals(firstName, employee.firstName) &&
                 Objects.equals(lastName, employee.lastName) &&
                 Objects.equals(sha256Password, employee.sha256Password) &&

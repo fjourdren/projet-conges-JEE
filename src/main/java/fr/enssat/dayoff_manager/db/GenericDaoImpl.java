@@ -61,7 +61,7 @@ public abstract class GenericDaoImpl<E extends GenericEntity> implements Generic
      * @return entité ayant l'ID spécifié en paramètre
      */
     @Override
-    public E findById(int id) {
+    public E findById(Long id) {
         return em.find(entityClass, id);
     }
 

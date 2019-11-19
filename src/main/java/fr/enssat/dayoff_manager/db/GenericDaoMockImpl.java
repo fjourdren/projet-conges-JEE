@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 public abstract class GenericDaoMockImpl<E extends GenericEntity> implements GenericDao<E> {
 
-    private Map<Integer, E> items = new HashMap<>();
-    private int nextID = 0;
+    private Map<Long, E> items = new HashMap<>();
+    private Long nextID = 0L;
 
     /**
      * Vérifie si la nouvelle entité ne déclenche pas d'erreurs de contraintes (lance une exception sinon)
@@ -37,7 +37,7 @@ public abstract class GenericDaoMockImpl<E extends GenericEntity> implements Gen
     }
 
     @Override
-    public E findById(int id) {
+    public E findById(Long id) {
         List<E> res = items.values().stream().filter(x -> x.getId() == id).collect(Collectors.toList());
         if (res.size() == 1) return res.get(0);
         return null;

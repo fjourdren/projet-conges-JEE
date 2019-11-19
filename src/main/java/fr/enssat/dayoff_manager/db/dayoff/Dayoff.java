@@ -18,7 +18,7 @@ public class Dayoff extends GenericEntity implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private Long id;
 
     /**
      * Date de début
@@ -98,12 +98,12 @@ public class Dayoff extends GenericEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Deprecated
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -211,7 +211,7 @@ public class Dayoff extends GenericEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Dayoff)) return false;
         Dayoff dayoff = (Dayoff) o;
-        return id == dayoff.id &&
+        return Objects.equals(id, dayoff.id) &&
                 Float.compare(dayoff.nbDays, nbDays) == 0 &&
                 Objects.equals(dateStart, dayoff.dateStart) &&
                 Objects.equals(dateEnd, dayoff.dateEnd) &&

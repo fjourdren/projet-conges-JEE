@@ -18,7 +18,7 @@ public class DayoffCount extends GenericEntity implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private Long id;
 
     /**
      * Nombre de jours annuels restants (null si pas de limitation)
@@ -47,11 +47,11 @@ public class DayoffCount extends GenericEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,7 +93,7 @@ public class DayoffCount extends GenericEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof DayoffCount)) return false;
         DayoffCount that = (DayoffCount) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(nbDays, that.nbDays) &&
                 Objects.equals(type, that.type) &&
                 Objects.equals(employee, that.employee);

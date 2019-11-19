@@ -15,7 +15,7 @@ public class Department extends GenericEntity implements Serializable {
     /**
      * ID
      */
-    private int id;
+    private Long id;
 
     /**
      * Nom
@@ -32,11 +32,11 @@ public class Department extends GenericEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -55,7 +55,7 @@ public class Department extends GenericEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Department)) return false;
         Department that = (Department) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name);
     }
 

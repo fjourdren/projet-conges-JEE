@@ -53,7 +53,7 @@ public class DeleteDayoffTypeServlet extends HttpServlet {
             DayoffType dayoffType = null;
 
             try {
-                dayoffType = dayoffTypeDao.findById(Integer.parseInt(request.getParameter("id")));
+                dayoffType = dayoffTypeDao.findById(Long.parseLong(request.getParameter("id")));
             } catch (Error e) {
                 session.setAttribute("flashType", "danger");
                 session.setAttribute("flashMessage", "Erreur de conversion");

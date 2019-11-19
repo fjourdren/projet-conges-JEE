@@ -37,13 +37,13 @@ public class EditDayoffTypeServlet extends HttpServlet {
 
         if (req.getParameter("id") == null) {
             // if new DayoffType
-            dayoffType.setId(-1);
+            dayoffType.setId(-1L);
         } else {
             //Modification employé existant
-            int dayoffTypeID = -1;
+            Long dayoffTypeID = -1L;
 
             try {
-                dayoffTypeID = Integer.parseInt(req.getParameter("id"));
+                dayoffTypeID = Long.parseLong(req.getParameter("id"));
                 if (dayoffTypeID < 0) throw new IllegalArgumentException("dayoffTypeID");
             } catch (Exception e) {
                 session.setAttribute("flashType", "danger");
@@ -99,7 +99,7 @@ public class EditDayoffTypeServlet extends HttpServlet {
 
 
         if (Integer.parseInt(req.getParameter("id")) != -1) {
-            dayoffType.setId(Integer.parseInt(req.getParameter("id")));
+            dayoffType.setId(Long.parseLong(req.getParameter("id")));
         }
 
         // save

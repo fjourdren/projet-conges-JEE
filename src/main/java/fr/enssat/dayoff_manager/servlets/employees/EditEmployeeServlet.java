@@ -51,10 +51,10 @@ public class EditEmployeeServlet extends HttpServlet {
             }
         } else {
             //Modification employé existant
-            int employeeID = -1;
+            Long employeeID = -1L;
 
             try {
-                employeeID = Integer.parseInt(req.getParameter("id"));
+                employeeID = Long.parseLong(req.getParameter("id"));
                 if (employeeID < 0) throw new IllegalArgumentException("employeeID");
             } catch (Exception e) {
                 session.setAttribute("flashType", "danger");
@@ -117,10 +117,12 @@ public class EditEmployeeServlet extends HttpServlet {
      * @param req http request
      */
     private Employee createEmployeeObjectFromForm(HttpServletRequest req) {
-        Employee employee = new Employee();
+        Employee employee;
 
         if (!req.getParameter("id").isEmpty()) {
-            employee.setId(Integer.parseInt(req.getParameter("id")));
+            employee = DaoProvider.getEmployeeDao().findById(Long.parseLong(req.getParameter("id")));
+        }else{
+            employee = new Employee();
         }
 
         employee.setLastName(req.getParameter("last-name"));
@@ -140,6 +142,7 @@ public class EditEmployeeServlet extends HttpServlet {
 
         employee.setDepartment(dep);
         DaoProvider.getEmployeeDao().save(employee);
+
         return employee;
     }
 
