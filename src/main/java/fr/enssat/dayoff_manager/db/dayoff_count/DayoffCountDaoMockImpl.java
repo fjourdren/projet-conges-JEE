@@ -1,29 +1,17 @@
 package fr.enssat.dayoff_manager.db.dayoff_count;
 
-import java.util.ArrayList;
-import java.util.List;
+import fr.enssat.dayoff_manager.db.GenericDaoMockImpl;
 
-public class DayoffCountDaoMockImpl implements DayoffCountDao {
+public class DayoffCountDaoMockImpl extends GenericDaoMockImpl<DayoffCount> implements DayoffCountDao {
 
     @Override
     public void save(DayoffCount entity) {
-        //nothing
-    }
+        for (DayoffCount count : getAll()) {
+            if (count.getType().equals(entity.getType()) && count.getEmployee().equals(entity.getEmployee())) {
+                throw new RuntimeException("item already exists");
+            }
+        }
 
-    @Override
-    public void delete(DayoffCount entity) {
-        //nothing
-    }
-
-    @Override
-    public DayoffCount findById(int id) {
-        //TODO
-        return null;
-    }
-
-    @Override
-    public List<DayoffCount> getAll() {
-        //TODO
-        return new ArrayList<>();
+        super.save(entity);
     }
 }

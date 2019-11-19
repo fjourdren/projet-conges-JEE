@@ -7,4 +7,6 @@ public class DayoffTypeDaoImpl extends GenericDaoImpl<DayoffType> implements Day
     public DayoffTypeDaoImpl() {
         super(DayoffType.class);
     }
+
+    //nothing
 }

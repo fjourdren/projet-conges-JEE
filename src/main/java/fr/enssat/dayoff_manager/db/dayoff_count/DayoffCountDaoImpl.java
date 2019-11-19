@@ -7,4 +7,6 @@ public class DayoffCountDaoImpl extends GenericDaoImpl<DayoffCount> implements D
     public DayoffCountDaoImpl() {
         super(DayoffCount.class);
     }
+
+    //nothing
 }
