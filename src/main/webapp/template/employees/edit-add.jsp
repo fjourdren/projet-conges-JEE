@@ -11,13 +11,18 @@
     List<String> allDeps = (List<String>) request.getAttribute("allDeps");
 %>
 
-<nav class="navbar navbar-light bg-light">
-    <% if (employee == null || employee.getId() == -1) { %>
-    <span class="navbar-brand mb-0 h1">Ajouter un employé</span>
-    <% } else { %>
-    <span class="navbar-brand mb-0 h1">Modifier un employé</span>
-    <% } %>
-</nav>
+<div class="col-md-9">
+	<div class="row">
+		<nav class="navbar navbar-light bg-light">
+			<% if (employee == null || employee.getId() == -1) { %>
+		    <span class="navbar-brand mb-0">Ajouter un employé</span>
+		    <% } else { %>
+		    <span class="navbar-brand mb-0">Modifier un employé</span>
+		    <% } %>
+		</nav>
+	</div>
+</div>
+
 
 <div class="col-md-9">
 	<div class="row">
@@ -109,7 +114,7 @@
 		            </div>
 		        </div>
 		
-		        <br>
+		        <hr/>
 		
 		        <div class="table card">
 		            <table class=" table table-hover">
