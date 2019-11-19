@@ -19,13 +19,13 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class loginServlet
  */
-public class loginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public loginServlet() {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,11 +42,11 @@ public class loginServlet extends HttpServlet {
 			return;
 		}
 				
-		// login page
+		// login page		
+		request.setAttribute("componentNeeded", "login");
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(
 		          "/template/index.jsp");
-		
-		request.setAttribute("componentNeeded", "login");
 		
 		dispatcher.forward(request, response);
 	}
