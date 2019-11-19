@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @param <E> type de l'entité
  */
-public interface GenericDao<E> {
+public interface GenericDao<E extends GenericEntity> {
 
     /**
      * Sauvegarde l'entité en base
@@ -29,7 +29,7 @@ public interface GenericDao<E> {
      * @param id ID
      * @return entité ayant l'ID spécifié en paramètre
      */
-    E findById(int id);
+    E findById(Long id);
 
     /**
      * Retourne tous les objets de l'entité stockés en base

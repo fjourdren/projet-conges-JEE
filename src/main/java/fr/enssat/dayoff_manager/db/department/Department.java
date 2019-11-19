@@ -1,5 +1,7 @@
 package fr.enssat.dayoff_manager.db.department;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,17 +10,17 @@ import java.util.Objects;
  * Service
  */
 @Entity
-public class Department implements Serializable {
+public class Department extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private Long id;
 
     /**
      * Nom
      */
-    private String name = "";
+    private String name;
 
     public Department() {
     }
@@ -30,12 +32,11 @@ public class Department implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    @Deprecated
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,7 +55,7 @@ public class Department implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Department)) return false;
         Department that = (Department) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name);
     }
 

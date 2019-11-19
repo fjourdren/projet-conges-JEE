@@ -1,52 +1,41 @@
 package fr.enssat.dayoff_manager.db.department;
 
+import fr.enssat.dayoff_manager.db.DaoProvider;
+import fr.enssat.dayoff_manager.db.GenericDaoMockImpl;
+import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class DepartmentDaoMockImpl implements DepartmentDao {
+public class DepartmentDaoMockImpl extends GenericDaoMockImpl<Department> implements DepartmentDao {
 
-    private List<Department> departmentList = new ArrayList<>();
-    private int nextID = -1;
-
-    public DepartmentDaoMockImpl() {
-        Department imr2 = new Department("imr2");
-        imr2.setId(++nextID);
-        Department imr3 = new Department("imr3");
-        imr3.setId(++nextID);
-
-        departmentList.add(imr2);
-        departmentList.add(imr3);
+    @Override
+    public void newEntityConstraintsCheck(Department entity) {
+        for (Department department : getAll()) {
+            if (department.getName().equals(entity.getName())) {
+                throw new RuntimeException("A department with name" + entity.getName() + " already exists");
+            }
+        }
     }
 
     @Override
-    public void save(Department entity) {
-        entity.setId(++nextID);
-        departmentList.add(entity);
-    }
-
-    @Override
-    public void delete(Department entity) {
-        departmentList.remove(entity);
-    }
-
-    @Override
-    public Department findById(int id) {
-        List<Department> res = departmentList.stream().filter(x -> x.getId() == id).collect(Collectors.toList());
-        if (res.size() == 1) return res.get(0);
-        return null;
-    }
-
-    @Override
-    public List<Department> getAll() {
-        return Collections.unmodifiableList(departmentList);
+    public List<Dayoff> getDayOffs(Department department) {
+        List<Dayoff> res = new ArrayList<>();
+        for (Dayoff dayoff : DaoProvider.getDayoffDao().getAll()) {
+            if (dayoff.getEmployee().getDepartment().getId() == department.getId()) {
+                res.add(dayoff);
+            }
+        }
+        return res;
     }
 
     @Override
     public Department findByName(String name) {
-        List<Department> res = departmentList.stream().filter(x -> x.getName() == name).collect(Collectors.toList());
-        if (res.size() == 1) return res.get(0);
+        for (Department department : getAll()) {
+            if (department.getName().equals(name)) {
+                return department;
+            }
+        }
         return null;
     }
 }

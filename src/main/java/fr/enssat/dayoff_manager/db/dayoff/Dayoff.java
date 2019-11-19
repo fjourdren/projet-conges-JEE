@@ -1,5 +1,6 @@
 package fr.enssat.dayoff_manager.db.dayoff;
 
+import fr.enssat.dayoff_manager.db.GenericEntity;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 
@@ -12,62 +13,62 @@ import java.util.Objects;
  * (Demande de) congés
  */
 @Entity
-public class Dayoff implements Serializable {
+public class Dayoff extends GenericEntity implements Serializable {
 
     /**
      * ID
      */
-    private int id = -1;
+    private Long id;
 
     /**
      * Date de début
      */
-    private java.util.Date dateStart = new Date();
+    private java.util.Date dateStart;
 
     /**
      * Date de fin
      */
-    private java.util.Date dateEnd = new Date();
+    private java.util.Date dateEnd;
 
     /**
      * Date de création
      */
-    private java.util.Date dateCreation = new Date();
+    private java.util.Date dateCreation;
 
     /**
      * Date de validation
      */
-    private java.util.Date dateValidation = null;
+    private java.util.Date dateValidation;
 
     /**
      * Nombre de jours ouvrés
      */
-    private float nbDays = 0.0f;
+    private float nbDays;
 
     /**
      * Statut (en attente, accepté, refusé)
      */
-    private DayoffStatus status = DayoffStatus.WAITING;
+    private DayoffStatus status;
 
     /**
      * Commentaire RH
      */
-    private String commentRH = null;
+    private String commentRH;
 
     /**
      * Commentaire employé (motif)
      */
-    private String commentEmployee = null;
+    private String commentEmployee;
 
     /**
      * Type du congés
      */
-    private DayoffType type = null;
+    private DayoffType type;
 
     /**
      * Employé
      */
-    private Employee employee = null;
+    private Employee employee;
 
     public Dayoff() {
     }
@@ -97,12 +98,12 @@ public class Dayoff implements Serializable {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Deprecated
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -185,7 +186,7 @@ public class Dayoff implements Serializable {
         this.commentEmployee = commentEmployee;
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_type", nullable = false)
     public DayoffType getType() {
         return type;
@@ -195,7 +196,7 @@ public class Dayoff implements Serializable {
         this.type = Objects.requireNonNull(type);
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_employee", nullable = false)
     public Employee getEmployee() {
         return employee;
@@ -210,7 +211,7 @@ public class Dayoff implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Dayoff)) return false;
         Dayoff dayoff = (Dayoff) o;
-        return id == dayoff.id &&
+        return Objects.equals(id, dayoff.id) &&
                 Float.compare(dayoff.nbDays, nbDays) == 0 &&
                 Objects.equals(dateStart, dayoff.dateStart) &&
                 Objects.equals(dateEnd, dayoff.dateEnd) &&
@@ -244,4 +245,6 @@ public class Dayoff implements Serializable {
                 ", employee=" + employee +
                 '}';
     }
+
+
 }

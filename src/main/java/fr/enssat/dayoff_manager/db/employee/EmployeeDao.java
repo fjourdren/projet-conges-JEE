@@ -11,11 +11,11 @@ public interface EmployeeDao extends GenericDao<Employee> {
     /**
      * Recherche dans la base un utilisateur ayant le login et le mot de passe spécifié en paramètre
      *
-     * @param username login
-     * @param password mot de passe
+     * @param email          login
+     * @param sha256Password mot de passe chiffré en SHA256
      * @return utilisateur authentifié ou null si username ou password faux
      */
-    Employee login(String username, String password);
+    Employee login(String email, String sha256Password);
 
     /**
      * Retourne tous les congés de l'employée spécifié en paramètre
@@ -29,7 +29,7 @@ public interface EmployeeDao extends GenericDao<Employee> {
      * Retourne le nombre de jours de congés disponibles pour le type de congés passé en paramètre
      *
      * @param employee employée
-     * @param type type
+     * @param type     type
      * @return nombre de jours de congés disponibles pour le type de congés passé en paramètre, null si aucune limite
      */
     Float nbDaysUsable(Employee employee, DayoffType type);
