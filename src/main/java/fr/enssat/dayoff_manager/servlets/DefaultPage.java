@@ -16,13 +16,13 @@ import fr.enssat.dayoff_manager.db.employee.Employee;
 /**
  * Servlet implementation class defaultPage
  */
-public class defaultPage extends HttpServlet {
+public class DefaultPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public defaultPage() {
+    public DefaultPage() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -57,7 +57,7 @@ public class defaultPage extends HttpServlet {
 		datatableDataArray.add(line1);
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
-		request.setAttribute("componentNeeded", "employees");
+		request.setAttribute("componentNeeded", "employeesRender");
 		
 		dispatcher.forward(request, response);
 	}

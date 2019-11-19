@@ -5,6 +5,7 @@ import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
+import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +25,15 @@ public class EditEmployeeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	// check if user is connected
+		HttpSession session = req.getSession();
+		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+		if(employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
+			resp.sendRedirect("default");
+			return;
+		}
+		
+		// generate
         Employee employee = new Employee();
         List<String> allDeps = new ArrayList<>();
         Map<DayoffType, Float> dayoffTypeMap = new HashMap<>();
@@ -45,13 +57,21 @@ public class EditEmployeeServlet extends HttpServlet {
                 employeeID = Integer.parseInt(req.getParameter("id"));
                 if (employeeID < 0) throw new IllegalArgumentException("employeeID");
             } catch (Exception e) {
-                resp.sendError(400, "INVALID REQUEST");
+            	session.setAttribute("flashType", "danger");
+        		session.setAttribute("flashMessage", "Requête invalide");
+        		
+        		resp.sendRedirect("employees");
+        		
                 return;
             }
 
             employee = DaoProvider.getEmployeeDao().findById(employeeID);
             if (employee == null) {
-                resp.sendError(404, "NOT FOUND");
+            	session.setAttribute("flashType", "danger");
+        		session.setAttribute("flashMessage", "Employé inconnu");
+        		
+        		resp.sendRedirect("employees");
+        		
                 return;
             }
 
@@ -63,12 +83,24 @@ public class EditEmployeeServlet extends HttpServlet {
         req.setAttribute("employee", employee);
         req.setAttribute("allDeps", allDeps);
         req.setAttribute("dayoffTypeMap", dayoffTypeMap);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/employees/edit.jsp");
+        
+        req.setAttribute("componentNeeded", "employeesEditAdd");
+        
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/template/index.jsp");
         rd.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	// check if user is connected
+		HttpSession session = req.getSession();
+		Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
+		if(employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
+			resp.sendRedirect("default");
+			return;
+		}
+		
+		// process
         Employee employee = new Employee();
         employee.setLastName(req.getParameter("last-name"));
         employee.setFirstName(req.getParameter("first-name"));
@@ -100,6 +132,22 @@ public class EditEmployeeServlet extends HttpServlet {
             }*/
         }
 
+
+        // save
+        EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
+        
+        employeeDao.save(employee);
+        
+        if(employeeDao.findById(employee.getId()) == null) {
+            session.setAttribute("flashType", "success");
+    		session.setAttribute("flashMessage", "Employé ajouté");
+        } else {
+            session.setAttribute("flashType", "success");
+    		session.setAttribute("flashMessage", "Employé modifié");
+        }
+        
         System.out.println(employee);
+        resp.sendRedirect("employees");
+        
     }
 }
