@@ -15,9 +15,9 @@ public class DepartmentDaoImpl extends GenericDaoImpl<Department> implements Dep
 
     @Override
     public List<Dayoff> getDayOffs(Department department) {
-        String qlString = "SELECT x FROM Dayoff x WHERE x.employee.id_department = :dep_id";
+        String qlString = "SELECT x FROM Dayoff x WHERE x.employee.department = :dep";
         TypedQuery<Dayoff> query = em.createQuery(qlString, Dayoff.class);
-        query.setParameter("dep_id", department.getId());
+        query.setParameter("dep", department);
         return query.getResultList();
     }
 
