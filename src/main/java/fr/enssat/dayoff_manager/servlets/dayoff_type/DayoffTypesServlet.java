@@ -1,4 +1,4 @@
-package fr.enssat.dayoff_manager.servlets.employees;
+package fr.enssat.dayoff_manager.servlets.dayoff_type;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
+import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
+import fr.enssat.dayoff_manager.db.dayoff_type.DayoffTypeDao;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
@@ -19,13 +21,13 @@ import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 /**
  * Servlet implementation class employeesServlet
  */
-public class EmployeesServlet extends HttpServlet {
+public class DayoffTypesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeesServlet() {
+    public DayoffTypesServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,12 +48,8 @@ public class EmployeesServlet extends HttpServlet {
 		// generate tabledata
 		ArrayList<String> datatableHeadArray = new ArrayList<String>();
 
-		datatableHeadArray.add("Prénom");
 		datatableHeadArray.add("Nom");
-		datatableHeadArray.add("Adresse");
-		datatableHeadArray.add("Poste");
-		datatableHeadArray.add("Email");
-		datatableHeadArray.add("Service");
+		datatableHeadArray.add("Nb jours par défaut");
 		
 		datatableHeadArray.add("Modifier");
 		datatableHeadArray.add("Supprimer");
@@ -60,19 +58,15 @@ public class EmployeesServlet extends HttpServlet {
 		
 		ArrayList<ArrayList<String>> datatableDataArray = new ArrayList<ArrayList<String>>();
 		
-		EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
+		DayoffTypeDao dayoffTypeDao = DaoProvider.getDayoffTypeDao();
 		
-		for(Employee e: employeeDao.getAll()) {
+		for(DayoffType e: dayoffTypeDao.getAll()) {
 			ArrayList<String> lineToAdd = new ArrayList<String>();
 
-			lineToAdd.add(e.getFirstName());
-			lineToAdd.add(e.getLastName());
-			lineToAdd.add(e.getAddress());
-			lineToAdd.add(e.getPosition());
-			lineToAdd.add(e.getEmail());
-			lineToAdd.add(e.getDepartment().getName());
-			lineToAdd.add("<a class=\"btn btn-primary\" href=\"employees-add-edit?id=" + e.getId() + "\" role=\"button\">Modifier</a>"); // modify button
-			lineToAdd.add("<a class=\"btn btn-danger\" href=\"employees-delete?id=" + e.getId() + "\" role=\"button\">Supprimer</a>"); // delete button
+			lineToAdd.add(e.getName());
+			lineToAdd.add(e.getDefaultNbDays().toString());
+			lineToAdd.add("<a class=\"btn btn-primary\" href=\"congesTypes-add-edit?id=" + e.getId() + "\" role=\"button\">Modifier</a>"); // modify button
+			lineToAdd.add("<a class=\"btn btn-danger\" href=\"congesTypes-delete?id=" + e.getId() + "\" role=\"button\">Supprimer</a>"); // delete button
 			
 			datatableDataArray.add(lineToAdd);
 		}
@@ -81,7 +75,7 @@ public class EmployeesServlet extends HttpServlet {
 		request.setAttribute("datatableDataArray", datatableDataArray);
 		
 		// page send
-		request.setAttribute("componentNeeded", "employeesRender");
+		request.setAttribute("componentNeeded", "dayoffTypeRender");
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(
 		          "/template/index.jsp");

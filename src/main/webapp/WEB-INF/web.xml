@@ -26,15 +26,15 @@
     </servlet>
 
     <servlet>
-    	<servlet-name>employeesServlet</servlet-name>
-    	<display-name>employeesServlet</display-name>
+    	<servlet-name>EmployeesServlet</servlet-name>
+    	<display-name>EmployeesServlet</display-name>
     	<description></description>
     	<servlet-class>fr.enssat.dayoff_manager.servlets.employees.EmployeesServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditEmployeeServlet</servlet-name>
         <display-name>EditEmployeeServlet</display-name>
-
+		<description></description>
         <servlet-class>fr.enssat.dayoff_manager.servlets.employees.EditEmployeeServlet</servlet-class>
     </servlet>
     <servlet>
@@ -42,6 +42,25 @@
     	<display-name>DeleteEmployeeServlet</display-name>
     	<description></description>
     	<servlet-class>fr.enssat.dayoff_manager.servlets.employees.DeleteEmployeeServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+    	<servlet-name>DayoffTypesServlet</servlet-name>
+    	<display-name>DayoffTypesServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.enssat.dayoff_manager.servlets.dayoff_type.DayoffTypesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditDayoffTypeServlet</servlet-name>
+        <display-name>EditDayoffTypeServlet</display-name>
+		<description></description>
+        <servlet-class>fr.enssat.dayoff_manager.servlets.dayoff_type.EditDayoffTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>DeleteDayoffTypeServlet</servlet-name>
+    	<display-name>DeleteDayoffTypeServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.enssat.dayoff_manager.servlets.dayoff_type.DeleteDayoffTypeServlet</servlet-class>
     </servlet>
     
 
@@ -66,7 +85,7 @@
     
     
     <servlet-mapping>
-    	<servlet-name>employeesServlet</servlet-name>
+    	<servlet-name>EmployeesServlet</servlet-name>
     	<url-pattern>/employees</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -76,6 +95,21 @@
     <servlet-mapping>
     	<servlet-name>DeleteEmployeeServlet</servlet-name>
     	<url-pattern>/employees-delete</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+    <servlet-mapping>
+    	<servlet-name>DayoffTypesServlet</servlet-name>
+    	<url-pattern>/congesTypes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditDayoffTypeServlet</servlet-name>
+        <url-pattern>/congesTypes-add-edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>DeleteDayoffTypeServlet</servlet-name>
+    	<url-pattern>/congesTypes-delete</url-pattern>
     </servlet-mapping>
     
 
