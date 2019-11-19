@@ -9,7 +9,10 @@ $(document).ready(function() {
 <div class="col-md-9">
 	<div class="row">
 		<div class="col-centered col-md-12">
-			<% if(request.getAttribute("datatableDataArray") != null) { %>
+			<% 
+			ArrayList<ArrayList<String>> datatableDataArray = (ArrayList<ArrayList<String>>) request.getAttribute("datatableDataArray");
+			if(datatableDataArray != null && datatableDataArray.size() > 0) { 
+			%>
 			<table id="dataTableRead" class="table table-bordred table-striped">
 				<thead>
 					<% 
@@ -22,7 +25,6 @@ $(document).ready(function() {
 				
 				<tbody>
 					<% 
-					ArrayList<ArrayList<String>> datatableDataArray = (ArrayList<ArrayList<String>>) request.getAttribute("datatableDataArray");
 					for (ArrayList<String> subDatatableDataArray: datatableDataArray) { 
 						%>
 						<tr>
@@ -39,7 +41,7 @@ $(document).ready(function() {
 				</tbody>  
 			</table>
 			<% } else { %>
-			<h1>Aucune donnée</h1>
+			<p>Aucune donnée.</p>
 			<% } %>
 		</div>
 	</div>
