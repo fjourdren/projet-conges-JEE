@@ -25,10 +25,10 @@
 						%> <jsp:include page="login.jsp" /> <%
 						break;
 					case "employeesRender":
-						%> <jsp:include page="employees/render.jsp" /> <%
+						%> <jsp:include page="Employees/render.jsp" /> <%
 						break;
 					case "employeesEditAdd":
-						%> <jsp:include page="employees/edit-add.jsp" /> <%
+						%> <jsp:include page="Employees/edit-add.jsp" /> <%
 						break;
 					case "dayoffTypeRender":
 						%> <jsp:include page="DayoffType/render.jsp" /> <%
