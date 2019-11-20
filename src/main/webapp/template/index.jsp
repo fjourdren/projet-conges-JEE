@@ -45,6 +45,9 @@
 					case "dayoffTraiterDemande":
 						%> <jsp:include page="Dayoff/traiter-demande.jsp" /> <%
 					break;
+					case "manageMyDayoffs":
+						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
+					break;
 					default:
 
 				}
