@@ -1,6 +1,8 @@
 package fr.enssat.dayoff_manager;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
+import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
@@ -10,14 +12,16 @@ import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Utils {
 
     private Utils() {
     }
 
     public static String sha256(String in) {
-        MessageDigest digest = null;
+        MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -26,8 +30,8 @@ public class Utils {
         byte[] encodedhash = digest.digest(in.getBytes(StandardCharsets.UTF_8));
 
         StringBuilder hexString = new StringBuilder();
-        for (int i = 0; i < encodedhash.length; i++) {
-            String hex = Integer.toHexString(0xff & encodedhash[i]);
+        for (byte b : encodedhash) {
+            String hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) hexString.append('0');
             hexString.append(hex);
         }
@@ -70,7 +74,7 @@ public class Utils {
                 "rhPosition",
                 "rh@company.fr",
                 EmployeeType.RH,
-                dep0);
+                dep1);
 
         Employee rhADMIN = new Employee("rhADMINFirstName",
                 "rhADMINLastName",
@@ -79,7 +83,7 @@ public class Utils {
                 "rhADMINPosition",
                 "rhADMIN@company.fr",
                 EmployeeType.RH_ADMIN,
-                dep0);
+                dep1);
 
         DaoProvider.getEmployeeDao().save(classic);
         DaoProvider.getEmployeeDao().save(boss);
@@ -89,7 +93,29 @@ public class Utils {
         DayoffCount count = new DayoffCount(null, type0, rhADMIN);
         DaoProvider.getDayoffCountDao().save(count);
 
-        //TODO dayoff
+        Date startDate = new Date();
+        Date endDate = new Date();
+        endDate.setDate(endDate.getDate() + 2);
+        Date creationDate = new Date();
+        creationDate.setDate(creationDate.getDate() - 7);
 
+        Dayoff dayoff1 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances1", null, type0, rhADMIN);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 4);
+        Dayoff dayoff2 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances2", null, type0, rh);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 6);
+        Dayoff dayoff3 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances3", null, type1, boss);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 8);
+        Dayoff dayoff4 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances4", null, type1, classic);
+
+        DaoProvider.getDayoffDao().save(dayoff1);
+        DaoProvider.getDayoffDao().save(dayoff2);
+        DaoProvider.getDayoffDao().save(dayoff3);
+        DaoProvider.getDayoffDao().save(dayoff4);
     }
 }
