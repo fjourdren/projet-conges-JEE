@@ -2,6 +2,7 @@ package fr.enssat.dayoff_manager.db.department;
 
 import fr.enssat.dayoff_manager.db.GenericDaoImpl;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+import fr.enssat.dayoff_manager.db.employee.Employee;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -11,6 +12,14 @@ public class DepartmentDaoImpl extends GenericDaoImpl<Department> implements Dep
 
     public DepartmentDaoImpl() {
         super(Department.class);
+    }
+
+    @Override
+    public List<Employee> getEmployees(Department department) {
+        String qlString = "SELECT x FROM Employee x WHERE x.department = :dep";
+        TypedQuery<Employee> query = em.createQuery(qlString, Employee.class);
+        query.setParameter("dep", department);
+        return query.getResultList();
     }
 
     @Override

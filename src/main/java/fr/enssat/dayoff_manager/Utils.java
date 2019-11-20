@@ -15,13 +15,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Utils {
 
     private Utils() {
     }
 
     public static String sha256(String in) {
-        MessageDigest digest = null;
+        MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -30,8 +31,8 @@ public class Utils {
         byte[] encodedhash = digest.digest(in.getBytes(StandardCharsets.UTF_8));
 
         StringBuilder hexString = new StringBuilder();
-        for (int i = 0; i < encodedhash.length; i++) {
-            String hex = Integer.toHexString(0xff & encodedhash[i]);
+        for (byte b : encodedhash) {
+            String hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) hexString.append('0');
             hexString.append(hex);
         }
@@ -44,8 +45,8 @@ public class Utils {
         DaoProvider.getDepartmentDao().save(dep0);
         DaoProvider.getDepartmentDao().save(dep1);
 
-        DayoffType type0 = new DayoffType("Vacances", 5.0f);
-        DayoffType type1 = new DayoffType("Maladie", null);
+        DayoffType type0 = new DayoffType("Vacances", 5.0f, false);
+        DayoffType type1 = new DayoffType("Maladie", null, false);
         DaoProvider.getDayoffTypeDao().save(type0);
         DaoProvider.getDayoffTypeDao().save(type1);
 
@@ -74,7 +75,7 @@ public class Utils {
                 "rhPosition",
                 "rh@company.fr",
                 EmployeeType.RH,
-                dep0);
+                dep1);
 
         Employee rhADMIN = new Employee("rhADMINFirstName",
                 "rhADMINLastName",
@@ -83,7 +84,7 @@ public class Utils {
                 "rhADMINPosition",
                 "rhADMIN@company.fr",
                 EmployeeType.RH_ADMIN,
-                dep0);
+                dep1);
 
         DaoProvider.getEmployeeDao().save(classic);
         DaoProvider.getEmployeeDao().save(boss);
@@ -108,6 +109,29 @@ public class Utils {
         Dayoff demande = new Dayoff(dateDebut, dateFin, dateStart, dateValidation,nbrDay, status, commentRH, commentEmployee, type, emp);
 
         DaoProvider.getDayoffDao().save(demande);
+        Date startDate = new Date();
+        Date endDate = new Date();
+        endDate.setDate(endDate.getDate() + 2);
+        Date creationDate = new Date();
+        creationDate.setDate(creationDate.getDate() - 7);
 
+        Dayoff dayoff1 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances1", null, type0, rhADMIN);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 4);
+        Dayoff dayoff2 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances2", null, type0, rh);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 6);
+        Dayoff dayoff3 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances3", null, type1, boss);
+
+        endDate = new Date();
+        endDate.setDate(endDate.getDate() + 8);
+        Dayoff dayoff4 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances4", null, type1, classic);
+
+        DaoProvider.getDayoffDao().save(dayoff1);
+        DaoProvider.getDayoffDao().save(dayoff2);
+        DaoProvider.getDayoffDao().save(dayoff3);
+        DaoProvider.getDayoffDao().save(dayoff4);
     }
 }
