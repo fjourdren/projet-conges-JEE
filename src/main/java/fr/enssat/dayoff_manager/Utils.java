@@ -1,15 +1,19 @@
 package fr.enssat.dayoff_manager;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
+import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 public class Utils {
 
@@ -90,6 +94,20 @@ public class Utils {
         DaoProvider.getDayoffCountDao().save(count);
 
         //TODO dayoff
+        Date dateStart = new Date();
+        Date dateDebut = new Date(120, 8, 10);
+        Date dateFin = new Date(120, 8, 17);
+        Date dateValidation = null;
+        float nbrDay = 5;
+        DayoffStatus status = DayoffStatus.WAITING;
+        String commentRH = null;
+        String commentEmployee = "Je pars en vacance à Malibu";
+        DayoffType type = type0;
+        Employee emp = classic;
+
+        Dayoff demande = new Dayoff(dateDebut, dateFin, dateStart, dateValidation,nbrDay, status, commentRH, commentEmployee, type, emp);
+
+        DaoProvider.getDayoffDao().save(demande);
 
     }
 }

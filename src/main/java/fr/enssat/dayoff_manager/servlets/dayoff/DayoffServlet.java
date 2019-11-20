@@ -62,6 +62,7 @@ public class DayoffServlet extends HttpServlet {
         datatableHeadArray.add("Commentaire");
         datatableHeadArray.add("Commentaire RH");
         datatableHeadArray.add("Statut");
+        datatableHeadArray.add(" ");
 
         request.setAttribute("datatableHeadArray", datatableHeadArray);
 
@@ -77,13 +78,13 @@ public class DayoffServlet extends HttpServlet {
             //on transforme les date en String
 
             Date dateCreation = e.getDateCreation();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String creaDate = dateFormat.format(dateCreation);
 
-            Date dateDebut = e.getDateCreation();
+            Date dateDebut = e.getDateStart();
             String debDate = dateFormat.format(dateDebut);
 
-            Date dateFin = e.getDateCreation();
+            Date dateFin = e.getDateEnd();
             String finDate = dateFormat.format(dateFin);
 
 
@@ -93,7 +94,7 @@ public class DayoffServlet extends HttpServlet {
             lineToAdd.add(e.getCommentEmployee());
             lineToAdd.add(e.getCommentRH());
             lineToAdd.add(e.getStatus().name());
-
+            lineToAdd.add("<a class=\"btn btn-primary\" onClick=\"developpement("+e.getId() +")\" role=\"button\">Développer</a>"); // statufier
 
             datatableDataArray.add(lineToAdd);
         }
