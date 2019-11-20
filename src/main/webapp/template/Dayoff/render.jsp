@@ -5,9 +5,7 @@
         </nav>
     </div>
 
-    <div class="row">
-        <a class="btn btn-primary" href="employees-add-edit" role="button">Ajouter</a>
-    </div>
+
 </div>
 
 <jsp:include page="../components/datatable.jsp" />

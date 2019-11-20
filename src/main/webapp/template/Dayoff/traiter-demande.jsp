@@ -47,13 +47,13 @@
 							<label class="col-sm-12 col-form-label">Date début du congé : <%= dayoff.getDateEnd() %></label>
 						</div>
 						<div class="form-group row">
-							<label class="col-sm-12 col-form-label">Commentaire : <%= dayoff.getCommentEmployee() %></label>
+							<label class="col-sm-12 col-form-label">Commentaire : <%= (dayoff.getCommentEmployee() == null)?"":dayoff.getCommentEmployee() %></label>
 						</div>
 						<div class="form-group row">
 							<label for="comment-rh-input" class="col-sm-2 col-form-label">Commentaire RH : </label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" name="comment-rh" id="comment-rh-input" required
-									   value="<%= dayoff.getCommentRH() %>">
+								<input type="text" class="form-control" name="comment-rh" id="comment-rh-input"
+									   value="<%= (dayoff.getCommentRH() == null)?"":dayoff.getCommentRH() %>">
 							</div>
 						</div>
 						<div class="form-group row">
