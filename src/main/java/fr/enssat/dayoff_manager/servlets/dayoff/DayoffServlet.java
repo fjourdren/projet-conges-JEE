@@ -94,7 +94,7 @@ public class DayoffServlet extends HttpServlet {
             lineToAdd.add(e.getCommentEmployee());
             lineToAdd.add(e.getCommentRH());
             lineToAdd.add(e.getStatus().name());
-            lineToAdd.add("<a class=\"btn btn-primary\" onClick=\"developpement("+e.getId() +")\" role=\"button\">Développer</a>"); // statufier
+            lineToAdd.add("<a class=\"btn btn-primary\" href=\"dayoffsRH-demande?id=" + e.getId() + "\" role=\"button\">Traiter</a>"); // modify button
 
             datatableDataArray.add(lineToAdd);
         }
