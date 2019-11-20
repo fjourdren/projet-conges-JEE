@@ -15,13 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Calendar;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @WebServlet(
         name = "ManageMyDayoffsServlet",
@@ -131,15 +128,16 @@ public class ManageMyDayoffsServlet extends HttpServlet {
             calendar.set(Calendar.HOUR_OF_DAY, 0);
         }
 
+        return calendar.getTime();
     }
 
 
-    protected boolean checkDayoff(Dayoff dayoff, Employee employee){
+    protected boolean checkDayoff(Dayoff dayoff, Employee employee) {
         List<Dayoff> dayoffs = DaoProvider.getEmployeeDao().getDayOffs(employee);
-        for (Dayoff conge:dayoffs){
-            if(dayoff.getDateStart().after(conge.getDateStart()) && dayoff.getDateStart().before(conge.getDateEnd()))
+        for (Dayoff conge : dayoffs) {
+            if (dayoff.getDateStart().after(conge.getDateStart()) && dayoff.getDateStart().before(conge.getDateEnd()))
                 return false;
-            if(dayoff.getDateEnd().after(conge.getDateStart()) && dayoff.getDateEnd().before(conge.getDateEnd()))
+            if (dayoff.getDateEnd().after(conge.getDateStart()) && dayoff.getDateEnd().before(conge.getDateEnd()))
                 return false;
 
         }
@@ -147,15 +145,15 @@ public class ManageMyDayoffsServlet extends HttpServlet {
     }
 
 
-    protected float NbrDayoffOpen(Dayoff dayoff){
+    protected float NbrDayoffOpen(Dayoff dayoff) {
         float nbrDay = getWorkingDaysBetweenTwoDates(dayoff.getDateStart(), dayoff.getDateEnd());
         SimpleDateFormat formater = new SimpleDateFormat("hh");
         String debutConge = formater.format(dayoff.getDateStart());
         String finConge = formater.format(dayoff.getDateEnd());
-        if(debutConge.equals("12") && finConge.equals("00"))
-            return nbrDay-0.5f;
-        if(debutConge.equals("00") && finConge.equals("12"))
-            return nbrDay-0.5f;
+        if (debutConge.equals("12") && finConge.equals("00"))
+            return nbrDay - 0.5f;
+        if (debutConge.equals("00") && finConge.equals("12"))
+            return nbrDay - 0.5f;
         return nbrDay;
 
     }
@@ -189,6 +187,5 @@ public class ManageMyDayoffsServlet extends HttpServlet {
         } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
 
         return workDays;
-        return calendar.getTime();
     }
 }
