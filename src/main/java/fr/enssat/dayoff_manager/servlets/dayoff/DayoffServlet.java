@@ -46,7 +46,7 @@ public class DayoffServlet extends HttpServlet {
         // check if user is connected
         HttpSession session = request.getSession();
         Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
+        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH) {
             response.sendRedirect("default");
             return;
         }
@@ -75,15 +75,16 @@ public class DayoffServlet extends HttpServlet {
             lineToAdd.add(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName());
 
             //on transforme les date en String
+
             Date dateCreation = e.getDateCreation();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             String creaDate = dateFormat.format(dateCreation);
 
             Date dateDebut = e.getDateCreation();
-            String debDate = dateFormat.format(dateCreation);
+            String debDate = dateFormat.format(dateDebut);
 
             Date dateFin = e.getDateCreation();
-            String finDate = dateFormat.format(dateCreation);
+            String finDate = dateFormat.format(dateFin);
 
 
             lineToAdd.add(creaDate);
