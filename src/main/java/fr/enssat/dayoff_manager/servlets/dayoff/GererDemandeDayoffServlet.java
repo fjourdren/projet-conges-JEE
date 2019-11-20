@@ -96,14 +96,27 @@ public class GererDemandeDayoffServlet extends HttpServlet {
 
         dayoff.setCommentRH(req.getParameter("comment-rh"));
         DayoffStatus status = DayoffStatus.valueOf(req.getParameter("choix-rh"));
-        dayoff.setStatus(status);
+        if(status == DayoffStatus.ACCEPTED){
+            DaoProvider.getDayoffDao().validate(dayoff,req.getParameter("comment-rh"));
+        }else if(status == DayoffStatus.REFUSED){
+            if(req.getParameter("comment-rh") == ""){
+                session.setAttribute("flashType", "danger");
+                session.setAttribute("flashMessage", "Vous devez entrer une raison de refus");
+                resp.sendRedirect("dayoffsRH-demande?id="+dayoff.getId());
+
+                return;
+            }else{
+                DaoProvider.getDayoffDao().refuse(dayoff,req.getParameter("comment-rh"));
+            }
+        }
+        //dayoff.setStatus(status);
 
         // save
         //FIXME (Clément) Si la sauvegarde échoue, une exception est levée
         try {
             DaoProvider.getDayoffDao().save(dayoff);
             session.setAttribute("flashType", "success");
-            session.setAttribute("flashMessage", "Demande ajouté");
+            session.setAttribute("flashMessage", "Demande traité");
         } catch (Exception e) {
             session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Demande traité");
