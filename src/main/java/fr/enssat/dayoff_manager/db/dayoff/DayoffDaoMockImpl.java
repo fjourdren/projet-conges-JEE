@@ -5,6 +5,7 @@ import fr.enssat.dayoff_manager.db.GenericDaoMockImpl;
 
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,5 +45,18 @@ public class DayoffDaoMockImpl extends GenericDaoMockImpl<Dayoff> implements Day
             }
         }
         return dayoffs;
+    }
+
+    @Override
+    public void save(Dayoff entity) {
+        if(entity.getDateCreation().after(entity.getDateStart()) ||
+                entity.getDateCreation().after(entity.getDateEnd()) ||
+                entity.getDateStart().after(entity.getDateEnd()) ||
+                entity.getDateCreation().after(new Date(entity.getDateStart().getTime() + (1000 * 60 * 60 * 24 * 2)))
+        )
+            return;
+
+
+        super.save(entity);
     }
 }

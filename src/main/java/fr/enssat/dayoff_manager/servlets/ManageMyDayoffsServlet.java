@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -83,5 +84,18 @@ public class ManageMyDayoffsServlet extends HttpServlet {
         System.out.println(employeeComment);
         System.out.println(typeID);
 
+    }
+
+    @Override
+    protected boolean checkDayoff(Dayoff dayoff, Employee employee){
+        List<Dayoff> dayoffs = DaoProvider.getEmployeeDao().getDayOffs(employee);
+        for (Dayoff conge:dayoffs){
+            if(dayoff.getDateStart().after(conge.getDateStart()) && dayoff.getDateStart().before(conge.getDateEnd()))
+                return false;
+            if(dayoff.getDateEnd().after(conge.getDateStart()) && dayoff.getDateEnd().before(conge.getDateEnd()))
+                return false;
+
+        }
+        return true;
     }
 }
