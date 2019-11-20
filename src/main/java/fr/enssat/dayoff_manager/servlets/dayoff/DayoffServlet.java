@@ -3,6 +3,7 @@ package fr.enssat.dayoff_manager.servlets.dayoff;
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffDao;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
@@ -70,7 +71,7 @@ public class DayoffServlet extends HttpServlet {
 
         DayoffDao dayoffDao = DaoProvider.getDayoffDao();
 
-        for (Dayoff e : dayoffDao.getAll()) {
+        for (Dayoff e : dayoffDao.getDayOffStatus(DayoffStatus.WAITING)) {
             ArrayList<String> lineToAdd = new ArrayList<String>();
 
             lineToAdd.add(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName());
@@ -91,8 +92,18 @@ public class DayoffServlet extends HttpServlet {
             lineToAdd.add(creaDate);
             lineToAdd.add(debDate);
             lineToAdd.add(finDate);
-            lineToAdd.add(e.getCommentEmployee());
-            lineToAdd.add(e.getCommentRH());
+            String commEmp;
+            if(e.getCommentEmployee()==null)
+                commEmp="";
+            else
+                commEmp = e.getCommentEmployee();
+            lineToAdd.add(commEmp);
+            String commRH;
+            if(e.getCommentRH()==null)
+                commRH="";
+            else
+                commRH = e.getCommentRH();
+            lineToAdd.add(commRH);
             lineToAdd.add(e.getStatus().name());
             lineToAdd.add("<a class=\"btn btn-primary\" href=\"dayoffsRH-demande?id=" + e.getId() + "\" role=\"button\">Traiter</a>"); // modify button
 
