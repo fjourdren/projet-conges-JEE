@@ -46,7 +46,7 @@ public class EditEmployeeServlet extends HttpServlet {
 
         if (req.getParameter("id") == null) {
             //Nouvel employé
-            for (DayoffType type : DaoProvider.getDayoffTypeDao().getAll()) {
+            for (DayoffType type : DaoProvider.getDayoffTypeDao().getAvailableDayoffTypes()) {
                 dayoffTypeMap.put(type, type.getDefaultNbDays());
             }
         } else {
@@ -72,7 +72,7 @@ public class EditEmployeeServlet extends HttpServlet {
                 return;
             }
 
-            for (DayoffType type : DaoProvider.getDayoffTypeDao().getAll()) {
+            for (DayoffType type : DaoProvider.getDayoffTypeDao().getAvailableDayoffTypes()) {
                 dayoffTypeMap.put(type, DaoProvider.getEmployeeDao().nbDaysUsable(employee, type));
             }
         }
@@ -121,7 +121,7 @@ public class EditEmployeeServlet extends HttpServlet {
 
         if (!req.getParameter("id").isEmpty()) {
             employee = DaoProvider.getEmployeeDao().findById(Long.parseLong(req.getParameter("id")));
-        }else{
+        } else {
             employee = new Employee();
         }
 
@@ -153,7 +153,7 @@ public class EditEmployeeServlet extends HttpServlet {
      * @param employee employé
      */
     private void updateDayoffCountsFromForm(HttpServletRequest req, Employee employee) {
-        for (DayoffType type : DaoProvider.getDayoffTypeDao().getAll()) {
+        for (DayoffType type : DaoProvider.getDayoffTypeDao().getAvailableDayoffTypes()) {
             Float nbDays;
             if (req.getParameter("dayofftype-" + type.getId() + "-unlimited") != null) {
                 nbDays = null;

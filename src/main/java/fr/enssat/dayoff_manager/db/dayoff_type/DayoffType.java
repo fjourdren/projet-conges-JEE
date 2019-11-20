@@ -27,12 +27,18 @@ public class DayoffType extends GenericEntity implements Serializable {
      */
     private Float defaultNbDays;
 
+    /**
+     * Si true, le type est marqué comme supprimé et ne doit plus être utilisé
+     */
+    private boolean deleted;
+
     public DayoffType() {
     }
 
-    public DayoffType(String name, Float defaultNbDays) {
+    public DayoffType(String name, Float defaultNbDays, boolean deleted) {
         setName(name);
         setDefaultNbDays(defaultNbDays);
+        setDeleted(deleted);
     }
 
     @Id
@@ -68,6 +74,14 @@ public class DayoffType extends GenericEntity implements Serializable {
                 throw new IllegalArgumentException("defaultNbDays must be a multiple of 0.5");
         }
         this.defaultNbDays = defaultNbDays;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

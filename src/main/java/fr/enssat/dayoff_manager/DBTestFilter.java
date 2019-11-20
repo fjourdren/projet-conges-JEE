@@ -43,7 +43,7 @@ public class DBTestFilter implements Filter {
 
         Department department = new Department("LOLILOL");
         Employee employee = new Employee("first", "end", "pass", "adr", "pos", "email@", EmployeeType.BOSS, department);
-        DayoffType type = new DayoffType("type", 5f);
+        DayoffType type = new DayoffType("type", 5f,false);
         Dayoff dayoff = new Dayoff(new Date(), new Date(), new Date(), new Date(), 5, DayoffStatus.WAITING, "comment", "aie", type, employee);
         DayoffCount dayoffCount = new DayoffCount(0f, type, employee);
 

@@ -16,29 +16,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Servlet implementation class employeesServlet
- */
-
 @WebServlet(
         name = "DayoffTypesServlet",
         description = "DayoffTypesServlet",
         urlPatterns = {"/congesTypes"}
 )
 public class DayoffTypesServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DayoffTypesServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // check if user is connected
         HttpSession session = request.getSession();
@@ -64,13 +48,14 @@ public class DayoffTypesServlet extends HttpServlet {
 
         DayoffTypeDao dayoffTypeDao = DaoProvider.getDayoffTypeDao();
 
-        for (DayoffType e : dayoffTypeDao.getAll()) {
+        //FIXME (Clément) On affiche seulement les DayoffTypes non marqués comme supprimés
+        for (DayoffType e : dayoffTypeDao.getAvailableDayoffTypes()) {
             ArrayList<String> lineToAdd = new ArrayList<String>();
 
             lineToAdd.add(e.getName());
-            if (e.getDefaultNbDays() == null){
+            if (e.getDefaultNbDays() == null) {
                 lineToAdd.add("Illimité");
-            }else{
+            } else {
                 lineToAdd.add(e.getDefaultNbDays().toString());
             }
 
@@ -92,13 +77,4 @@ public class DayoffTypesServlet extends HttpServlet {
 
         dispatcher.forward(request, response);
     }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
-    }
-
 }

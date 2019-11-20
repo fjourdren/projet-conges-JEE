@@ -2,7 +2,7 @@
 
 <script>
 $(document).ready(function() {
-    //$('#dataTableRead').DataTable();
+    $('#dataTableRead').DataTable();
 });
 </script>
 
