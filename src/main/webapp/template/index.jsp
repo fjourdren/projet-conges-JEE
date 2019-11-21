@@ -39,6 +39,9 @@
 					case "changePassword":
 						%> <jsp:include page="changePassword.jsp" /> <%
 						break;
+					case "dayoffTimeline":
+						%> <jsp:include page="dayoff-timeline.jsp" /> <%
+						break;
 					default:
 						%>
 						<div class="col-md-9">

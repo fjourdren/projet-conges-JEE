@@ -7,7 +7,7 @@
 <%
     List<Employee> employees = (List<Employee>) request.getAttribute("employees");
     List<Dayoff> dayoffs = (List<Dayoff>) request.getAttribute("dayoffs");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 %>
 
 <style>
