@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(
-        name = "LoginServlet",
-        description = "Login",
+        name = "ChangePasswordServlet",
+        description = "changePassword",
         urlPatterns = {"/changePassword"}
 )
 public class ChangePasswordServlet extends HttpServlet {
@@ -39,16 +39,16 @@ public class ChangePasswordServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String password = Utils.sha256(request.getParameter("password"));
-        String repeatpassword = Utils.sha256(request.getParameter("repeatpassword"));
+        String password = (String) request.getParameter("password");
+        String repeatpassword = (String) request.getParameter("repeatpassword");
 
         EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
 
         HttpSession session = request.getSession();
         
-        if(password == repeatpassword) {
+        if(password.equals(repeatpassword)) {
         	Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        	employeeLogged.setSha256Password(password);
+        	employeeLogged.setSha256Password(Utils.sha256(password));
         	
         	session.setAttribute("flashType", "success");
             session.setAttribute("flashMessage", "Mot de passe changé !");
