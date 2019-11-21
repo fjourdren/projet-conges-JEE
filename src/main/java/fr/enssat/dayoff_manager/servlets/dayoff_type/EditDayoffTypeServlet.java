@@ -2,71 +2,58 @@ package fr.enssat.dayoff_manager.servlets.dayoff_type;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
-import fr.enssat.dayoff_manager.db.employee.Employee;
-import fr.enssat.dayoff_manager.db.employee.EmployeeType;
+import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet permettant d'ajouter ou de modifier un type de congés
+ * <p>
+ * URLS:
+ * - /dayofftype-add-edit
+ * - /dayofftype-add-edit?id=ID
+ */
 @WebServlet(
         name = "EditDayoffTypeServlet",
         description = "EditDayoffTypeServlet",
-        urlPatterns = {"/congesTypes-add-edit"}
+        urlPatterns = {"/dayofftype-add-edit"}
 )
-public class EditDayoffTypeServlet extends HttpServlet {
+public class EditDayoffTypeServlet extends EnhancedHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // check if user is connected
-        HttpSession session = req.getSession();
-        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-            resp.sendRedirect("default");
-            return;
-        }
+        DayoffType dayoffType;
 
-        // generate
-        DayoffType dayoffType = new DayoffType();
-
-        if (req.getParameter("id") == null) {
-            // if new DayoffType
-            //FIXME (Clément) NE PAS METTRE l'ID à -1 (fause bonne idée de ma part)
-            //dayoffType.setId(-1L);
-        } else {
-            //Modification employé existant
+        if (req.getParameter("id") != null) {
+            //Modification d'un type de congés existant
             Long dayoffTypeID;
 
             try {
                 dayoffTypeID = Long.parseLong(req.getParameter("id"));
                 if (dayoffTypeID < 0) throw new IllegalArgumentException("dayoffTypeID");
             } catch (Exception e) {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Requête invalide");
-
-                resp.sendRedirect("congesTypes");
-
+                showFlashMessage(req, resp, "danger", "Requête invalide");
+                resp.sendRedirect("dayofftype-list");
                 return;
             }
 
             dayoffType = DaoProvider.getDayoffTypeDao().findById(dayoffTypeID);
             if (dayoffType == null) {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Type de congés inconnu");
-
-                resp.sendRedirect("congesTypes");
-
+                showFlashMessage(req, resp, "danger", "Type de congés inconnu");
+                resp.sendRedirect("dayofftype-list");
                 return;
             }
+        } else {
+            //Création d'un type de congés
+            dayoffType = null;
         }
 
         req.setAttribute("dayoffType", dayoffType);
-
         req.setAttribute("componentNeeded", "dayoffTypeEditAdd");
 
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/template/index.jsp");
@@ -75,44 +62,30 @@ public class EditDayoffTypeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // check if user is connected
-        HttpSession session = req.getSession();
-        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-            resp.sendRedirect("default");
-            return;
-        }
-
-        // process
-        //FIXME (Clément) Lors de la modification, il faut récupérer l'objet existant depuis la DB (sinon bug)
         DayoffType dayoffType;
-        if (req.getParameter("id") == null) {
+        if (req.getParameter("id") == null || req.getParameter("id").isEmpty()) {
             dayoffType = new DayoffType();
         } else {
             dayoffType = DaoProvider.getDayoffTypeDao().findById(Long.parseLong(req.getParameter("id")));
         }
 
-        dayoffType.setName(req.getParameter("last-name"));
+        dayoffType.setName(req.getParameter("name"));
         try {
-            dayoffType.setDefaultNbDays(Float.parseFloat(req.getParameter("first-name")));
+            dayoffType.setDefaultNbDays(Float.parseFloat(req.getParameter("nb-days")));
         } catch (Exception e) {
-            session.setAttribute("flashType", "danger");
-            session.setAttribute("flashMessage", "Requête invalide");
-            resp.sendRedirect("conges");
+            showFlashMessage(req, resp, "danger", "Nombre de jours non valide. Doit être un multiple de 0.5 et être positif");
+            resp.sendRedirect("dayofftype-list");
             return;
         }
 
-        // save
-        //FIXME (Clément) Si la sauvegarde échoue, une exception est levée
+        // Sauvegarde de l'objet
         try {
             DaoProvider.getDayoffTypeDao().save(dayoffType);
-            session.setAttribute("flashType", "success");
-            session.setAttribute("flashMessage", "Type de congés ajouté");
+            showFlashMessage(req, resp, "success", "Type de congés sauvegardé");
         } catch (Exception e) {
-            session.setAttribute("flashType", "success");
-            session.setAttribute("flashMessage", "Type de congés modifié");
+            showFlashMessage(req, resp, "success", "Erreur pendant sauvegarde type de congés");
         }
 
-        resp.sendRedirect("congesTypes");
+        resp.sendRedirect("dayofftype-list");
     }
 }

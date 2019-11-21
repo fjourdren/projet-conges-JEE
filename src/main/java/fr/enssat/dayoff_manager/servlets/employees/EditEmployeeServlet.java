@@ -7,39 +7,34 @@ import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
+import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Servlet permettant d'ajouter ou de modifier un employé
+ * <p>
+ * URLS:
+ * - /employees-add-edit
+ * - /employees-add-edit?id=ID
+ */
 @WebServlet(
         name = "EditEmployeeServlet",
-        description = "Add or edit employee",
+        description = "EditEmployeeServlet",
         urlPatterns = {"/employees-add-edit"}
 )
-public class EditEmployeeServlet extends HttpServlet {
-
+public class EditEmployeeServlet extends EnhancedHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // check if user is connected
-        HttpSession session = req.getSession();
-        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-            resp.sendRedirect("default");
-            return;
-        }
-
-        // generate
         Employee employee = null;
         List<String> allDeps = new ArrayList<>();
         Map<DayoffType, Float> dayoffTypeMap = new HashMap<>();
-
         for (Department department : DaoProvider.getDepartmentDao().getAll()) {
             allDeps.add(department.getName());
         }
@@ -57,18 +52,15 @@ public class EditEmployeeServlet extends HttpServlet {
                 employeeID = Long.parseLong(req.getParameter("id"));
                 if (employeeID < 0) throw new IllegalArgumentException("employeeID");
             } catch (Exception e) {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Requête invalide");
-                resp.sendRedirect("employees");
+                showFlashMessage(req, resp, "danger", "Requête invalide");
+                resp.sendRedirect("employees-list");
                 return;
             }
 
             employee = DaoProvider.getEmployeeDao().findById(employeeID);
             if (employee == null) {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Employé inconnu");
-                resp.sendRedirect("employees");
-
+                showFlashMessage(req, resp, "danger", "Employé inconnu");
+                resp.sendRedirect("employees-list");
                 return;
             }
 
@@ -88,27 +80,16 @@ public class EditEmployeeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // check if user is connected
-        HttpSession session = req.getSession();
-        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-            resp.sendRedirect("default");
-            return;
-        }
-
         try {
             Employee employee = createEmployeeObjectFromForm(req);
             updateDayoffCountsFromForm(req, employee);
-
-            session.setAttribute("flashType", "success");
-            session.setAttribute("flashMessage", "Employé ajouté");
+            showFlashMessage(req, resp, "success", "Employé enregistré");
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("flashType", "success");
-            session.setAttribute("flashMessage", "Employé modifié");
+            showFlashMessage(req, resp, "danger", "Erreur pendant enregistrement employé");
         }
 
-        resp.sendRedirect("employees");
+        resp.sendRedirect("employees-list");
     }
 
     /**
