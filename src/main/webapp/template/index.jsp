@@ -40,7 +40,13 @@
 						%> <jsp:include page="changePassword.jsp" /> <%
 						break;
 					default:
-
+						%>
+						<div class="col-md-9">
+							<div class="row">
+								<h2>Bienvenue !</h2>
+							</div>
+						</div>
+						<%
 				}
 			%>
 

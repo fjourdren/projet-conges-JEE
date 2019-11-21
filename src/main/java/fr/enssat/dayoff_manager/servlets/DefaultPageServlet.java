@@ -32,21 +32,7 @@ public class DefaultPageServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher(
                 "/template/index.jsp");
 
-        ArrayList<String> datatableHeadArray = new ArrayList<String>();
-        datatableHeadArray.add("collumn 1");
-        datatableHeadArray.add("collumn 2");
-        request.setAttribute("datatableHeadArray", datatableHeadArray);
-
-        ArrayList<ArrayList<String>> datatableDataArray = new ArrayList<ArrayList<String>>();
-
-        ArrayList<String> line1 = new ArrayList<String>();
-        line1.add("content");
-        line1.add("content2");
-
-        datatableDataArray.add(line1);
-        request.setAttribute("datatableDataArray", datatableDataArray);
-
-        request.setAttribute("componentNeeded", "employeesRender");
+        request.setAttribute("componentNeeded", "default");
 
         dispatcher.forward(request, response);
     }
