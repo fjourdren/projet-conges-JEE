@@ -1,4 +1,4 @@
-<title>resr</title>
+<title>Gestion des congés</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -15,7 +15,6 @@
 <script src="<%=request.getContextPath()%>/template/includes/js/jquery3.2.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap-toggle.min.js"></script>
-<<<<<<< HEAD
 <script src="<%=request.getContextPath()%>/template/includes/js/datatables.js"></script>
 
 <script src="<%=request.getContextPath()%>/template/includes/js/fullcalendar/core.js"></script>
@@ -29,6 +28,5 @@
 <!-- <link href="../includes/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/style.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"> -->
-=======
+
 <script src="<%=request.getContextPath()%>/template/includes/js/datatables.js"></script>
->>>>>>> feature
