@@ -14,6 +14,7 @@
             %>
 				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img class="img-circle" style="height: 19px; padding: 0; margin: 0;" src="https://cours-informatique-gratuit.fr/wp-content/uploads/2014/05/compte-utilisateur-1.png" alt=""/> <%= employeeLogged.getFirstName() %> <%= employeeLogged.getLastName() %> <span class="caret"></span></a>
 					<ul class="dropdown-menu">
+						<li><a href="changePassword"><span class="glyphicon glyphicon-cog"></span> Changer mot de passe</a></li>
 						<li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 					</ul>
 				</li>

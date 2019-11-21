@@ -36,11 +36,22 @@
 					case "dayoffTypeEditAdd":
 						%> <jsp:include page="DayoffType/edit-add.jsp" /> <%
 						break;
+<<<<<<< HEAD
 					case "dayoffTimeline":
 						%> <jsp:include page="dayoff-timeline.jsp" /> <%
+=======
+					case "changePassword":
+						%> <jsp:include page="changePassword.jsp" /> <%
+>>>>>>> feature
 						break;
 					default:
-
+						%>
+						<div class="col-md-9">
+							<div class="row">
+								<h2>Bienvenue !</h2>
+							</div>
+						</div>
+						<%
 				}
 			%>
 
