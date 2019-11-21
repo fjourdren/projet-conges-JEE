@@ -3,7 +3,7 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">Gestion des congés</a>
+            <a class="navbar-brand" href="default">Gestion des congés</a>
         </div>
 
 
