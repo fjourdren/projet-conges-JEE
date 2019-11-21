@@ -36,6 +36,9 @@
 					case "dayoffTypeEditAdd":
 						%> <jsp:include page="DayoffType/edit-add.jsp" /> <%
 						break;
+					case "changePassword":
+						%> <jsp:include page="changePassword.jsp" /> <%
+						break;
 					default:
 
 				}

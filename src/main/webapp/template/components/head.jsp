@@ -11,7 +11,3 @@
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap-toggle.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/datatables.js"></script>
-
-<!-- <link href="../includes/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="../includes/css/style.css" rel="stylesheet" type="text/css">
-<link href="../includes/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"> -->
