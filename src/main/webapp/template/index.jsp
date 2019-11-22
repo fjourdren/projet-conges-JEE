@@ -42,6 +42,9 @@
 					case "dayoffTimeline":
 						%> <jsp:include page="dayoff-timeline.jsp" /> <%
 						break;
+					case "manageMyDayoffs":
+						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
+						break;
 					default:
 						%>
 						<div class="col-md-9">
