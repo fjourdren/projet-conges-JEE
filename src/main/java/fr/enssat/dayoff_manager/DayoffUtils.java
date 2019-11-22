@@ -10,28 +10,37 @@ import java.util.List;
 public class DayoffUtils {
 
     /**
-     * Vérifie si la nouvelle demande de congés peut être ajouté ou non
+     * Vérifie si la nouvelle demande de congés est valide ou non
      *
      * @param dayoff nouvelle demande de congés
-     * @return true/false
+     * @return String avec message d'erreur, null si dayoff valide
      */
-    public static boolean canAddNewDayoff(Dayoff dayoff) {
-        if (dayoff.getDateCreation().after(dayoff.getDateStart()) ||
-                dayoff.getDateCreation().after(dayoff.getDateEnd()) ||
-                dayoff.getDateStart().after(dayoff.getDateEnd()) ||
-                dayoff.getDateCreation().after(new Date(dayoff.getDateStart().getTime() + (1000 * 60 * 60 * 24 * 2)))
-        ) {
-            return false;
+    public static String isDayOffValid(Dayoff dayoff) {
+        if (dayoff.getDateStart().after(dayoff.getDateEnd())) {
+            return "La date de début doit être antérieure à celle de fin";
+        }
+
+        if (dayoff.getDateCreation().after(dayoff.getDateStart())) {
+            return "La date de début ne peut être antérieure à la date actuelle";
+        }
+
+        if (dayoff.getDateCreation().after(dayoff.getDateEnd())) {
+            return "La date de fin ne peut être antérieure à la date actuelle";
+        }
+
+        if (dayoff.getDateCreation().after(new Date(dayoff.getDateStart().getTime() + (1000 * 60 * 60 * 24 * 2)))) {
+            return "La date de début doit au moins être 2 jours après la date actuelle";
         }
 
         List<Dayoff> dayoffs = DaoProvider.getEmployeeDao().getDayOffs(dayoff.getEmployee());
         for (Dayoff conge : dayoffs) {
             if (dayoff.getDateStart().after(conge.getDateStart()) && dayoff.getDateStart().before(conge.getDateEnd()))
-                return false;
+                return "Il existe déjà un congés dans les dates spécifiés";
             if (dayoff.getDateEnd().after(conge.getDateStart()) && dayoff.getDateEnd().before(conge.getDateEnd()))
-                return false;
+                return "Il existe déjà un congés dans les dates spécifiés";
         }
-        return true;
+
+        return null;
     }
 
     /**

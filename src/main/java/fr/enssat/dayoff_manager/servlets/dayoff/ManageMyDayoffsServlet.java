@@ -4,6 +4,7 @@ import fr.enssat.dayoff_manager.DayoffUtils;
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
+import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.db.dayoff_type.DayoffType;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
@@ -45,18 +46,10 @@ public class ManageMyDayoffsServlet extends EnhancedHttpServlet {
 
         switch (req.getParameter("dayoff-action")) {
             case "edit":
-                Dayoff dayoff = createDayoffFromForm(req, user);
-                if (DayoffUtils.canAddNewDayoff(dayoff)) {
-                    DaoProvider.getDayoffDao().save(dayoff);
-                    showFlashMessage(req, resp, "success", "Demande de congés enregistré");
-                } else {
-                    //TODO meilleur message d'erreur
-                    showFlashMessage(req, resp, "danger", "Demande de congés non valide");
-                }
-
+                addOrEditDayoffWithForm(req, resp);
                 break;
             case "delete":
-                deleteDayoffWithForm(req);
+                deleteDayoffWithForm(req, resp);
                 break;
             case "nothing":
                 //nothing
@@ -67,6 +60,88 @@ public class ManageMyDayoffsServlet extends EnhancedHttpServlet {
         }
 
         resp.sendRedirect("manage-my-dayoffs");
+    }
+
+    private void addOrEditDayoffWithForm(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Employee user = getLoggedUser(req.getSession());
+        Dayoff newOrUpdatedDayOff = createDayoffFromForm(req, user);
+        Dayoff oldDayOff = null;
+
+        if (newOrUpdatedDayOff.getId() != null) {
+            oldDayOff = DaoProvider.getDayoffDao().findById(newOrUpdatedDayOff.getId());
+        }
+
+        // Vérification de base de la demande de congés
+        String validationError = DayoffUtils.isDayOffValid(newOrUpdatedDayOff);
+        if (validationError != null) {
+            showFlashMessage(req, resp, "danger", validationError);
+            return;
+        }
+
+        // Calcul nombre de jours disponibles pour l'employé et le type de congé
+        Float remainingDaysForDayoffType = DaoProvider.getEmployeeDao().nbDaysUsable(user, newOrUpdatedDayOff.getType());
+        if (remainingDaysForDayoffType != null) {
+            if (oldDayOff != null && oldDayOff.getType().equals(newOrUpdatedDayOff.getType())) {
+                remainingDaysForDayoffType += oldDayOff.getNbDays();
+            }
+
+            // Vérification que le nombre de jours disponible est suffisant
+            if (remainingDaysForDayoffType < newOrUpdatedDayOff.getNbDays()) {
+                showFlashMessage(req, resp, "danger", "Vous n'avez pas assez de jours de congés disponibles");
+                return;
+            }
+        }
+
+        try {
+            updateRemainingDays(oldDayOff, newOrUpdatedDayOff, user);
+            DaoProvider.getDayoffDao().save(newOrUpdatedDayOff);
+            showFlashMessage(req, resp, "success", "Demande de congés enregistré");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showFlashMessage(req, resp, "danger", "Erreur enregistrement");
+        }
+    }
+
+    /**
+     * Supprime une demande de congé depuis un formulaire HTTP
+     *
+     * @param req http request
+     */
+    private void deleteDayoffWithForm(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Employee user = getLoggedUser(req.getSession());
+        Dayoff dayoff = DaoProvider.getDayoffDao().findById(Long.parseLong(req.getParameter("dayoff-id")));
+        if (dayoff.getStatus() != DayoffStatus.WAITING) {
+            showFlashMessage(req, resp, "danger", "Action impossible");
+            return;
+        }
+
+        try {
+            updateRemainingDays(dayoff, null, user);
+            DaoProvider.getDayoffDao().delete(dayoff);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showFlashMessage(req, resp, "danger", "Erreur suppression");
+        }
+    }
+
+    private void updateRemainingDays(Dayoff oldDayoff, Dayoff newOrUpdatedDayOff, Employee employee) {
+        DayoffCount count = null;
+
+        if (oldDayoff != null) {
+            count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(employee, oldDayoff.getType());
+            if (count.getNbDays() != null) {
+                count.setNbDays(count.getNbDays() + oldDayoff.getNbDays());
+                DaoProvider.getDayoffCountDao().save(count);
+            }
+        }
+
+        if (newOrUpdatedDayOff != null) {
+            count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(employee, newOrUpdatedDayOff.getType());
+            if (count.getNbDays() != null) {
+                count.setNbDays(count.getNbDays() - newOrUpdatedDayOff.getNbDays());
+                DaoProvider.getDayoffCountDao().save(count);
+            }
+        }
     }
 
     /**
@@ -93,16 +168,6 @@ public class ManageMyDayoffsServlet extends EnhancedHttpServlet {
         dayoff.setEmployee(employee);
         dayoff.setNbDays(DayoffUtils.calcNbDays(dayoff));
         return dayoff;
-    }
-
-    /**
-     * Supprime une demande de congé depuis un formulaire HTTP
-     *
-     * @param req http request
-     */
-    private void deleteDayoffWithForm(HttpServletRequest req) {
-        Dayoff dayoff = DaoProvider.getDayoffDao().findById(Long.parseLong(req.getParameter("dayoff-id")));
-        DaoProvider.getDayoffDao().delete(dayoff);
     }
 
     /**

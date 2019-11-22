@@ -19,6 +19,7 @@ import java.util.*;
 public class AuthFilter extends HttpFilter {
 
     private static final Map<String, List<EmployeeType>> AUTH_MAP = new HashMap<>();
+    private static final boolean ALLOW_DEBUG_ENDPOINTS = true;
 
     static {
         AUTH_MAP.put("change-password", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
@@ -33,6 +34,11 @@ public class AuthFilter extends HttpFilter {
         AUTH_MAP.put("employees-delete", Collections.singletonList(EmployeeType.RH_ADMIN));
         AUTH_MAP.put("employees-add-edit", Collections.singletonList(EmployeeType.RH_ADMIN));
         AUTH_MAP.put("employees-list", Collections.singletonList(EmployeeType.RH_ADMIN));
+
+        AUTH_MAP.put("rh-dayoff-edit", Arrays.asList(EmployeeType.RH, EmployeeType.RH_ADMIN));
+        AUTH_MAP.put("rh-dayoff-list", Arrays.asList(EmployeeType.RH, EmployeeType.RH_ADMIN));
+        AUTH_MAP.put("manage-my-dayoffs", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
+
     }
 
     @Override
@@ -40,6 +46,11 @@ public class AuthFilter extends HttpFilter {
         Employee user = (Employee) req.getSession().getAttribute(Constants.LOGGED_USER_SESSION_ATTRIBUTE_NAME);
         String endpoint = req.getRequestURI().substring(req.getRequestURI().lastIndexOf("/") + 1, req.getRequestURI().length());
         if (endpoint.equals("login") || req.getRequestURI().contains("includes")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
+        if (ALLOW_DEBUG_ENDPOINTS && endpoint.equals("showDBContents")){
             chain.doFilter(req, res);
             return;
         }

@@ -2,6 +2,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="fr.enssat.dayoff_manager.db.dayoff.Dayoff" %>
 <%@ page import="fr.enssat.dayoff_manager.db.dayoff_type.DayoffType" %>
+<%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
 <%
@@ -70,8 +71,9 @@
                         </div>
 
                         <br>
-                        Etat :
-                        <div id="state-div"></div>
+                        Etat : <span id="state-div"></span>
+                        <br>
+                        Commentaire RH : <span id="rh-comment-div"></span>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -88,14 +90,25 @@
 
 <!-- JS source data (dynamic) -->
 <script>
+    <% DateFormat simpleDayFormat = new SimpleDateFormat("yyyy-MM-dd"); %>
     const events = [
         <% for (Dayoff dayoff : dayoffs) { %>
+        <%
+        StringBuilder titleBuilder = new StringBuilder();
+        titleBuilder.append("Du ");
+        titleBuilder.append(simpleDayFormat.format(dayoff.getDateStart()));
+        titleBuilder.append(dayoff.getDateStart().getHours() == 12 ? " après-midi" : " matin" );
+        titleBuilder.append(" au ");
+        titleBuilder.append(simpleDayFormat.format(dayoff.getDateEnd()));
+        titleBuilder.append(dayoff.getDateEnd().getHours() == 12 ? " après-midi" : " matin" );
+        %>
+
         {
             id: "<%= dayoff.getId() %>",
-            title: "TODO",
+            title: "<%= titleBuilder.toString() %>",
             start: "<%= dateFormat.format(dayoff.getDateStart()) %>",
             end: "<%= dateFormat.format(dayoff.getDateEnd()) %>",
-            rhComment: "<%= (dayoff.getCommentRH() == null) ? "" : dayoff.getCommentRH()%>",
+            rhComment: "<%= (dayoff.getCommentRH() == null) ? "<aucun>" : dayoff.getCommentRH()%>",
             employeeComment: "<%= (dayoff.getCommentEmployee() == null) ? "" : dayoff.getCommentEmployee()%>",
             typeId: "<%= dayoff.getType().getId() %>",
             state: "<%= dayoff.getStatus().toString() %>"
@@ -112,8 +125,9 @@
 
     // Appellé après que l'utilisateur a sélectionné une période, pour pouvoir ajouter une nouvelle demande de congés
     function onDateRangeSelection(data) {
+        console.log("onDateRangeSelection", data);
         calendar.unselect();
-        calendar.addEvent({id: UNSAVED_DAYOFF_ID, title: "TODO", start: data.start, end: data.end, allDay: true});
+        calendar.addEvent({id: UNSAVED_DAYOFF_ID, title: "", start: data.start, end: data.end, allDay: true});
 
         setEditFormReadOnly(false);
         document.getElementById("dayoff-id-input").value = "";
@@ -125,6 +139,7 @@
         document.getElementById("dayoff-type-select").value = <%= dayoffTypes.get(0).getId() %>;
         document.getElementById("state-div").textContent = "En cours de création";
         document.getElementById("delete-button").setAttribute('disabled', "");
+        document.getElementById("rh-comment-div").textContent = "<aucun>";
 
         EDIT_MODAL.modal({keyboard: false, backdrop: 'static'});
     }
@@ -133,15 +148,18 @@
     // pour voir les informations sur la demande de congés et la modifier si possible
     function onCalendarItemClick(eventObject) {
         const dayoff = eventObject.event;
+        console.log("onCalendarItemClick", eventObject);
         setEditFormReadOnly(false);
 
+        //les dates en JS sont en GMT+1
         document.getElementById("dayoff-id-input").value = dayoff.id;
         document.getElementById("start-date-input").value = dayoff.start.toISOString().split('T')[0];
-        document.getElementById("start-date-type-id").value = (dayoff.start.getHours() === 12) ? "AFTERNOON" : "MORNING";
+        document.getElementById("start-date-type-id").value = (dayoff.start.getHours() === 13) ? "AFTERNOON" : "MORNING";
         document.getElementById("end-date-input").value = dayoff.end.toISOString().split('T')[0];
-        document.getElementById("end-date-type-id").value = (dayoff.end.getHours() === 12) ? "AFTERNOON" : "MORNING";
+        document.getElementById("end-date-type-id").value = (dayoff.end.getHours() === 13) ? "AFTERNOON" : "MORNING";
         document.getElementById("employee-comment-input").value = dayoff.extendedProps.employeeComment;
         document.getElementById("dayoff-type-select").value = dayoff.extendedProps.typeId;
+        document.getElementById("rh-comment-div").textContent = dayoff.extendedProps.rhComment;
 
         switch (dayoff.extendedProps.state) {
             case "WAITING":

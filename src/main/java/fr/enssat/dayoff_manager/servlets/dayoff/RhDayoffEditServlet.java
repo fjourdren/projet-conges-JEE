@@ -3,6 +3,7 @@ package fr.enssat.dayoff_manager.servlets.dayoff;
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
+import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
 import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
 
 import javax.servlet.RequestDispatcher;
@@ -72,9 +73,21 @@ public class RhDayoffEditServlet extends EnhancedHttpServlet {
                         resp.sendRedirect("rh-dayoff-edit?id=" + dayoff.getId());
                         return;
                     }
+
+                    //rollback nbDaysUsable of employee
+                    DayoffCount count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(dayoff.getEmployee(), dayoff.getType());
+                    if (count.getNbDays() != null) {
+                        count.setNbDays(count.getNbDays() + dayoff.getNbDays());
+                        DaoProvider.getDayoffCountDao().save(count);
+                    }
+
                     DaoProvider.getDayoffDao().refuse(dayoff, req.getParameter("comment-rh"));
                     break;
                 }
+                case WAITING:
+                    dayoff.setCommentRH(req.getParameter("comment-rh"));
+                    DaoProvider.getDayoffDao().save(dayoff);
+                    break;
             }
             resp.sendRedirect("rh-dayoff-list");
         } catch (Exception e) {
