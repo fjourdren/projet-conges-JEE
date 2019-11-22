@@ -36,8 +36,8 @@
 					case "dayoffTypeEditAdd":
 						%> <jsp:include page="DayoffType/edit-add.jsp" /> <%
 						break;
-					case "dayoffTimeline":
-						%> <jsp:include page="dayoff-timeline.jsp" /> <%
+					case "changePassword":
+						%> <jsp:include page="changePassword.jsp" /> <%
 						break;
 					case "dayoffRender":
 						%> <jsp:include page="Dayoff/render.jsp" /> <%
@@ -49,7 +49,13 @@
 						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
 					break;
 					default:
-
+						%>
+						<div class="col-md-9">
+							<div class="row">
+								<h2>Bienvenue !</h2>
+							</div>
+						</div>
+						<%
 				}
 			%>
 

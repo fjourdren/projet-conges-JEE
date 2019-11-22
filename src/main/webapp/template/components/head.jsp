@@ -1,4 +1,4 @@
-<title>resr</title>
+<title>Gestion des congés</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,3 +28,5 @@
 <!-- <link href="../includes/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/style.css" rel="stylesheet" type="text/css">
 <link href="../includes/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"> -->
+
+<script src="<%=request.getContextPath()%>/template/includes/js/datatables.js"></script>
