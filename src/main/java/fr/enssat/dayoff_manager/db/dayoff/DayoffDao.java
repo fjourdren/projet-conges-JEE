@@ -2,6 +2,8 @@ package fr.enssat.dayoff_manager.db.dayoff;
 
 import fr.enssat.dayoff_manager.db.GenericDao;
 
+import java.util.List;
+
 public interface DayoffDao extends GenericDao<Dayoff> {
 
     /**
@@ -20,4 +22,11 @@ public interface DayoffDao extends GenericDao<Dayoff> {
      */
     void refuse(Dayoff dayoff, String rhComment);
 
+    /**
+     * Retourne tous les congés d'un statut particulier
+     *
+     * @param status Status du congé
+     * @return tous les congés de l'employée spécifié en paramètre
+     */
+    List<Dayoff> getDayOffStatus(DayoffStatus status);
 }

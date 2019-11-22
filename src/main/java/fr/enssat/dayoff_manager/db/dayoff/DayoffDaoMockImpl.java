@@ -1,7 +1,10 @@
 package fr.enssat.dayoff_manager.db.dayoff;
 
+import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.GenericDaoMockImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DayoffDaoMockImpl extends GenericDaoMockImpl<Dayoff> implements DayoffDao {
@@ -28,5 +31,17 @@ public class DayoffDaoMockImpl extends GenericDaoMockImpl<Dayoff> implements Day
         dayoff.setCommentRH(rhComment);
         dayoff.setStatus(DayoffStatus.REFUSED);
         save(dayoff);
+    }
+
+    @Override
+    public List<Dayoff> getDayOffStatus(DayoffStatus status) {
+        List<Dayoff> dayoffs = new ArrayList<>();
+
+        for (Dayoff dayoff : DaoProvider.getDayoffDao().getAll()) {
+            if (dayoff.getStatus() == status) {
+                dayoffs.add(dayoff);
+            }
+        }
+        return dayoffs;
     }
 }

@@ -42,6 +42,12 @@
 					case "dayoffTimeline":
 						%> <jsp:include page="dayoff-timeline.jsp" /> <%
 						break;
+					case "dayoffRender":
+						%> <jsp:include page="Dayoff/render.jsp" /> <%
+						break;
+					case "dayoffTraiterDemande":
+						%> <jsp:include page="Dayoff/traiter-demande.jsp" /> <%
+						break;
 					case "manageMyDayoffs":
 						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
 						break;
