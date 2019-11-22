@@ -93,6 +93,10 @@ public class Utils {
         DayoffCount count = new DayoffCount(null, type0, rhADMIN);
         DaoProvider.getDayoffCountDao().save(count);
 
+        if (true) {
+            return;
+        }
+
         Date startDate = new Date();
         Date endDate = new Date();
         endDate.setDate(endDate.getDate() + 2);
