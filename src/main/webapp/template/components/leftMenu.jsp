@@ -11,13 +11,13 @@ if(employeeLogged != null) {
         	<strong>Menu Salarié</strong>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "recapdayoffs") { %> active <% } %>" href="recapdayoffs"><span class="glyphicon glyphicon-road"></span> Récapitulatif des congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "recapdayoffs") { %> active <% } %>" href="recapdayoffs"><span class="glyphicon glyphicon-folder-open"></span> Récapitulatif des congés</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffsAddModify") { %> active <% } %>" href="dayoffsAddModify"><span class="glyphicon glyphicon-road"></span> Ajouter congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffsAddModify") { %> active <% } %>" href="dayoffsAddModify"><span class="glyphicon glyphicon-plus"></span> Ajouter congés</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffs") { %> active <% } %>" href="dayoffs"><span class="glyphicon glyphicon-road"></span> Congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffs") { %> active <% } %>" href="dayoffs"><span class="glyphicon glyphicon-list-alt"></span> Congés</a>
         </li>
         
         <% if(employeeLogged.getType() == EmployeeType.BOSS) { %>
@@ -25,17 +25,17 @@ if(employeeLogged != null) {
         	<strong>Menu chef de service</strong>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "teamdayoffs") { %> active <% } %>" href="teamdayoffs"><span class="glyphicon glyphicon-road"></span> Congés des membres de l'équipe</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "teamdayoffs") { %> active <% } %>" href="teamdayoffs"><span class="glyphicon glyphicon-calendar"></span> Congés des membres de l'équipe</a>
         </li>
         <% } %>
         
         
-        <% if(employeeLogged.getType() == EmployeeType.RH) { %>
+        <% if(employeeLogged.getType() == EmployeeType.RH || employeeLogged.getType() == EmployeeType.RH_ADMIN) { %>
         <li class="nav-item">
         	<strong>Menu RH</strong>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffsRH") { %> active <% } %>" href="dayoffsRH"><span class="glyphicon glyphicon-console"></span> Voir les demandes de congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "dayoffsRH") { %> active <% } %>" href="dayoffsRH"><span class="glyphicon glyphicon-calendar"></span> Voir les demandes de congés</a>
         </li>
         <% } %>
         
@@ -45,10 +45,10 @@ if(employeeLogged != null) {
         	<strong>Menu Responsable RH</strong>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "typesDayoff") { %> active <% } %>" href="congesTypes"><span class="glyphicon glyphicon-user"></span> Gestion des types de congés</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "typesDayoff") { %> active <% } %>" href="congesTypes"><span class="glyphicon glyphicon-book"></span> Gestion des types de congés</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "employees") { %> active <% } %>" href="employees"><span class="glyphicon glyphicon-cog"></span> Gestion des employées</a>
+            <a class="nav-link <% if((String) request.getAttribute("leftMenuActive") == "employees") { %> active <% } %>" href="employees"><span class="glyphicon glyphicon-user"></span> Gestion des employées</a>
         </li>
         <% } %>
     </ul>
