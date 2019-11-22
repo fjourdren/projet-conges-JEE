@@ -7,22 +7,18 @@
 <%
     List<Dayoff> dayoffs = (List<Dayoff>) request.getAttribute("dayoffs");
     List<DayoffType> dayoffTypes = (List<DayoffType>) request.getAttribute("dayoffTypes");
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 %>
 
-<style>
-    #calendar {
-        max-width: 900px;
-        margin: 40px auto;
-    }
-</style>
+<!-- Calendar (dynamic) -->
+<div id="calendar"></div>
 
-<div id='calendar'></div>
-
-<div id="myModal" class="modal" tabindex="-1" role="dialog">
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="" method="post">
+        <form action="" method="post" id="edit-form">
+            <input type="hidden" name="dayoff-id" id="dayoff-id-input" value>
+            <input type="hidden" name="dayoff-action" id="dayoff-action-input" value="edit">
             <div class="modal-content">
                 <div class="modal-body">
                     <form>
@@ -74,72 +70,126 @@
                         </div>
 
                         <br>
-                        Etat : en cours de création
+                        Etat :
+                        <div id="state-div"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class=" mr-auto btn btn-danger" data-dismiss="modal">Supprimer</button>
-                    <input type="submit" value="ENVOYER">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="okBTN" data-dismiss="modal">Valider</button>
+                    <button onclick="onDeleteButtonClick()" id="delete-button" type="button"
+                            class="mr-auto btn btn-danger">Supprimer
+                    </button>
+                    <button data-dismiss="modal" type="button" class="btn btn-secondary">Annuler</button>
+                    <input type="submit" value="Valider" class="btn btn-primary" id="submit-button">
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-
+<!-- JS source data (dynamic) -->
 <script>
-    var events = [
+    const events = [
         <% for (Dayoff dayoff : dayoffs) { %>
         {
+            id: "<%= dayoff.getId() %>",
             title: "TODO",
             start: "<%= dateFormat.format(dayoff.getDateStart()) %>",
-            end: "<%= dateFormat.format(dayoff.getDateEnd()) %>"
+            end: "<%= dateFormat.format(dayoff.getDateEnd()) %>",
+            rhComment: "<%= (dayoff.getCommentRH() == null) ? "" : dayoff.getCommentRH()%>",
+            employeeComment: "<%= (dayoff.getCommentEmployee() == null) ? "" : dayoff.getCommentEmployee()%>",
+            typeId: "<%= dayoff.getType().getId() %>",
+            state: "<%= dayoff.getStatus().toString() %>"
         },
         <% } %>
     ];
-
 </script>
 
+<!-- JS logic -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#okBTN').on('click', function () {
-            alert("HELLO");
-            const evt = calendar.getEventById(newEventID);
-            evt.setStart(document.getElementById("startDate").value);
-            evt.setEnd(document.getElementById("endDate").value);
+    let calendar = undefined;
+    const UNSAVED_DAYOFF_ID = "unsaved";
 
-        })
+    // Appellé après que l'utilisateur a sélectionné une période, pour pouvoir ajouter une nouvelle demande de congés
+    function onDateRangeSelection(data) {
+        calendar.unselect();
+        calendar.addEvent({id: UNSAVED_DAYOFF_ID, title: "TODO", start: data.start, end: data.end, allDay: true});
 
-        function onDateSelection(data) {
-            console.log(data);
-            //data.start
-            //data.end
+        document.getElementById("dayoff-id-input").value = "";
+        document.getElementById("start-date-input").value = data.startStr;
+        document.getElementById("start-date-type-id").value = "MORNING";
+        document.getElementById("end-date-input").value = data.endStr;
+        document.getElementById("end-date-type-id").value = "MORNING";
+        document.getElementById("employee-comment-input").value = "";
+        document.getElementById("dayoff-type-select").value = <%= dayoffTypes.get(0).getId() %>;
+        document.getElementById("state-div").textContent = "En cours de création";
 
-            newEventID = Math.random().toString();
-            calendar.unselect();
-            calendar.addEvent({
-                id: newEventID,
-                title: 'my new event' + Math.random(),
-                start: data.start,
-                end: data.end,
-                allDay: true
-            });
+        $("#edit-modal").modal({keyboard: false});
+    }
 
-            $('#myModal').modal({
-                keyboard: false
-            })
+    // Appellé après que l'utilisateur a cliqué sur un élément du calendrier
+    // pour voir les informations sur la demande de congés et la modifier si possible
+    function onCalendarItemClick(eventObject) {
+        const dayoff = eventObject.event;
+        document.getElementById("dayoff-id-input").value = dayoff.id;
+        document.getElementById("start-date-input").value = dayoff.start.toISOString().split('T')[0];
+        document.getElementById("start-date-type-id").value = (dayoff.start.getHours() === 12) ? "AFTERNOON" : "MORNING";
+        document.getElementById("end-date-input").value = dayoff.end.toISOString().split('T')[0];
+        document.getElementById("end-date-type-id").value = (dayoff.end.getHours() === 12) ? "AFTERNOON" : "MORNING";
+        document.getElementById("employee-comment-input").value = dayoff.extendedProps.employeeComment;
+        document.getElementById("dayoff-type-select").value = dayoff.extendedProps.typeId;
 
-            document.getElementById("start-date-input").value = data.startStr;
-            document.getElementById("end-date-input").value = data.endStr;
+        switch (dayoff.extendedProps.state) {
+            case "WAITING":
+                document.getElementById("state-div").textContent = "En attente de validation";
+                setEditFormReadOnly(false);
+                break;
+            case "ACCEPTED":
+                document.getElementById("state-div").textContent = "Accepté";
+                setEditFormReadOnly(true);
+                break;
+            case "REFUSED":
+                document.getElementById("state-div").textContent = "Refusé";
+                setEditFormReadOnly(true);
+                break;
         }
 
+        $("#edit-modal").modal({keyboard: false});
+    }
 
-        var calendarEl = document.getElementById('calendar');
+    function setEditFormReadOnly(readOnly) {
+        const inputIDs = ["start-date-input", "start-date-type-id", "end-date-input", "end-date-type-id", "employee-comment-input", "dayoff-type-select", "submit-button", "delete-button"];
+        if (readOnly) {
+            for (let inputID of inputIDs) {
+                document.getElementById(inputID).setAttribute('disabled', "");
+            }
+        } else {
+            for (let inputID of inputIDs) {
+                document.getElementById(inputID).removeAttribute('disabled');
+            }
+        }
+    }
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+    //Appellé lorsque l'utilisateur appuie sur le bouton Supprimer dans la boite de dialogue pour modifier une demande de congé
+    function onDeleteButtonClick() {
+        if (confirm("Voulez vous vraiment supprimer cette demande de congés ?")) {
+            document.getElementById("dayoff-action-input").value = "delete";
+            document.getElementById("edit-form").submit();
+        }
+    }
+
+    $("#edit-modal").on("hidden.bs.modal", (e) => {
+        //lorsque la fenêtre d'ajout/modification se ferme (clic sur bouton Annuler)
+        //il faut enlever la demande de congés en cours d'ajout si existant
+        const unsavedDayOff = calendar.getEventById(UNSAVED_DAYOFF_ID);
+        if (unsavedDayOff) {
+            unsavedDayOff.remove();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+            eventClick: onCalendarItemClick,
             plugins: ['interaction', 'dayGrid'],
             timeZone: 'UTC',
             defaultView: 'dayGridMonth',
@@ -149,7 +199,7 @@
             selectable: true,
             locale: 'fr',
             events: events,
-            select: onDateSelection
+            select: onDateRangeSelection
         });
 
         calendar.render();

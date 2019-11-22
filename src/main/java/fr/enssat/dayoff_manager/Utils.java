@@ -9,7 +9,6 @@ import fr.enssat.dayoff_manager.db.department.Department;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -93,8 +92,6 @@ public class Utils {
 
         DayoffCount count = new DayoffCount(null, type0, rhADMIN);
         DaoProvider.getDayoffCountDao().save(count);
-
-        //TODO dayoff
         Date dateStart = new Date();
         Date dateDebut = new Date(120, 7, 10);
         Date dateFin = new Date(120, 7, 17);
@@ -106,32 +103,40 @@ public class Utils {
         DayoffType type = type0;
         Employee emp = classic;
 
-        Dayoff demande = new Dayoff(dateDebut, dateFin, dateStart, dateValidation,nbrDay, status, commentRH, commentEmployee, type, emp);
+        Dayoff demande = new Dayoff(dateDebut, dateFin, dateStart, dateValidation, nbrDay, status, commentRH, commentEmployee, type, emp);
 
         DaoProvider.getDayoffDao().save(demande);
-        Date startDate = new Date();
-        Date endDate = new Date();
+        Date startDate = resetTimeAttributes(new Date());
+        Date endDate = resetTimeAttributes(new Date());
         endDate.setDate(endDate.getDate() + 2);
         Date creationDate = new Date();
         creationDate.setDate(creationDate.getDate() - 7);
 
-        Dayoff dayoff1 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances1", null, type0, rhADMIN);
+        endDate.setHours(12);
+        Dayoff dayoff1 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.ACCEPTED, null , "Vacances1", type1, rhADMIN);
 
-        endDate = new Date();
+        endDate = resetTimeAttributes(new Date());
         endDate.setDate(endDate.getDate() + 4);
-        Dayoff dayoff2 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances2", null, type0, rh);
+        Dayoff dayoff2 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, null, "Vacances2", type1, rh);
 
-        endDate = new Date();
+        endDate = resetTimeAttributes(new Date());
         endDate.setDate(endDate.getDate() + 6);
-        Dayoff dayoff3 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances3", null, type1, boss);
+        Dayoff dayoff3 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, null, "Vacances3", type0, boss);
 
-        endDate = new Date();
+        endDate = resetTimeAttributes(new Date());
         endDate.setDate(endDate.getDate() + 8);
-        Dayoff dayoff4 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, "Vacances4", null, type1, classic);
+        Dayoff dayoff4 = new Dayoff(startDate, endDate, creationDate, null, 2.0f, DayoffStatus.WAITING, null, "Vacance4", type0, classic);
 
         DaoProvider.getDayoffDao().save(dayoff1);
         DaoProvider.getDayoffDao().save(dayoff2);
         DaoProvider.getDayoffDao().save(dayoff3);
         DaoProvider.getDayoffDao().save(dayoff4);
+    }
+
+    private static Date resetTimeAttributes(Date in) {
+        in.setHours(0);
+        in.setMinutes(0);
+        in.setSeconds(0);
+        return in;
     }
 }
