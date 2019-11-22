@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -31,6 +32,7 @@ import java.util.Date;
 )
 public class DayoffServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -71,43 +73,61 @@ public class DayoffServlet extends HttpServlet {
 
         DayoffDao dayoffDao = DaoProvider.getDayoffDao();
 
+
+        ArrayList<String> lineToAdd = new ArrayList<String>();
         for (Dayoff e : dayoffDao.getDayOffStatus(DayoffStatus.WAITING)) {
-            ArrayList<String> lineToAdd = new ArrayList<String>();
 
-            lineToAdd.add(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName());
+            Date currentDate = new Date();
 
-            //on transforme les date en String
+            // convert date to calendar
+            Calendar c = Calendar.getInstance();
+            c.setTime(e.getDateCreation());
 
-            Date dateCreation = e.getDateCreation();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String creaDate = dateFormat.format(dateCreation);
+            // manipulate dateCreate pour l'incrémenter de deux jour
+            c.add(Calendar.DATE, 2);
+            // convert calendar to date
+            Date dateCreationPlusTwoDay = c.getTime();
 
-            Date dateDebut = e.getDateStart();
-            String debDate = dateFormat.format(dateDebut);
+            if(dateCreationPlusTwoDay.after(currentDate)){
 
-            Date dateFin = e.getDateEnd();
-            String finDate = dateFormat.format(dateFin);
+                lineToAdd.add(e.getEmployee().getFirstName()+" "+e.getEmployee().getLastName());
+
+                //on transforme les date en String
+
+                Date dateCreation = e.getDateCreation();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String creaDate = dateFormat.format(dateCreation);
+
+                Date dateDebut = e.getDateStart();
+                String debDate = dateFormat.format(dateDebut);
+
+                Date dateFin = e.getDateEnd();
+                String finDate = dateFormat.format(dateFin);
 
 
-            lineToAdd.add(creaDate);
-            lineToAdd.add(debDate);
-            lineToAdd.add(finDate);
-            String commEmp;
-            if(e.getCommentEmployee()==null)
-                commEmp="";
-            else
-                commEmp = e.getCommentEmployee();
-            lineToAdd.add(commEmp);
-            String commRH;
-            if(e.getCommentRH()==null)
-                commRH="";
-            else
-                commRH = e.getCommentRH();
-            lineToAdd.add(commRH);
-            lineToAdd.add(e.getStatus().name());
-            lineToAdd.add("<a class=\"btn btn-primary\" href=\"dayoffsRH-demande?id=" + e.getId() + "\" role=\"button\">Traiter</a>"); // modify button
+                lineToAdd.add(creaDate);
+                lineToAdd.add(debDate);
+                lineToAdd.add(finDate);
+                String commEmp;
+                if(e.getCommentEmployee()==null)
+                    commEmp="";
+                else
+                    commEmp = e.getCommentEmployee();
+                lineToAdd.add(commEmp);
+                String commRH;
+                if(e.getCommentRH()==null)
+                    commRH="";
+                else
+                    commRH = e.getCommentRH();
+                lineToAdd.add(commRH);
+                lineToAdd.add(e.getStatus().name());
+                lineToAdd.add("<a class=\"btn btn-primary\" href=\"dayoffsRH-demande?id=" + e.getId() + "\" role=\"button\">Traiter</a>"); // modify button
 
-            datatableDataArray.add(lineToAdd);
+                datatableDataArray.add(lineToAdd);
+            }
+            else{
+                DaoProvider.getDayoffDao().validate(e, "Limite de 48h passé, votre demande est automatiquement validé.");
+            }
         }
 
 
