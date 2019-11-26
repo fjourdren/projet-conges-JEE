@@ -71,7 +71,11 @@ public class EditDayoffTypeServlet extends EnhancedHttpServlet {
 
         dayoffType.setName(req.getParameter("name"));
         try {
-            dayoffType.setDefaultNbDays(Float.parseFloat(req.getParameter("nb-days")));
+            if (req.getParameter("nb-days-unlimited") != null) {
+                dayoffType.setDefaultNbDays(null);
+            } else {
+                dayoffType.setDefaultNbDays(Float.parseFloat(req.getParameter("nb-days")));
+            }
         } catch (Exception e) {
             showFlashMessage(req, resp, "danger", "Nombre de jours non valide. Doit être un multiple de 0.5 et être positif");
             resp.sendRedirect("dayofftype-list");
