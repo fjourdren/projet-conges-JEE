@@ -45,12 +45,13 @@ public class AuthFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         Employee user = (Employee) req.getSession().getAttribute(Constants.LOGGED_USER_SESSION_ATTRIBUTE_NAME);
         String endpoint = req.getRequestURI().substring(req.getRequestURI().lastIndexOf("/") + 1, req.getRequestURI().length());
+        req.getSession().setAttribute(Constants.CURRENT_ENDPOINT_SESSION_ATTRIBUTE_NAME, endpoint);
         if (endpoint.equals("login") || req.getRequestURI().contains("includes")) {
             chain.doFilter(req, res);
             return;
         }
 
-        if (ALLOW_DEBUG_ENDPOINTS && endpoint.equals("showDBContents")){
+        if (ALLOW_DEBUG_ENDPOINTS && endpoint.equals("showDBContents")) {
             chain.doFilter(req, res);
             return;
         }
