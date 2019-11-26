@@ -37,9 +37,15 @@ public abstract class GenericDaoImpl<E extends GenericEntity> implements Generic
      */
     @Override
     public void save(E entity) {
-        em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.persist(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+            throw e;
+        }
     }
 
     /**
@@ -49,9 +55,15 @@ public abstract class GenericDaoImpl<E extends GenericEntity> implements Generic
      */
     @Override
     public void delete(E entity) {
-        em.getTransaction().begin();
-        em.remove(entity);
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.remove(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+            throw e;
+        }
     }
 
     /**
