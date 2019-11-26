@@ -8,13 +8,14 @@
 
 		<jsp:include page="components/head.jsp" />
 	</head>
-	<body>
+	<body style="width: 100vw; height: 100vh">
 
 		<jsp:include page="components/menu.jsp" />
 
-        <div class="container">
+      <!--  <div class="container"> -->
+		<div style="margin: 16px">
 
-        	<jsp:include page="components/leftMenu.jsp" />
+        <%--	<jsp:include page="components/leftMenu.jsp" /> --%>
 
         	<jsp:include page="components/flashMessages.jsp" />
 
@@ -25,10 +26,10 @@
 						%> <jsp:include page="login.jsp" /> <%
 						break;
 					case "employeesRender":
-						%> <jsp:include page="Employees/render.jsp" /> <%
+						%> <jsp:include page="employees/render.jsp" /> <%
 						break;
 					case "employeesEditAdd":
-						%> <jsp:include page="Employees/edit-add.jsp" /> <%
+						%> <jsp:include page="employees/edit-add.jsp" /> <%
 						break;
 					case "dayoffTypeRender":
 						%> <jsp:include page="DayoffType/render.jsp" /> <%
@@ -65,6 +66,7 @@
 
             <jsp:include page="components/footer.jsp" />
 
-        </div>
+		</div>
+      <!--  </div> -->
 	</body>
 </html>

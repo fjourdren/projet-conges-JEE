@@ -1,11 +1,9 @@
-<div class="col-md-9">
-    <div class="row">
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0">Liste des demandes en cours</span>
-        </nav>
-    </div>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="UTF-8" %>
 
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">Liste des demandes en cours</span>
+</nav>
+<br>
 
-</div>
-
-<jsp:include page="../components/datatable.jsp" />
+<jsp:include page="../components/datatable.jsp"/>

@@ -109,7 +109,10 @@ public class EditEmployeeServlet extends EnhancedHttpServlet {
         employee.setLastName(req.getParameter("last-name"));
         employee.setFirstName(req.getParameter("first-name"));
         employee.setEmail(req.getParameter("email"));
-        employee.setSha256Password(Utils.sha256(req.getParameter("password")));
+        if (!req.getParameter("password").equals(employee.getSha256Password())){
+            employee.setSha256Password(Utils.sha256(req.getParameter("password")));
+        }
+
         employee.setAddress(req.getParameter("adress"));
         employee.setPosition(req.getParameter("position"));
         employee.setType(EmployeeType.valueOf(req.getParameter("type")));
