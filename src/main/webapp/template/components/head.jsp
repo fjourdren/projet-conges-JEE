@@ -1,4 +1,4 @@
-<title>Gestion des congés</title>
+<title>Gestion des congï¿½s</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/fullcalendar/timeline.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/fullcalendar/resource-timeline.css">
 
+<script src="<%=request.getContextPath()%>/template/includes/js/Chart.bundle.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/jquery3.2.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/template/includes/js/bootstrap-toggle.min.js"></script>

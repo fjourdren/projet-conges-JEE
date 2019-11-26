@@ -39,6 +39,9 @@
 					case "changePassword":
 						%> <jsp:include page="changePassword.jsp" /> <%
 						break;
+					case "stat-overview":
+						%> <jsp:include page="stat-overview.jsp" /> <%
+						break;
 					default:
 						%>
 						<div class="col-md-9">
