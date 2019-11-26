@@ -18,7 +18,7 @@ public class DayoffAutoValidation extends TimerTask implements ServletContextLis
 
     static {
         TimeUnit unit = TimeUnit.MILLISECONDS;
-        TIMER_PERIOD = unit.convert(10, TimeUnit.SECONDS);
+        TIMER_PERIOD = unit.convert(10, TimeUnit.DAYS);
     }
 
     private static final long TIMER_PERIOD;
