@@ -17,7 +17,7 @@
 <!-- Edit Modal -->
 <div id="edit-modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="" method="post" id="edit-form">
+        <form style="width: 100%; height: 100%;" action="" method="post" id="edit-form">
             <input type="hidden" name="dayoff-id" id="dayoff-id-input" value>
             <input type="hidden" name="dayoff-action" id="dayoff-action-input" value="edit">
             <div class="modal-content">
@@ -217,6 +217,7 @@
             weekends: false,
             editable: false,
             selectable: true,
+            height: 'parent',
             locale: 'fr',
             events: events,
             select: onDateRangeSelection
