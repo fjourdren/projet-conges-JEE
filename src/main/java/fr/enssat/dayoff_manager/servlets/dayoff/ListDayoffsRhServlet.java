@@ -57,7 +57,19 @@ public class ListDayoffsRhServlet extends EnhancedHttpServlet {
             lineToAdd.add(dateFormat.format(e.getDateEnd()));
             lineToAdd.add(e.getCommentEmployee() == null ? "" : e.getCommentEmployee());
             lineToAdd.add(e.getCommentRH() == null ? "" : e.getCommentRH());
-            lineToAdd.add(e.getStatus().name());
+
+            switch (e.getStatus()) {
+                case WAITING:
+                    lineToAdd.add("En attente");
+                    break;
+                case ACCEPTED:
+                    lineToAdd.add("Accepté");
+                    break;
+                case REFUSED:
+                    lineToAdd.add("Refusé");
+                    break;
+            }
+
             lineToAdd.add("<a class=\"btn btn-primary\" href=\"rh-dayoff-edit?id=" + e.getId() + "\" role=\"button\">Traiter</a>"); // modify button
 
             datatableDataArray.add(lineToAdd);
