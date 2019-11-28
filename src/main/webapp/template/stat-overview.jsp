@@ -2,11 +2,10 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="fr.enssat.dayoff_manager.db.dayoff.Dayoff" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.List" %>
 <%
-    int[] dataMonth  = (int[]) request.getAttribute("dataMonth");
+    int[] dataMonth = (int[]) request.getAttribute("dataMonth");
     List<Dayoff> allDayoff = (List<Dayoff>) request.getAttribute("allDayoff");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 %>
@@ -15,7 +14,6 @@
 
 <script>
     // Bar chart
-
     new Chart(document.getElementById("bar-chart"), {
         type: 'bar',
         data: {
@@ -29,12 +27,11 @@
             ]
         },
         options: {
-            legend: { display: false },
+            legend: {display: false},
             title: {
                 display: true,
                 text: 'Prise des congés par mois (en %).'
             }
         }
     });
-
 </script>

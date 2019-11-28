@@ -1,65 +1,56 @@
 <%--suppress unchecked --%>
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="fr.enssat.dayoff_manager.db.dayoff_type.DayoffType" %>
-<%@ page import="fr.enssat.dayoff_manager.db.employee.Employee" %>
-<%@ page import="fr.enssat.dayoff_manager.db.employee.EmployeeType" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%
-	DayoffType dayoffType = (DayoffType) request.getAttribute("dayoffType");
-    Map<DayoffType, Float> dayoffTypeMap = (Map<DayoffType, Float>) request.getAttribute("dayoffTypeMap");
+    DayoffType e = (DayoffType) request.getAttribute("dayoffType");
 %>
 
-<div class="col-md-9">
-	<div class="row">
-		<nav class="navbar navbar-light bg-light">
-			<% if (dayoffType == null || dayoffType.getId() == -1) { %>
-		    <span class="navbar-brand mb-0">Ajouter un type de congés</span>
-		    <% } else { %>
-		    <span class="navbar-brand mb-0">Modifier un type de congés</span>
-		    <% } %>
-		</nav>
-	</div>
-</div>
 
+<form action="" method="POST" id="edit-form">
+    <nav class="navbar navbar-light bg-light">
+        <% if (e == null) { %>
+        <span class="navbar-brand mb-0 h1">Ajouter un type de congés</span>
+        <% } else { %>
+        <span class="navbar-brand mb-0 h1">Modifier un type de congés</span>
+        <% } %>
 
-<div class="col-md-9">
-	<div class="row">
-		<form action="congesTypes-add-edit" method="POST" id="edit-form">
-		
-		    <input type="hidden" name="id" id="object-id" value="<%= dayoffType.getId() %>">
-		    <div style="margin: 16px">
-		        <div class="card">
-		            <div style="padding: 16px">
-		                <div class="form-group row">
-		                    <label for="last-name-input" class="col-sm-2 col-form-label">Nom</label>
-		                    <div class="col-sm-10">
-		                        <input type="text" class="form-control" name="last-name" id="last-name-input" required
-		                               value="<%= dayoffType.getName() %>">
-		                    </div>
-		                </div>
-		                <div class="form-group row">
-		                    <label for="first-name-input" class="col-sm-2 col-form-label">Nombre de jour par défaut</label>
-		                    <div class="col-sm-10">
-		                        <input type="text" class="form-control" name="first-name" id="first-name-input" required
-		                               value="<%= dayoffType.getDefaultNbDays() %>">
-		                    </div>
-		                </div>
-		                
-		            </div>
-		        </div>
-		        
-		    </div>
-		    
-		    
-		    <div class="row">
-				<div class="center-button">
-					<button class="btn btn-success" type="submit" style="margin:5px;">Enregistrer</button>
-					<a class="btn btn-primary" style="margin:5px;" href="employees" role="button">Annuler</a>
-				</div>
-			</div>
-		
-		
-		</form>
-	</div>
-</div>
+        <div>
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Enregistrer</button>
+            <a class="btn btn-outline-success my-2 my-sm-0" href="employees-add-edit">Annuler</a>
+        </div>
+    </nav>
+
+    <input type="hidden" name="id" id="object-id" value="<%= e == null ? "" : e.getId() %>">
+    <div style="margin: 16px">
+        <div class="card">
+            <div style="padding: 16px">
+                <div class="form-group row">
+                    <label for="name-input" class="col-sm-2 col-form-label">Nom</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" id="name-input" required
+                               value="<%= e == null ? "" : e.getName() %>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="input-group mb-2">
+                        <label for="nb-days-input" class="col-sm-4 col-form-label">Nombre jours congés par défaut : </label>
+                        <input type="number" class="form-control" min="0" step="0.5"
+                            <%= (e != null && e.getDefaultNbDays() == null) ? "disabled" : "" %>
+                               name="nb-days" id="nb-days-input"
+                               value="<%= e == null || e.getDefaultNbDays() == null ? "" : e.getDefaultNbDays() %>">
+
+                        <span class="input-group-text">
+                                    <input type="checkbox" name="nb-days-unlimited" id="nb-days-unlimited-input"
+                                           onclick="var a = document.getElementById('nb-days-input'); a.disabled = this.checked; a.required = !this.checked;"
+                                        <%= (e != null && e.getDefaultNbDays() == null) ? "checked" : "" %>
+                                    >
+                                    <label style="margin-bottom:0; margin-left: 4px"
+                                           for="<%= "nb-days-unlimited" %>">Illimité</label>
+                                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

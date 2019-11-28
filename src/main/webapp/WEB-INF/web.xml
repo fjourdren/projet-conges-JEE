@@ -4,6 +4,9 @@
 
 <web-app>
     <display-name>dayoff_manager</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
 
     <!-- A décommenter pour tester la BDD -->

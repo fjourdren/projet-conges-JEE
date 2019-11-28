@@ -49,40 +49,40 @@ public class Utils {
         DaoProvider.getDayoffTypeDao().save(type0);
         DaoProvider.getDayoffTypeDao().save(type1);
 
-        Employee classic = new Employee("classicFirstName",
-                "classicLastName",
-                Utils.sha256("classicPassword"), /*password*/
-                "classicAddress",
-                "classicPosition",
-                "classic@company.fr",
+        Employee classic = new Employee("Clément",
+                "FORGEARD",
+                Utils.sha256("pass"), /*password*/
+                "address",
+                "Manageur RH",
+                "cforgear@enssat.fr",
+                EmployeeType.RH_ADMIN,
+                dep1);
+
+        Employee boss = new Employee("Alexis",
+                "LE GAL",
+                Utils.sha256("pass"), /*password*/
+                "address",
+                "Développeur",
+                "alegal@enssat.fr",
                 EmployeeType.CLASSIC,
-                dep0);
+                dep1);
 
-        Employee boss = new Employee("bossFirstName",
-                "bossLastName",
-                Utils.sha256("bossPassword"), /*password*/
-                "bossAddress",
-                "bossPosition",
-                "boss@company.fr",
-                EmployeeType.BOSS,
-                dep0);
-
-        Employee rh = new Employee("rhFirstName",
-                "rhLastName",
-                Utils.sha256("rhPassword"), /*password*/
-                "rhAddress",
-                "rhPosition",
-                "rh@company.fr",
+        Employee rh = new Employee("Flavien",
+                "JOURDREN",
+                Utils.sha256("pass"), /*password*/
+                "address",
+                "RH",
+                "fjourdren@enssat.fr",
                 EmployeeType.RH,
                 dep1);
 
-        Employee rhADMIN = new Employee("rhADMINFirstName",
-                "rhADMINLastName",
-                Utils.sha256("rhADMINPassword"), /*password*/
-                "rhADMINAddress",
-                "rhADMINPosition",
-                "rhADMIN@company.fr",
-                EmployeeType.RH_ADMIN,
+        Employee rhADMIN = new Employee("JB",
+                "DUCHENE",
+                Utils.sha256("pass"), /*password*/
+                "address",
+                "Chef équipe",
+                "jduchene@enssat.fr",
+                EmployeeType.BOSS,
                 dep1);
 
         DaoProvider.getEmployeeDao().save(classic);
@@ -90,7 +90,7 @@ public class Utils {
         DaoProvider.getEmployeeDao().save(rh);
         DaoProvider.getEmployeeDao().save(rhADMIN);
 
-        DayoffCount count = new DayoffCount(null, type0, rhADMIN);
+      /*  DayoffCount count = new DayoffCount(null, type0, rhADMIN);
         DaoProvider.getDayoffCountDao().save(count);
 
         Date startDate = new Date();
@@ -117,5 +117,7 @@ public class Utils {
         DaoProvider.getDayoffDao().save(dayoff2);
         DaoProvider.getDayoffDao().save(dayoff3);
         DaoProvider.getDayoffDao().save(dayoff4);
+
+       */
     }
 }

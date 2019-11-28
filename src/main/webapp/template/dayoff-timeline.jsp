@@ -2,12 +2,13 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="fr.enssat.dayoff_manager.db.dayoff.Dayoff" %>
 <%@ page import="fr.enssat.dayoff_manager.db.employee.Employee" %>
+<%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.List" %>
 <%
     List<Employee> employees = (List<Employee>) request.getAttribute("employees");
     List<Dayoff> dayoffs = (List<Dayoff>) request.getAttribute("dayoffs");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 %>
 
 <style>
@@ -30,12 +31,40 @@
     ];
 
     var events = [
+        <% DateFormat simpleDayFormat = new SimpleDateFormat("yyyy-MM-dd"); %>
         <% for (Dayoff dayoff : dayoffs) { %>
+        <%
+        StringBuilder titleBuilder = new StringBuilder();
+        titleBuilder.append("Du ");
+        titleBuilder.append(simpleDayFormat.format(dayoff.getDateStart()));
+        titleBuilder.append(dayoff.getDateStart().getHours() == 12 ? " après-midi" : " matin" );
+        titleBuilder.append(" au ");
+        titleBuilder.append(simpleDayFormat.format(dayoff.getDateEnd()));
+        titleBuilder.append(dayoff.getDateEnd().getHours() == 12 ? " après-midi" : " matin" );
+
+        String eventColor = "blue";
+        switch (dayoff.getStatus()){
+            case WAITING:{
+                eventColor = "lightgray";
+                break;
+            }
+            case ACCEPTED:{
+                eventColor = "lightgreen";
+                break;
+            }
+            case REFUSED:{
+                eventColor = "lightcoral";
+                break;
+            }
+        }
+        %>
+
         {
             resourceId: "<%= dayoff.getEmployee().getId() %>",
-            title: "TODO",
+            title: "<%= titleBuilder.toString() %>",
             start: "<%= dateFormat.format(dayoff.getDateStart()) %>",
-            end: "<%= dateFormat.format(dayoff.getDateEnd()) %>"
+            end: "<%= dateFormat.format(dayoff.getDateEnd()) %>",
+            color: "<%= eventColor %>",
         },
         <% } %>
     ];
