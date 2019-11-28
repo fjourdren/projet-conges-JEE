@@ -11,6 +11,13 @@
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'");
 %>
 
+<style>
+    #calendar {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+</style>
+
 <!-- Calendar (dynamic) -->
 <div id="calendar"></div>
 
@@ -101,6 +108,23 @@
         titleBuilder.append(" au ");
         titleBuilder.append(simpleDayFormat.format(dayoff.getDateEnd()));
         titleBuilder.append(dayoff.getDateEnd().getHours() == 12 ? " après-midi" : " matin" );
+
+        String eventColor = "blue";
+        switch (dayoff.getStatus()){
+            case WAITING:{
+                eventColor = "lightgray";
+                break;
+            }
+            case ACCEPTED:{
+                eventColor = "lightgreen";
+                break;
+            }
+            case REFUSED:{
+                eventColor = "lightcoral";
+                break;
+            }
+        }
+
         %>
 
         {
@@ -111,7 +135,8 @@
             rhComment: "<%= (dayoff.getCommentRH() == null) ? "<aucun>" : dayoff.getCommentRH()%>",
             employeeComment: "<%= (dayoff.getCommentEmployee() == null) ? "" : dayoff.getCommentEmployee()%>",
             typeId: "<%= dayoff.getType().getId() %>",
-            state: "<%= dayoff.getStatus().toString() %>"
+            state: "<%= dayoff.getStatus().toString() %>",
+            color: "<%= eventColor %>",
         },
         <% } %>
     ];
@@ -217,7 +242,6 @@
             weekends: false,
             editable: false,
             selectable: true,
-            height: 'parent',
             locale: 'fr',
             events: events,
             select: onDateRangeSelection
