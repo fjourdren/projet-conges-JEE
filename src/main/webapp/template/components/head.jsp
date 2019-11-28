@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/fullcalendar/daygrid.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/fullcalendar/timeline.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/template/includes/css/fullcalendar/resource-timeline.css">
+<script src="<%=request.getContextPath()%>/template/includes/js/Chart.bundle.min.js"></script>
 
 <script src="<%=request.getContextPath()%>/template/includes/js/jquery3.2.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
