@@ -35,7 +35,7 @@ public class ListEmployeesServlet extends EnhancedHttpServlet {
         List<String> datatableHeadArray = new ArrayList<>();
         datatableHeadArray.add("Prénom");
         datatableHeadArray.add("Nom");
-        datatableHeadArray.add("Adresse");
+        //datatableHeadArray.add("Adresse");
         datatableHeadArray.add("Poste");
         datatableHeadArray.add("Email");
         datatableHeadArray.add("Service");
@@ -52,7 +52,7 @@ public class ListEmployeesServlet extends EnhancedHttpServlet {
 
             lineToAdd.add(e.getFirstName());
             lineToAdd.add(e.getLastName());
-            lineToAdd.add(e.getAddress());
+            //lineToAdd.add(e.getAddress());
             lineToAdd.add(e.getPosition());
             lineToAdd.add(e.getEmail());
             lineToAdd.add(e.getDepartment().getName());

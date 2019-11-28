@@ -57,6 +57,12 @@
 
                 <div class="form-group row">
                     <label class="col-sm-12 col-form-label">
+                        Type : <%= e.getType().getName() %>
+                    </label>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-12 col-form-label">
                         Commentaire employé : <%= e.getCommentEmployee() %>
                     </label>
                 </div>

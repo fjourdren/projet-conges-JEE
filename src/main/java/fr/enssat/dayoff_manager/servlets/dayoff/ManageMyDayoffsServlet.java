@@ -129,7 +129,7 @@ public class ManageMyDayoffsServlet extends EnhancedHttpServlet {
 
         if (oldDayoff != null) {
             count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(employee, oldDayoff.getType());
-            if (count.getNbDays() != null) {
+            if (count != null && count.getNbDays() != null) {
                 count.setNbDays(count.getNbDays() + oldDayoff.getNbDays());
                 DaoProvider.getDayoffCountDao().save(count);
             }
@@ -137,7 +137,7 @@ public class ManageMyDayoffsServlet extends EnhancedHttpServlet {
 
         if (newOrUpdatedDayOff != null) {
             count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(employee, newOrUpdatedDayOff.getType());
-            if (count.getNbDays() != null) {
+            if (count != null && count.getNbDays() != null) {
                 count.setNbDays(count.getNbDays() - newOrUpdatedDayOff.getNbDays());
                 DaoProvider.getDayoffCountDao().save(count);
             }

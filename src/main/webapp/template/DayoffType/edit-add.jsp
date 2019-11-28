@@ -31,12 +31,13 @@
                                value="<%= e == null ? "" : e.getName() %>">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="input-group mb-2">
+                        <label for="nb-days-input" class="col-sm-4 col-form-label">Nombre jours congés par défaut : </label>
                         <input type="number" class="form-control" min="0" step="0.5"
                             <%= (e != null && e.getDefaultNbDays() == null) ? "disabled" : "" %>
                                name="nb-days" id="nb-days-input"
-                               value="<%= e != null && e.getDefaultNbDays() == null ? "" : e.getDefaultNbDays() %>">
+                               value="<%= e == null || e.getDefaultNbDays() == null ? "" : e.getDefaultNbDays() %>">
 
                         <span class="input-group-text">
                                     <input type="checkbox" name="nb-days-unlimited" id="nb-days-unlimited-input"
