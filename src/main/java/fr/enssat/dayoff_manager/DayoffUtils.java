@@ -2,6 +2,7 @@ package fr.enssat.dayoff_manager;
 
 import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
+import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,13 +33,21 @@ public class DayoffUtils {
             return "La date de début doit au moins être 2 jours après la date actuelle";
         }
 
+        if (calcNbDays(dayoff) < 0.5) {
+            return "Il faut que le congé dure au minimum un demi-jour ouvré";
+        }
+
         List<Dayoff> dayoffs = DaoProvider.getEmployeeDao().getDayOffs(dayoff.getEmployee());
         for (Dayoff conge : dayoffs) {
+            if (conge.getStatus() == DayoffStatus.REFUSED)
+                continue;
+
             if (dayoff.getDateStart().after(conge.getDateStart()) && dayoff.getDateStart().before(conge.getDateEnd()))
                 return "Il existe déjà un congés dans les dates spécifiés";
             if (dayoff.getDateEnd().after(conge.getDateStart()) && dayoff.getDateEnd().before(conge.getDateEnd()))
                 return "Il existe déjà un congés dans les dates spécifiés";
         }
+
 
         return null;
     }

@@ -4,6 +4,8 @@ import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.dayoff.Dayoff;
 import fr.enssat.dayoff_manager.db.dayoff.DayoffStatus;
 import fr.enssat.dayoff_manager.db.dayoff_count.DayoffCount;
+import fr.enssat.dayoff_manager.db.employee.Employee;
+import fr.enssat.dayoff_manager.db.employee.EmployeeType;
 import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
 
 import javax.servlet.RequestDispatcher;
@@ -60,6 +62,19 @@ public class RhDayoffEditServlet extends EnhancedHttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Dayoff dayoff = DaoProvider.getDayoffDao().findById(Long.parseLong(req.getParameter("id")));
         DayoffStatus status = DayoffStatus.valueOf(req.getParameter("choix-rh"));
+        Employee currentUser = getLoggedUser(req.getSession());
+
+        if (dayoff.getEmployee().getType() == EmployeeType.RH_ADMIN && currentUser.getType() != EmployeeType.RH_ADMIN) {
+            showFlashMessage(req, resp, "danger", "Une demande réalisé par un manager RH ne peut être validé que par un manager RH");
+            resp.sendRedirect("rh-dayoff-list");
+            return;
+        }
+
+        if (dayoff.getEmployee().getType() == EmployeeType.RH && currentUser.equals(dayoff.getEmployee())) {
+            showFlashMessage(req, resp, "danger", "Vous ne pouvez pas valider vous-même vos demandes de congé");
+            resp.sendRedirect("rh-dayoff-list");
+            return;
+        }
 
         try {
             switch (status) {
@@ -76,7 +91,7 @@ public class RhDayoffEditServlet extends EnhancedHttpServlet {
 
                     //rollback nbDaysUsable of employee
                     DayoffCount count = DaoProvider.getDayoffCountDao().findByEmployeeAndDayoffType(dayoff.getEmployee(), dayoff.getType());
-                    if (count.getNbDays() != null) {
+                    if (count != null && count.getNbDays() != null) {
                         count.setNbDays(count.getNbDays() + dayoff.getNbDays());
                         DaoProvider.getDayoffCountDao().save(count);
                     }
