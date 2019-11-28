@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<title>DayoffManager</title>
 
 		<jsp:include page="components/head.jsp" />
 	</head>
@@ -52,7 +52,10 @@
 					case "manageMyDayoffs":
 						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
 						break;
-					default:
+					case "stat-overview":
+                        %> <jsp:include page="stat-overview.jsp" /> <%
+                        break;
+                    default:
 						%>
 						<div class="col-md-9">
 							<div class="row">
