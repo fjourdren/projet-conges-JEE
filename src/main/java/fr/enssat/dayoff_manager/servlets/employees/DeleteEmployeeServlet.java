@@ -4,74 +4,60 @@ import fr.enssat.dayoff_manager.db.DaoProvider;
 import fr.enssat.dayoff_manager.db.employee.Employee;
 import fr.enssat.dayoff_manager.db.employee.EmployeeDao;
 import fr.enssat.dayoff_manager.db.employee.EmployeeType;
+import fr.enssat.dayoff_manager.servlets.EnhancedHttpServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
+/**
+ * Servlet permettant de supprimer un employé
+ * <p>
+ * URLS:
+ * - /employees-delete?id=ID
+ */
 @WebServlet(
         name = "DeleteEmployeeServlet",
-        description = "Delete employee",
+        description = "DeleteEmployeeServlet",
         urlPatterns = {"/employees-delete"}
 )
-public class DeleteEmployeeServlet extends HttpServlet {
+public class DeleteEmployeeServlet extends EnhancedHttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // check if user is connected
-        HttpSession session = request.getSession();
-        Employee employeeLogged = (Employee) session.getAttribute("employeeLogged");
-        if (employeeLogged == null || employeeLogged.getType() != EmployeeType.RH_ADMIN) {
-            response.sendRedirect("default");
-            return;
-        }
-
-        // delete
         if (request.getParameter("id") != null) {
             EmployeeDao employeeDao = DaoProvider.getEmployeeDao();
-
             Employee employee = null;
 
             try {
                 employee = employeeDao.findById(Long.parseLong(request.getParameter("id")));
-            } catch (Error e) {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Erreur de conversion");
-
-                response.sendRedirect("employees");
-
+            } catch (Exception e) {
+                showFlashMessage(request, response, "danger", "Requête invalide");
+                response.sendRedirect("employees-list");
                 return;
             }
-
 
             if (employee != null) {
-                employeeDao.delete(employee);
 
-                session.setAttribute("flashType", "success");
-                session.setAttribute("flashMessage", "Employé supprimé");
+                try {
+                    employeeDao.delete(employee);
+                    showFlashMessage(request, response, "success", "Employé supprimé");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showFlashMessage(request, response, "danger", "Erreur pendant suppression");
+                }
 
-                response.sendRedirect("employees");
-
-                return;
             } else {
-                session.setAttribute("flashType", "danger");
-                session.setAttribute("flashMessage", "Employé inconnu");
-
-                response.sendRedirect("employees");
-
-                return;
+                showFlashMessage(request, response, "danger", "Employé inconnu");
             }
         } else {
-            session.setAttribute("flashType", "danger");
-            session.setAttribute("flashMessage", "L'employé est non défini");
-
-            response.sendRedirect("employees");
-
-            return;
+            showFlashMessage(request, response, "danger", "Requête invalide");
         }
+
+        response.sendRedirect("employees-list");
     }
 
 }

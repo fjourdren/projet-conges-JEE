@@ -26,8 +26,8 @@
         <% } %>
 
         <div>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Enregistrer</button>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Annuler</button>
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Enregistrer</button>
+            <a class="btn btn-outline-success my-2 my-sm-0" href="employees-list">Annuler</a>
         </div>
     </nav>
 

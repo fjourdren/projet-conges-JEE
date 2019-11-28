@@ -4,17 +4,18 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<title>DayoffManager</title>
 
 		<jsp:include page="components/head.jsp" />
 	</head>
-	<body>
+	<body style="width: 100vw; height: 100vh">
 
 		<jsp:include page="components/menu.jsp" />
 
-        <div class="container">
+      <!--  <div class="container"> -->
+		<div style="margin: 16px">
 
-        	<jsp:include page="components/leftMenu.jsp" />
+        <%--	<jsp:include page="components/leftMenu.jsp" /> --%>
 
         	<jsp:include page="components/flashMessages.jsp" />
 
@@ -25,10 +26,10 @@
 						%> <jsp:include page="login.jsp" /> <%
 						break;
 					case "employeesRender":
-						%> <jsp:include page="Employees/render.jsp" /> <%
+						%> <jsp:include page="employees/render.jsp" /> <%
 						break;
 					case "employeesEditAdd":
-						%> <jsp:include page="Employees/edit-add.jsp" /> <%
+						%> <jsp:include page="employees/edit-add.jsp" /> <%
 						break;
 					case "dayoffTypeRender":
 						%> <jsp:include page="DayoffType/render.jsp" /> <%
@@ -39,10 +40,22 @@
 					case "changePassword":
 						%> <jsp:include page="changePassword.jsp" /> <%
 						break;
-					case "stat-overview":
-						%> <jsp:include page="stat-overview.jsp" /> <%
+					case "dayoffTimeline":
+						%> <jsp:include page="dayoff-timeline.jsp" /> <%
 						break;
-					default:
+					case "dayoffRender":
+						%> <jsp:include page="Dayoff/render.jsp" /> <%
+						break;
+					case "dayoffTraiterDemande":
+						%> <jsp:include page="Dayoff/traiter-demande.jsp" /> <%
+						break;
+					case "manageMyDayoffs":
+						%> <jsp:include page="manage-my-dayoffs.jsp" /> <%
+						break;
+					case "stat-overview":
+                        %> <jsp:include page="stat-overview.jsp" /> <%
+                        break;
+                    default:
 						%>
 						<div class="col-md-9">
 							<div class="row">
@@ -56,6 +69,7 @@
 
             <jsp:include page="components/footer.jsp" />
 
-        </div>
+		</div>
+      <!--  </div> -->
 	</body>
 </html>

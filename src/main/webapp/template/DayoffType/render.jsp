@@ -1,13 +1,12 @@
-<div class="col-md-9">
-	<div class="row">
-		<nav class="navbar navbar-light bg-light">
-			<span class="navbar-brand mb-0">Liste des types de congés</span>
-		</nav>
-	</div>
-	
-	<div class="row">
-		<a class="btn btn-primary" href="congesTypes-add-edit" role="button">Ajouter</a>
-	</div>
-</div>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="UTF-8" %>
 
-<jsp:include page="../components/datatable.jsp" />
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">Liste des types de congÃ©s</span>
+    <div>
+        <a class="btn btn-primary my-2 my-sm-0" href="dayofftype-add-edit" role="button">Ajouter</a>
+    </div>
+</nav>
+<br>
+
+<jsp:include page="../components/datatable.jsp"/>
