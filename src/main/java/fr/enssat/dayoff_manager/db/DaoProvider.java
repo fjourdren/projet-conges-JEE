@@ -19,7 +19,7 @@ import fr.enssat.dayoff_manager.db.employee.EmployeeDaoMockImpl;
 
 public class DaoProvider {
 
-    private static final boolean MOCK_MODE = true;
+    private static final boolean MOCK_MODE = false;
     private static final DayoffDao DAYOFF_DAO;
     private static final DayoffCountDao DAYOFF_COUNT_DAO;
     private static final DayoffTypeDao DAYOFF_TYPE_DAO;
