@@ -9,7 +9,7 @@
 %>
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">DayoffManager</a>
+    <a class="navbar-brand" href="default">DayoffManager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -43,6 +43,9 @@
             <li class="nav-item">
                 <a class="nav-link <%= endpoint.equals("dayoff-timeline") ? "active":"" %>" href="dayoff-timeline">Visualisation
                     congés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <%= endpoint.equals("stat-overview") ? "active":"" %>" href="stat-overview">Afficher des statistiques</a>
             </li>
             <% } %>
 

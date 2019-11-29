@@ -25,6 +25,7 @@ public class AuthFilter extends HttpFilter {
         AUTH_MAP.put("change-password", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
         AUTH_MAP.put("logout", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
         AUTH_MAP.put("dayoff-timeline", Arrays.asList(EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
+        AUTH_MAP.put("stat-overview", Arrays.asList(EmployeeType.RH, EmployeeType.RH_ADMIN));
         AUTH_MAP.put("default", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
 
         AUTH_MAP.put("dayofftype-delete", Collections.singletonList(EmployeeType.RH_ADMIN));
@@ -38,6 +39,7 @@ public class AuthFilter extends HttpFilter {
         AUTH_MAP.put("rh-dayoff-edit", Arrays.asList(EmployeeType.RH, EmployeeType.RH_ADMIN));
         AUTH_MAP.put("rh-dayoff-list", Arrays.asList(EmployeeType.RH, EmployeeType.RH_ADMIN));
         AUTH_MAP.put("manage-my-dayoffs", Arrays.asList(EmployeeType.CLASSIC, EmployeeType.BOSS, EmployeeType.RH, EmployeeType.RH_ADMIN));
+
 
     }
 

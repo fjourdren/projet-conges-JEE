@@ -16,9 +16,6 @@ import java.util.stream.IntStream;
 
 /**
  * Servlet affichant des stats sur les congés
- * <p>
- * URLS:
- * - /stat-overview
  */
 @WebServlet(
         name = "StatServlet",
