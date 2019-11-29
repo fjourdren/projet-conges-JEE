@@ -56,13 +56,8 @@
                         %> <jsp:include page="stat-overview.jsp" /> <%
                         break;
                     default:
-						%>
-						<div class="col-md-9">
-							<div class="row">
-								<h2>Bienvenue !</h2>
-							</div>
-						</div>
-						<%
+						%> <jsp:include page="default.jsp" /> <%
+						break;
 				}
 			%>
 
