@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="dayoff_manager">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <!-- URL connection BDD, forme : jdbc:mysql://localhost/<<database name>> -->
+            <property name="hibernate.connection.url"
+                      value="jdbc:mysql://localhost/dayoff_manager?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC"/>
+            <!-- Nom d'utilisateur BDD -->
+            <property name="hibernate.connection.username" value="root"/>
+            <!-- Mot de passe BDD -->
+            <property name="hibernate.connection.password" value="root"/>
+
+            <!-- Classe du pilote de la BDD -->
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+
+            <!-- Active la détection automatiques des classes entités -->
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+
+            <!-- Affiche le SQL exécuté par Hibernate (débogage) -->
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Comportement d'Hibernate au démarrage -->
+            <!-- Update -> crée les tables automatiquement si besoin -->
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update"/> -->
+        </properties>
+    </persistence-unit>
+</persistence>
